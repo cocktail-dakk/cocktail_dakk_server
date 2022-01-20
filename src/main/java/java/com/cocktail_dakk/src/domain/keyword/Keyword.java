@@ -1,4 +1,4 @@
-package java.com.cocktail_dakk.src.domain;
+package java.com.cocktail_dakk.src.domain.keyword;
 
 import lombok.Getter;
 
@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 public class Keyword {
+
 
     @Id @GeneratedValue
     private Long keywordId;

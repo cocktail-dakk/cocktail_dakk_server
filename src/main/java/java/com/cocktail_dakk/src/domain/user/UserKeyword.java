@@ -3,7 +3,7 @@ package java.com.cocktail_dakk.src.domain.user;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.com.cocktail_dakk.src.domain.Keyword;
+import java.com.cocktail_dakk.src.domain.keyword.Keyword;
 
 @Entity
 @Getter

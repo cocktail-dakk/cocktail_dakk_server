@@ -1,8 +1,9 @@
-package java.com.cocktail_dakk.src.domain;
+package java.com.cocktail_dakk.src.domain.ingredient;
 
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.com.cocktail_dakk.src.domain.Status;
 import java.com.cocktail_dakk.src.domain.cocktail.CocktailIngredient;
 import java.util.ArrayList;
 import java.util.List;
