@@ -1,11 +1,14 @@
 package java.com.cocktail_dakk.src.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.cocktail.CocktailMixingMethod;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class MixingMethod {
 
     @Id @GeneratedValue

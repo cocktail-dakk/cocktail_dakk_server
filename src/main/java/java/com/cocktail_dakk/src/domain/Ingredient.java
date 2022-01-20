@@ -1,11 +1,14 @@
 package java.com.cocktail_dakk.src.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.cocktail.CocktailIngredient;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class Ingredient {
 
     @Id @GeneratedValue

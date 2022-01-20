@@ -1,10 +1,21 @@
 package java.com.cocktail_dakk.src.domain.cocktail;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.Drink;
 
 @Entity
+@Getter
 public class CocktailDrink {
+
+    public CocktailDrink() {
+    }
+
+    public CocktailDrink(CocktailInfo cocktailInfo, Drink drink) {
+        this.cocktailInfo = cocktailInfo;
+        this.drink = drink;
+    }
 
     @Id @GeneratedValue
     private Long cocktailDrinkId;

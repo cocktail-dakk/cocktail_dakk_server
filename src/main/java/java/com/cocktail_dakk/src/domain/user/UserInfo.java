@@ -1,11 +1,14 @@
 package java.com.cocktail_dakk.src.domain.user;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.Status;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class UserInfo {
 
     @Id @GeneratedValue
