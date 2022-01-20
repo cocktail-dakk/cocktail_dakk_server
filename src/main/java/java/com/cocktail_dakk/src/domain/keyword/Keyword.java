@@ -1,6 +1,8 @@
 package java.com.cocktail_dakk.src.domain.keyword;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Keyword {
-
 
     @Id @GeneratedValue
     private Long keywordId;

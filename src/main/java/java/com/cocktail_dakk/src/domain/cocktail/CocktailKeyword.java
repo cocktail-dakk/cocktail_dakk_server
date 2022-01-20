@@ -1,11 +1,13 @@
 package java.com.cocktail_dakk.src.domain.cocktail;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.keyword.Keyword;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class CocktailKeyword {
 

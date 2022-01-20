@@ -1,16 +1,15 @@
 package java.com.cocktail_dakk.src.domain.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class UserCocktail {
-
-    public UserCocktail() {
-    }
 
     public UserCocktail(UserInfo userInfo, CocktailInfo cocktailInfo, Double rating, String review) {
         this.rating = rating;

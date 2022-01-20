@@ -1,16 +1,15 @@
 package java.com.cocktail_dakk.src.domain.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.com.cocktail_dakk.src.domain.keyword.Keyword;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class UserKeyword {
-
-    public UserKeyword() {
-    }
 
     public UserKeyword(UserInfo userInfo, Keyword keyword) {
         this.userInfo = userInfo;
