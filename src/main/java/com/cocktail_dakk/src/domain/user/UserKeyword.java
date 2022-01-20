@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class UserKeyword {
 
     public UserKeyword(UserInfo userInfo, Keyword keyword) {
-        this.userInfo = userInfo;
         this.keyword = keyword;
+        userInfo.getUserKeywords().add(this);
     }
 
     @Id @GeneratedValue
