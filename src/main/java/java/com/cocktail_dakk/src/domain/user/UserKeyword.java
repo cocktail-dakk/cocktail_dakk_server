@@ -9,7 +9,6 @@ public class UserKeyword {
     @Id @GeneratedValue
     private Long userKeywordId;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     private UserInfo userInfo;
 

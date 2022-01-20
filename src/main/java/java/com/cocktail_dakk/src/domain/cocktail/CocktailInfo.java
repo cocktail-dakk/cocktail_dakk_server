@@ -1,6 +1,7 @@
 package java.com.cocktail_dakk.src.domain.cocktail;
 
 import javax.persistence.*;
+import java.com.cocktail_dakk.src.domain.Status;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class CocktailInfo {
     private String cocktailBackgroundImageURL;
     @Lob
     private String recommendImageURL;
-    private String status;
+    private Status status;
 
     @OneToMany(mappedBy = "cocktailInfo")
     private List<CocktailKeyword> cocktailKeywords=new ArrayList<>();

@@ -14,7 +14,7 @@ public class Drink {
     private String drinkName;
 
     @Enumerated(EnumType.STRING)
-    private String status;
+    private Status status;
 
     @OneToMany(mappedBy = "drink")
     List<CocktailDrink> cocktailDrinks=new ArrayList<>();

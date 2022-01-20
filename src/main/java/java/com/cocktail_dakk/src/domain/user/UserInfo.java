@@ -1,6 +1,7 @@
 package java.com.cocktail_dakk.src.domain.user;
 
 import javax.persistence.*;
+import java.com.cocktail_dakk.src.domain.Status;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class UserInfo {
     private Integer alcoholLevel;
 
     @Enumerated(EnumType.STRING)
-    private String status;
+    private Status status;
 
     @OneToMany(mappedBy = "userInfo")
     private List<UserKeyword> userKeywords=new ArrayList<>();

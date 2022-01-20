@@ -14,7 +14,7 @@ public class MixingMethod {
     private String mixingMethodName;
 
     @Enumerated(EnumType.STRING)
-    private String status;
+    private Status status;
 
     @OneToMany
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();

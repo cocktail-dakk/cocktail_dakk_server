@@ -18,5 +18,4 @@ public class Keyword {
 
     @OneToMany
     List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
-
 }

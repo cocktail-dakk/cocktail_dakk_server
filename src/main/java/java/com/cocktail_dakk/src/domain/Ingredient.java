@@ -14,7 +14,7 @@ public class Ingredient {
     private String ingredientName;
 
     @Enumerated(EnumType.STRING)
-    private String status;
+    private Status status;
 
     @OneToMany(mappedBy = "ingredient")
     List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
