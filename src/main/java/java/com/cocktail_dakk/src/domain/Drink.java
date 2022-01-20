@@ -1,8 +1,9 @@
 package java.com.cocktail_dakk.src.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.com.cocktail_dakk.src.domain.cocktail.CocktailDrink;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Drink {
@@ -10,4 +11,11 @@ public class Drink {
     @Id @GeneratedValue
     private Long drinkId;
 
+    private String drinkName;
+
+    @Enumerated(EnumType.STRING)
+    private String status;
+
+    @OneToMany(mappedBy = "drink")
+    List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 }
