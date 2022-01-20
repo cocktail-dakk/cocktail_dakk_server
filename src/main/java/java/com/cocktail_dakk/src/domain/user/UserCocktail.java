@@ -13,9 +13,11 @@ public class UserCocktail {
     private Double rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userInfoId")
     private UserInfo userInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="cocktailInfoId")
     private CocktailInfo cocktailInfo;
 
     @Lob

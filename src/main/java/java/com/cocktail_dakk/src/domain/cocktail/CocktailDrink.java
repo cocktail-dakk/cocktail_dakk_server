@@ -10,8 +10,10 @@ public class CocktailDrink {
     private Long cocktailDrinkId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cocktailInfoId")
     private CocktailInfo cocktailInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="drinkId")
     private Drink drink;
 }

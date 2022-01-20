@@ -10,8 +10,10 @@ public class UserKeyword {
     private Long userKeywordId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="userInfoId")
     private UserInfo userInfo;
 
     @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "kewordId")
     private Keyword keyword;
 }

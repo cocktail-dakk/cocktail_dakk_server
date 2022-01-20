@@ -10,9 +10,11 @@ public class CocktailKeyword {
     private Long cocktailKeywordId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "keywordId")
     private Keyword keyword;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="cocktialInfoId")
     private CocktailInfo cocktailInfo;
 
 }
