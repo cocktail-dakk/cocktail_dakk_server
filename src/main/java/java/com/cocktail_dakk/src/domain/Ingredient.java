@@ -10,4 +10,5 @@ public class Ingredient {
     @Id @GeneratedValue
     private Long ingredientId;
 
+
 }
