@@ -8,6 +8,7 @@ import javax.persistence.Id;
 public class UserKeyword {
 
     @Id @GeneratedValue
+    
     private Long userKeywordId;
 
 }
