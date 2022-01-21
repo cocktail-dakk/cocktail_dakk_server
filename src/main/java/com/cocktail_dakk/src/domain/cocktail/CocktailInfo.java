@@ -39,7 +39,7 @@ public class CocktailInfo {
     @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
     private List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cocktailInfo"/*, cascade = CascadeType.ALL*/)
     private List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
 
     @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)

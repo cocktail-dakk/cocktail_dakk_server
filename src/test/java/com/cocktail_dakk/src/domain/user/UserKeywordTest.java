@@ -49,6 +49,9 @@ class UserKeywordTest {
     @Autowired
     CocktailIngredientRepository cocktailIngredientRepository;
 
+    @Autowired
+    UserCocktailRepository userCocktailRepository;
+
     //사용자가 선택한 취향키워드를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
     @Test
     @Transactional
@@ -386,5 +389,98 @@ class UserKeywordTest {
             System.out.println();
         }
         System.out.println("Successfully searched cocktail with ingredient.");
+    }
+
+    //사용자가 즐겨찾기한 칵테일 조회
+    @Test
+    @Transactional
+    public void testUserCocktail(){
+
+        // Given
+        CocktailInfo cocktailInfo1=CocktailInfo.builder()
+                .englishName("21st Century")
+                .koreanName("21세기")
+                .description("쓰다")
+                .cocktailImageURL("1234")
+                .cocktailBackgroundImageURL("5678")
+                .recommendImageURL("91011")
+                .build();
+
+        CocktailInfo cocktailInfo2=CocktailInfo.builder()
+                .englishName("God Father")
+                .koreanName("갓 파더")
+                .description("모르겠다")
+                .cocktailImageURL("abcd")
+                .cocktailBackgroundImageURL("efg")
+                .recommendImageURL("hijk")
+                .build();
+
+        CocktailInfo cocktailInfo3=CocktailInfo.builder()
+                .englishName("Gold Rush")
+                .koreanName("골드 러시")
+                .description("금 맛이다")
+                .cocktailImageURL("lmno")
+                .cocktailBackgroundImageURL("pqkr")
+                .recommendImageURL("stu")
+                .build();
+
+        UserInfo userInfo1=UserInfo.builder()
+                .deviceNum("1234")
+                .nickname("dale")
+                .age(25)
+                .sex("m")
+                .alcoholLevel(3)
+                .build();
+
+        UserInfo userInfo2=UserInfo.builder()
+                .deviceNum("5678")
+                .nickname("jimin")
+                .age(23)
+                .sex("w")
+                .alcoholLevel(3)
+                .build();
+
+        UserCocktail userCocktail1=new UserCocktail(userInfo1, cocktailInfo1, 4.5, "good");
+        UserCocktail userCocktail2=new UserCocktail(userInfo1, cocktailInfo2, 5.0, "great");
+        UserCocktail userCocktail3=new UserCocktail(userInfo2, cocktailInfo3, 4.5, "yeah~");
+
+        // when 조인 엔티티 직접 영속화하는 방법
+        cocktailInfoRepository.save(cocktailInfo1);
+        cocktailInfoRepository.save(cocktailInfo2);
+        cocktailInfoRepository.save(cocktailInfo3);
+
+        userInfoRepository.save(userInfo1);
+        userInfoRepository.save(userInfo2);
+
+        userCocktailRepository.save(userCocktail1);
+        userCocktailRepository.save(userCocktail2);
+        userCocktailRepository.save(userCocktail3);
+
+        userInfoRepository.flush();
+
+        // Then
+        List<UserInfo> all = userInfoRepository.findAll();
+        assertThat(all.size()).isEqualTo(2);
+        System.out.println("Find All success");
+
+        for(int i=0; i<all.size(); i++){
+            UserInfo userInfo=all.get(i);
+
+            List<UserCocktail> userCocktails = userInfo.getUserCocktails();
+
+            System.out.println(userInfo.getNickname());
+            if(userInfo.getDeviceNum()=="1234"){
+                for(int j=0; j<userCocktails.size(); j++){
+                    assertThat(userInfo1.getUserCocktails().get(j).getCocktailInfo().getEnglishName()).isEqualTo(userCocktails.get(j).getCocktailInfo().getEnglishName());
+                    System.out.println(userCocktails.get(j).getCocktailInfo().getEnglishName());
+                }
+            }else if(userInfo.getDeviceNum()=="5678"){
+                for(int j=0; j<userCocktails.size(); j++){
+                    assertThat(userInfo2.getUserCocktails().get(j).getCocktailInfo().getEnglishName()).isEqualTo(userCocktails.get(j).getCocktailInfo().getEnglishName());
+                    System.out.println(userCocktails.get(j).getCocktailInfo().getEnglishName());
+                }
+            }
+            System.out.println();
+        }
     }
 }

@@ -36,7 +36,7 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
     private List<UserKeyword> userKeywords=new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
     private List<UserCocktail> userCocktails=new ArrayList<>();
 
     @Builder

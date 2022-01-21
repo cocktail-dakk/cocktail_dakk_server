@@ -12,9 +12,10 @@ import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 public class UserCocktail {
 
     public UserCocktail(UserInfo userInfo, CocktailInfo cocktailInfo, Double rating, String review) {
-        this.rating = rating;
         this.userInfo = userInfo;
         this.cocktailInfo = cocktailInfo;
+        userInfo.getUserCocktails().add(this);
+        this.rating = rating;
         this.review = review;
     }
 
