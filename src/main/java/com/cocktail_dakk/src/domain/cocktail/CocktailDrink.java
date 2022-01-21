@@ -14,6 +14,8 @@ public class CocktailDrink {
     public CocktailDrink(CocktailInfo cocktailInfo, Drink drink) {
         this.cocktailInfo = cocktailInfo;
         this.drink = drink;
+        cocktailInfo.getCocktailDrinks().add(this);
+        drink.getCocktailDrinks().add(this);
     }
 
     @Id @GeneratedValue

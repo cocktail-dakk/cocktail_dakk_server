@@ -1,9 +1,8 @@
 package com.cocktail_dakk.src.domain.user;
 
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
-import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
-import com.cocktail_dakk.src.domain.cocktail.CocktailKeywordRepository;
+import com.cocktail_dakk.src.domain.cocktail.*;
+import com.cocktail_dakk.src.domain.drink.Drink;
+import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,12 @@ class UserKeywordTest {
 
     @Autowired
     CocktailKeywordRepository cocktailKeywordRepository;
+
+    @Autowired
+    DrinkRepository drinkRepository;
+
+    @Autowired
+    CocktailDrinkRepository cocktailDrinkRepository;
 
     //사용자가 선택한 취향키워드를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
     @Test
@@ -67,12 +72,13 @@ class UserKeywordTest {
 
         userInfoRepository.flush();
 
-        // Then 영속선 전이일 때 Id: 2L 직접 영속화일 땐 Id:2L
-        Optional<UserInfo> byId = userInfoRepository.findById(2L);
-        assertThat(byId).isNotEmpty();
+        // Then
+        List<UserInfo> all = userInfoRepository.findAll();
+        assertThat(all).isNotEmpty();
+        UserInfo byId=all.get(0);
         System.out.println("Find by id success");
 
-        UserInfo userInfo1=byId.orElseThrow(IllegalArgumentException::new);
+        UserInfo userInfo1=byId;
         assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
         System.out.println("UserInfo is same : "+userInfo1.getNickname());
 
@@ -166,12 +172,13 @@ class UserKeywordTest {
         userInfoRepository.flush();
 
 
-        // Then 영속선 전이일 때 Id: 9L 직접 영속화일 땐 Id:6L
-        Optional<UserInfo> byId = userInfoRepository.findById(6L);
-        assertThat(byId).isNotEmpty();
+        // Then
+        List<UserInfo> all = userInfoRepository.findAll();
+        assertThat(all).isNotEmpty();
+        UserInfo byId=all.get(0);
         System.out.println("Find by id success");
 
-        UserInfo userInfo1=byId.orElseThrow(IllegalArgumentException::new);
+        UserInfo userInfo1=byId;
         assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
         System.out.println("UserInfo is same : "+userInfo1.getNickname());
 
@@ -191,9 +198,94 @@ class UserKeywordTest {
         }
     }
 
+    //기주로 칵테일 조회하는 테스트
     @Test
     @Transactional
     public void testDrinkCocktail(){
 
+        // Given
+        CocktailInfo cocktailInfo1=CocktailInfo.builder()
+                .englishName("21st Century")
+                .koreanName("21세기")
+                .description("쓰다")
+                .cocktailImageURL("1234")
+                .cocktailBackgroundImageURL("5678")
+                .recommendImageURL("91011")
+                .build();
+
+        CocktailInfo cocktailInfo2=CocktailInfo.builder()
+                .englishName("God Father")
+                .koreanName("갓 파더")
+                .description("모르겠다")
+                .cocktailImageURL("abcd")
+                .cocktailBackgroundImageURL("efg")
+                .recommendImageURL("hijk")
+                .build();
+
+        CocktailInfo cocktailInfo3=CocktailInfo.builder()
+                .englishName("Gold Rush")
+                .koreanName("골드 러시")
+                .description("금 맛이다")
+                .cocktailImageURL("lmno")
+                .cocktailBackgroundImageURL("pqkr")
+                .recommendImageURL("stu")
+                .build();
+
+        Drink drink1=Drink.builder()
+                .drinkName("데킬라")
+                .build();
+
+        Drink drink2=Drink.builder()
+                .drinkName("위스키")
+                .build();
+
+        CocktailDrink cocktailDrink1=new CocktailDrink(cocktailInfo1, drink1);
+        CocktailDrink cocktailDrink2=new CocktailDrink(cocktailInfo2, drink2);
+        CocktailDrink cocktailDrink3=new CocktailDrink(cocktailInfo3, drink2);
+
+        // when 조인 엔티티 직접 영속화하는 방법
+        cocktailInfoRepository.save(cocktailInfo1);
+        cocktailInfoRepository.save(cocktailInfo2);
+        cocktailInfoRepository.save(cocktailInfo3);
+
+        drinkRepository.save(drink1);
+        drinkRepository.save(drink2);
+
+        cocktailDrinkRepository.save(cocktailDrink1);
+        cocktailDrinkRepository.save(cocktailDrink2);
+        cocktailDrinkRepository.save(cocktailDrink3);
+
+        cocktailInfoRepository.flush();
+
+        // Then
+        List<Drink> drinks = drinkRepository.findAll();
+        assertThat(drinks.size()).isEqualTo(2);
+        System.out.println("find all drink success");
+
+        String[] drinkNameList={"데킬라", "위스키"};
+        for(int i=0; i<drinks.size(); i++){
+            assertThat(drinks.get(i).getDrinkName()).isEqualTo(drinkNameList[i]);
+        }
+        System.out.println(" drink name correct");
+        
+        for(int i=0; i<drinks.size();i ++){
+            Drink drink=drinks.get(i);
+            List<CocktailDrink> cocktailDrinks = drink.getCocktailDrinks();
+
+            System.out.println(drink.getDrinkName());
+            if(drink.getDrinkName()=="데킬라"){
+                for(int j=0; j<cocktailDrinks.size(); j++){
+                    assertThat(drink1.getCocktailDrinks().get(j).getCocktailInfo().getEnglishName()).isEqualTo(cocktailDrinks.get(j).getCocktailInfo().getEnglishName());
+                    System.out.println(cocktailDrinks.get(j).getCocktailInfo().getEnglishName());
+                }
+            }else if(drink.getDrinkName()=="위스키"){
+                for(int j=0; j<cocktailDrinks.size(); j++){
+                    assertThat(drink2.getCocktailDrinks().get(j).getCocktailInfo().getEnglishName()).isEqualTo(cocktailDrinks.get(j).getCocktailInfo().getEnglishName());
+                    System.out.println(cocktailDrinks.get(j).getCocktailInfo().getEnglishName());
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("Successfully searched cocktail with drink.");
     }
 }
