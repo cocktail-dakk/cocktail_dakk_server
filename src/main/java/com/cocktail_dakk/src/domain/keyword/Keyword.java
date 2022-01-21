@@ -4,10 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class Keyword {
 
     private String keywordName;
 
-    @OneToMany
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL)
     List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
 
     @Builder

@@ -23,7 +23,7 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "ingredient")
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
 
 }

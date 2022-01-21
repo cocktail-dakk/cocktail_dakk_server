@@ -1,6 +1,7 @@
 package com.cocktail_dakk.src.domain.cocktail;
 
 import com.cocktail_dakk.src.domain.Status;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,17 +33,25 @@ public class CocktailInfo {
     private String recommendImageURL;
     private Status status;
 
-    @OneToMany(mappedBy = "cocktailInfo")
+    @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)
     private List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo")
+    @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)
     private List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo")
+    @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();
 
-
+    @Builder
+    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL){
+        this.englishName=englishName;
+        this.koreanName=koreanName;
+        this.description=description;
+        this.cocktailImageURL=cocktailImageURL;
+        this.cocktailBackgroundImageURL=cocktailBackgroundImageURL;
+        this.recommendImageURL=recommendImageURL;
+    }
 }

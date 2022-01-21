@@ -11,6 +11,13 @@ import javax.persistence.*;
 @Getter
 public class CocktailKeyword {
 
+    public CocktailKeyword(CocktailInfo cocktailInfo, Keyword keyword) {
+        this.keyword = keyword;
+        this.cocktailInfo=cocktailInfo;
+        cocktailInfo.getCocktailKeywords().add(this);
+        keyword.getCocktailKeywords().add(this);
+    }
+
     @Id @GeneratedValue
     private Long cocktailKeywordId;
 
@@ -21,5 +28,4 @@ public class CocktailKeyword {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cocktialInfoId")
     private CocktailInfo cocktailInfo;
-
 }

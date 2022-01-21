@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class UserKeyword {
 
     public UserKeyword(UserInfo userInfo, Keyword keyword) {
+        this.userInfo=userInfo;
         this.keyword = keyword;
         userInfo.getUserKeywords().add(this);
     }
@@ -26,6 +27,4 @@ public class UserKeyword {
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "kewordId")
     private Keyword keyword;
-
-
 }

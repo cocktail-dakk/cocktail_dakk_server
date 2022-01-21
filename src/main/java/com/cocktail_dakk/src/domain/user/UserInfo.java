@@ -33,10 +33,10 @@ public class UserInfo {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "userInfo")
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<UserKeyword> userKeywords=new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfo")
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<UserCocktail> userCocktails=new ArrayList<>();
 
     @Builder
