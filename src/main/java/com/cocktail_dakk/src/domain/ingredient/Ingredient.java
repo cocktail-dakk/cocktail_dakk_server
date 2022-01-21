@@ -1,6 +1,7 @@
 package com.cocktail_dakk.src.domain.ingredient;
 
 import com.cocktail_dakk.src.domain.Status;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,12 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ingredient"/*, cascade = CascadeType.ALL*/)
     List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
+
+    @Builder
+    public Ingredient(String ingredientName){
+        this.ingredientName=ingredientName;
+    }
 
 }

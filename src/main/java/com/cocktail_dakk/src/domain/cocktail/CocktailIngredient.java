@@ -11,8 +11,22 @@ import javax.persistence.*;
 @Getter
 public class CocktailIngredient {
 
+    public CocktailIngredient(CocktailInfo cocktailInfo, Ingredient ingredient, String unit, Double volume) {
+        this.cocktailInfo = cocktailInfo;
+        this.ingredient = ingredient;
+        cocktailInfo.getCocktailIngredients().add(this);
+        ingredient.getCocktailIngredients().add(this);
+
+        this.unit = unit;
+        this.volume = volume;
+    }
+
     @Id @GeneratedValue
     private Long cocktailIngredientId;
+
+    private String unit;
+
+    private Double volume;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ingredientId")

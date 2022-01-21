@@ -3,6 +3,8 @@ package com.cocktail_dakk.src.domain.user;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
+import com.cocktail_dakk.src.domain.ingredient.Ingredient;
+import com.cocktail_dakk.src.domain.ingredient.IngredientRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +42,12 @@ class UserKeywordTest {
 
     @Autowired
     CocktailDrinkRepository cocktailDrinkRepository;
+
+    @Autowired
+    IngredientRepository ingredientRepository;
+
+    @Autowired
+    CocktailIngredientRepository cocktailIngredientRepository;
 
     //사용자가 선택한 취향키워드를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
     @Test
@@ -287,5 +296,95 @@ class UserKeywordTest {
             System.out.println();
         }
         System.out.println("Successfully searched cocktail with drink.");
+    }
+
+    //재료로 칵테일 조회하는 테스트
+    @Test
+    @Transactional
+    public void testIngredientCocktail(){
+
+        // Given
+        CocktailInfo cocktailInfo1=CocktailInfo.builder()
+                .englishName("21st Century")
+                .koreanName("21세기")
+                .description("쓰다")
+                .cocktailImageURL("1234")
+                .cocktailBackgroundImageURL("5678")
+                .recommendImageURL("91011")
+                .build();
+
+        CocktailInfo cocktailInfo2=CocktailInfo.builder()
+                .englishName("God Father")
+                .koreanName("갓 파더")
+                .description("모르겠다")
+                .cocktailImageURL("abcd")
+                .cocktailBackgroundImageURL("efg")
+                .recommendImageURL("hijk")
+                .build();
+
+        CocktailInfo cocktailInfo3=CocktailInfo.builder()
+                .englishName("Gold Rush")
+                .koreanName("골드 러시")
+                .description("금 맛이다")
+                .cocktailImageURL("lmno")
+                .cocktailBackgroundImageURL("pqkr")
+                .recommendImageURL("stu")
+                .build();
+
+        Ingredient ingredient1= Ingredient.builder()
+                .ingredientName("레몬즙")
+                .build();
+        Ingredient ingredient2= Ingredient.builder()
+                .ingredientName("아마레또")
+                .build();
+
+        CocktailIngredient cocktailIngredient1=new CocktailIngredient(cocktailInfo1, ingredient1, "ml", 23.0);
+        CocktailIngredient cocktailIngredient2=new CocktailIngredient(cocktailInfo2, ingredient2, "ml", 10.0);
+        CocktailIngredient cocktailIngredient3=new CocktailIngredient(cocktailInfo3, ingredient1, "ml", 22.5);
+
+        // when 조인 엔티티 직접 영속화하는 방법
+        cocktailInfoRepository.save(cocktailInfo1);
+        cocktailInfoRepository.save(cocktailInfo2);
+        cocktailInfoRepository.save(cocktailInfo3);
+
+        ingredientRepository.save(ingredient1);
+        ingredientRepository.save(ingredient2);
+
+        cocktailIngredientRepository.save(cocktailIngredient1);
+        cocktailIngredientRepository.save(cocktailIngredient2);
+        cocktailIngredientRepository.save(cocktailIngredient3);
+
+        cocktailInfoRepository.flush();
+
+        // Then
+        List<Ingredient> ingredients = ingredientRepository.findAll();
+        assertThat(ingredients.size()).isEqualTo(2);
+        System.out.println("find all ingredient success");
+
+        String[] ingredientNameList={"레몬즙", "아마레또"};
+        for(int i=0; i<ingredients.size(); i++){
+            assertThat(ingredients.get(i).getIngredientName()).isEqualTo(ingredientNameList[i]);
+        }
+        System.out.println("ingredient name correct");
+
+        for(int i=0; i<ingredients.size();i ++){
+            Ingredient ingredient=ingredients.get(i);
+            List<CocktailIngredient> cocktailIngredients = ingredient.getCocktailIngredients();
+
+            System.out.println(ingredient.getIngredientName());
+            if(ingredient.getIngredientName()=="레몬즙"){
+                for(int j=0; j<cocktailIngredients.size(); j++){
+                    assertThat(ingredient1.getCocktailIngredients().get(j).getCocktailInfo().getEnglishName()).isEqualTo(cocktailIngredients.get(j).getCocktailInfo().getEnglishName());
+                    System.out.println(cocktailIngredients.get(j).getCocktailInfo().getEnglishName());
+                }
+            }else if(ingredient.getIngredientName()=="아마레또"){
+                for(int j=0; j<cocktailIngredients.size(); j++){
+                    assertThat(ingredient2.getCocktailIngredients().get(j).getCocktailInfo().getEnglishName()).isEqualTo(cocktailIngredients.get(j).getCocktailInfo().getEnglishName());
+                    System.out.println(cocktailIngredients.get(j).getCocktailInfo().getEnglishName());
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("Successfully searched cocktail with ingredient.");
     }
 }
