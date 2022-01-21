@@ -52,6 +52,9 @@ class UserKeywordTest {
     @Autowired
     UserCocktailRepository userCocktailRepository;
 
+    @Autowired
+    UserDrinkRepository userDrinkRepository;
+
     //사용자가 선택한 취향키워드를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
     @Test
     @Transactional
@@ -251,6 +254,7 @@ class UserKeywordTest {
                 .drinkName("위스키")
                 .build();
 
+        // 칵테일과 기주 연관관계 설정
         CocktailDrink cocktailDrink1=new CocktailDrink(cocktailInfo1, drink1);
         CocktailDrink cocktailDrink2=new CocktailDrink(cocktailInfo2, drink2);
         CocktailDrink cocktailDrink3=new CocktailDrink(cocktailInfo3, drink2);
@@ -481,6 +485,150 @@ class UserKeywordTest {
                 }
             }
             System.out.println();
+        }
+    }
+
+
+    //사용자가 선택한 선호기주를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
+    @Test
+    @Transactional
+    public void testUserDrink(){
+        // Given
+        Drink drink=Drink.builder()
+                .drinkName("보드카")
+                .build();
+
+        UserInfo userInfo=UserInfo.builder()
+                .deviceNum("1234")
+                .nickname("dale")
+                .age(25)
+                .sex("m")
+                .alcoholLevel(3)
+                .build();
+
+        //유저와 선호 기주 간의 연관관계 설정
+        UserDrink userDrink=new UserDrink(userInfo, drink);
+
+        // when 조인에티티를 직접 영속화하는 방법
+        drinkRepository.save(drink);
+        userInfoRepository.save(userInfo);
+        userDrinkRepository.save(userDrink);
+
+        userInfoRepository.flush();
+
+        // Then
+        List<UserInfo> all = userInfoRepository.findAll();
+        assertThat(all).isNotEmpty();
+        UserInfo byId=all.get(0);
+        System.out.println("Find by id success");
+
+        UserInfo userInfo1=byId;
+        assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
+        System.out.println("UserInfo is same : "+userInfo1.getNickname());
+
+        List<UserDrink> userDrinks = userInfo1.getUserDrinks();
+        System.out.println(userDrinks.getClass().getName());
+
+        UserDrink getUserDrink=userDrinks.get(0);
+        System.out.println(getUserDrink.getDrink().getDrinkName());
+        assertThat(getUserDrink.getDrink().getDrinkName()).isEqualTo(drink.getDrinkName());
+    }
+
+    //사용자가 선택한 선호 기주에 맞는 칵테일을 조회할 수 있는지의 테스트
+    @Test
+    @Transactional
+    public void testUserDrinkCocktail(){
+        // Given
+        Drink drink1=Drink.builder()
+                .drinkName("데킬라")
+                .build();
+
+        Drink drink2=Drink.builder()
+                .drinkName("위스키")
+                .build();
+
+        UserInfo userInfo=UserInfo.builder()
+                .deviceNum("1234")
+                .nickname("dale")
+                .age(25)
+                .sex("m")
+                .alcoholLevel(3)
+                .build();
+
+        // 유저와 선호 기주 연관관계 설정
+        UserDrink userDrink=new UserDrink(userInfo, drink2);
+
+        CocktailInfo cocktailInfo1=CocktailInfo.builder()
+                .englishName("21st Century")
+                .koreanName("21세기")
+                .description("쓰다")
+                .cocktailImageURL("1234")
+                .cocktailBackgroundImageURL("5678")
+                .recommendImageURL("91011")
+                .build();
+
+        CocktailInfo cocktailInfo2=CocktailInfo.builder()
+                .englishName("God Father")
+                .koreanName("갓 파더")
+                .description("모르겠다")
+                .cocktailImageURL("abcd")
+                .cocktailBackgroundImageURL("efg")
+                .recommendImageURL("hijk")
+                .build();
+
+        CocktailInfo cocktailInfo3=CocktailInfo.builder()
+                .englishName("Gold Rush")
+                .koreanName("골드 러시")
+                .description("금 맛이다")
+                .cocktailImageURL("lmno")
+                .cocktailBackgroundImageURL("pqkr")
+                .recommendImageURL("stu")
+                .build();
+
+        // 칵테일과 선호 기주 연관관계 설정
+        CocktailDrink cocktailDrink1=new CocktailDrink(cocktailInfo1, drink1);
+        CocktailDrink cocktailDrink2=new CocktailDrink(cocktailInfo2, drink2);
+        CocktailDrink cocktailDrink3=new CocktailDrink(cocktailInfo3, drink2);
+
+        // when 조인 엔티티를 직접 영속화하는 방법
+        drinkRepository.save(drink1);
+        drinkRepository.save(drink2);
+        userInfoRepository.save(userInfo);
+        userDrinkRepository.save(userDrink);
+
+        cocktailInfoRepository.save(cocktailInfo1);
+        cocktailInfoRepository.save(cocktailInfo2);
+        cocktailInfoRepository.save(cocktailInfo3);
+        cocktailDrinkRepository.save(cocktailDrink1);
+        cocktailDrinkRepository.save(cocktailDrink2);
+        cocktailDrinkRepository.save(cocktailDrink3);
+
+        userInfoRepository.flush();
+
+
+        // Then
+        List<UserInfo> all = userInfoRepository.findAll();
+        assertThat(all).isNotEmpty();
+        UserInfo byId=all.get(0);
+        System.out.println("Find by id success");
+
+        UserInfo userInfo1=byId;
+        assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
+        System.out.println("UserInfo is same : "+userInfo1.getNickname());
+
+        List<UserDrink> userDrinks = userInfo1.getUserDrinks();
+        System.out.println(userDrinks.getClass().getName());
+
+        for(UserDrink getUserDrink:userDrinks){
+            assertThat(getUserDrink.getDrink().getDrinkName()).isEqualTo(drink2.getDrinkName());
+            System.out.println(getUserDrink.getDrink().getDrinkName());
+
+            List<CocktailDrink> cocktailDrinks = getUserDrink.getDrink().getCocktailDrinks();
+            assertThat(cocktailDrinks.get(0).getCocktailInfo().getEnglishName()).isEqualTo(cocktailInfo2.getEnglishName());
+            assertThat(cocktailDrinks.get(1).getCocktailInfo().getEnglishName()).isEqualTo(cocktailInfo3.getEnglishName());
+            for (CocktailDrink cocktailDrink:cocktailDrinks) {
+                System.out.println(cocktailDrink.getCocktailInfo().getEnglishName());
+            }
         }
     }
 }

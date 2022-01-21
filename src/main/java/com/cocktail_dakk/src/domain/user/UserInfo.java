@@ -39,6 +39,9 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
     private List<UserCocktail> userCocktails=new ArrayList<>();
 
+    @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
+    private List<UserDrink> userDrinks=new ArrayList<>();
+
     @Builder
     public UserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel){
         this.deviceNum=deviceNum;
