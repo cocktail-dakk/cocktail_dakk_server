@@ -3,6 +3,7 @@ package com.cocktail_dakk.src.domain.user;
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
+import com.cocktail_dakk.src.domain.cocktail.CocktailKeywordRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ class UserKeywordTest {
     @Autowired
     CocktailInfoRepository cocktailInfoRepository;
 
+    @Autowired
+    UserKeywordRepository userKeywordRepository;
+
+    @Autowired
+    CocktailKeywordRepository cocktailKeywordRepository;
+
     //사용자가 선택한 취향키워드를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
     @Test
     @Transactional
@@ -45,15 +52,22 @@ class UserKeywordTest {
                 .alcoholLevel(3)
                 .build();
 
+        //유저와 취향키워드 간의 연관관계 설정
         UserKeyword userKeyword=new UserKeyword(userInfo, keyword);
 
-        // when
+        // when 영속성 전이로 조인엔티티를 영속화하는 방법 -> 이 코드 실행할 때 엔티티에 영속성 전이 설정했는지 확인할 것
+//        keywordRepository.save(keyword);
+//        userInfoRepository.save(userInfo);
+
+        // when 조인에티티를 직접 영속화하는 방법
         keywordRepository.save(keyword);
         userInfoRepository.save(userInfo);
+        userKeywordRepository.save(userKeyword);
+
 
         userInfoRepository.flush();
 
-        // Then
+        // Then 영속선 전이일 때 Id: 2L 직접 영속화일 땐 Id:2L
         Optional<UserInfo> byId = userInfoRepository.findById(2L);
         assertThat(byId).isNotEmpty();
         System.out.println("Find by id success");
@@ -91,8 +105,8 @@ class UserKeywordTest {
                 .sex("m")
                 .alcoholLevel(3)
                 .build();
-
-
+        
+        // 유저와 취향 키워드 연관관계 설정
         UserKeyword userKeyword=new UserKeyword(userInfo, keyword1);
 
         CocktailInfo cocktailInfo1=CocktailInfo.builder()
@@ -122,24 +136,38 @@ class UserKeywordTest {
                 .recommendImageURL("dkfjak")
                 .build();
 
+        // 칵테일과 취향 키워드 연관관계 설정
         CocktailKeyword cocktailKeyword1=new CocktailKeyword(cocktailInfo1, keyword1);
         CocktailKeyword cocktailKeyword2=new CocktailKeyword(cocktailInfo2, keyword2);
         CocktailKeyword cocktailKeyword3=new CocktailKeyword(cocktailInfo3, keyword1);
 
 
-        // when
+        // when 영속성 전이로 조인 엔티티를 영속화하는 방법 -> 이 코드 실행할 때 엔티티에 영속성 전이 설정했는지 확인할 것
+//        keywordRepository.save(keyword1);
+//        keywordRepository.save(keyword2);
+//        userInfoRepository.save(userInfo);
+//        cocktailInfoRepository.save(cocktailInfo1);
+//        cocktailInfoRepository.save(cocktailInfo2);
+//        cocktailInfoRepository.save(cocktailInfo3);
+        
+        // when 조인 엔티티를 직접 영속화하는 방법
         keywordRepository.save(keyword1);
         keywordRepository.save(keyword2);
         userInfoRepository.save(userInfo);
+        userKeywordRepository.save(userKeyword);
+
         cocktailInfoRepository.save(cocktailInfo1);
         cocktailInfoRepository.save(cocktailInfo2);
         cocktailInfoRepository.save(cocktailInfo3);
+        cocktailKeywordRepository.save(cocktailKeyword1);
+        cocktailKeywordRepository.save(cocktailKeyword2);
+        cocktailKeywordRepository.save(cocktailKeyword3);
 
         userInfoRepository.flush();
 
 
-        // Then
-        Optional<UserInfo> byId = userInfoRepository.findById(9L);
+        // Then 영속선 전이일 때 Id: 9L 직접 영속화일 땐 Id:6L
+        Optional<UserInfo> byId = userInfoRepository.findById(6L);
         assertThat(byId).isNotEmpty();
         System.out.println("Find by id success");
 
@@ -161,5 +189,11 @@ class UserKeywordTest {
                 System.out.println(cocktailKeyword.getCocktailInfo().getEnglishName());
             }
         }
+    }
+
+    @Test
+    @Transactional
+    public void testDrinkCocktail(){
+
     }
 }

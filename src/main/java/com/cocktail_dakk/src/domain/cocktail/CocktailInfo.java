@@ -33,7 +33,7 @@ public class CocktailInfo {
     private String recommendImageURL;
     private Status status;
 
-    @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cocktailInfo"/*, cascade = CascadeType.ALL*/)
     private List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
 
     @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

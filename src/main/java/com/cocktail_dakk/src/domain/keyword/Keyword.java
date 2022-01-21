@@ -20,7 +20,7 @@ public class Keyword {
 
     private String keywordName;
 
-    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "keyword" /*,cascade = CascadeType.ALL*/)
     List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
 
     @Builder

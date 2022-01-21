@@ -33,7 +33,7 @@ public class UserInfo {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
     private List<UserKeyword> userKeywords=new ArrayList<>();
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
