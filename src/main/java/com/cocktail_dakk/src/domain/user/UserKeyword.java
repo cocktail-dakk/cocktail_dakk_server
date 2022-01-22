@@ -27,5 +27,4 @@ public class UserKeyword {
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "kewordId")
     private Keyword keyword;
-    
 }
