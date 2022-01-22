@@ -33,16 +33,16 @@ public class CocktailInfo {
     private String recommendImageURL;
     private Status status;
 
-    @OneToMany(mappedBy = "cocktailInfo"/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "cocktailInfo")
     private List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER)
     private List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo"/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "cocktailInfo")
     private List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cocktailInfo")
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();
 
     @Builder

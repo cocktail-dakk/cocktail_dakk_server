@@ -24,7 +24,7 @@ public class Drink {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "drink"/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "drink")
     List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 
     @Builder

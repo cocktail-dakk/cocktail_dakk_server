@@ -33,13 +33,13 @@ public class UserInfo {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "userInfo")
     private List<UserKeyword> userKeywords=new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "userInfo")
     private List<UserCocktail> userCocktails=new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfo"/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "userInfo")
     private List<UserDrink> userDrinks=new ArrayList<>();
 
     @Builder
