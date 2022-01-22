@@ -98,7 +98,6 @@ class UserKeywordTest {
         assertThat(userKeywords.contains(userKeyword)).isTrue();
 
         UserKeyword getUserKeyword=userKeywords.get(0);
-        System.out.println(getUserKeyword.toString());
         System.out.println(getUserKeyword.getKeyword().getKeywordName());
         assertThat(getUserKeyword.getKeyword().getKeywordName()).isEqualTo(keyword.getKeywordName());
     }
