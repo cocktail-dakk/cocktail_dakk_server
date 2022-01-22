@@ -6,9 +6,11 @@ name: test CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ feature/testCICD ]
+    branches:
+      - feature/testCICD
   pull_request:
-    branches: [ feature/testCICD ]
+    branches:
+      - feature/testCICD
     
 env:
   PROJECT_NAME: cocktail_dakk_server
