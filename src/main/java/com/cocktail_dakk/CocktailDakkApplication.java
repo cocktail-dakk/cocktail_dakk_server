@@ -1,4 +1,4 @@
-package java.com.cocktail_dakk;
+package com.cocktail_dakk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

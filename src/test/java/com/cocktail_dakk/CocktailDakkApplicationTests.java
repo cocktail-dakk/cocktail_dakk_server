@@ -1,4 +1,4 @@
-package java.com.cocktail_dakk;
+package com.cocktail_dakk;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

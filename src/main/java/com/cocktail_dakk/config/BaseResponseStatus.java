@@ -1,4 +1,4 @@
-package java.com.cocktail_dakk.config;
+package com.cocktail_dakk.config;
 
 import lombok.Getter;
 
