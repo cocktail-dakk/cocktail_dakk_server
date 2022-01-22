@@ -13,9 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -93,12 +91,11 @@ class UserKeywordTest {
         UserInfo byId=all.get(0);
         System.out.println("Find by id success");
 
-        UserInfo userInfo1=byId;
-        assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
-        System.out.println("UserInfo is same : "+userInfo1.getNickname());
+        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        System.out.println("UserInfo is same : "+ byId.getNickname());
 
-        List<UserKeyword> userKeywords = userInfo1.getUserKeywords();
-        assertThat(userKeywords.contains(userKeyword));
+        List<UserKeyword> userKeywords = byId.getUserKeywords();
+        assertThat(userKeywords.contains(userKeyword)).isTrue();
 
         UserKeyword getUserKeyword=userKeywords.get(0);
         System.out.println(getUserKeyword.toString());
@@ -193,19 +190,18 @@ class UserKeywordTest {
         UserInfo byId=all.get(0);
         System.out.println("Find by id success");
 
-        UserInfo userInfo1=byId;
-        assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
-        System.out.println("UserInfo is same : "+userInfo1.getNickname());
+        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        System.out.println("UserInfo is same : "+ byId.getNickname());
 
-        List<UserKeyword> userKeywords = userInfo1.getUserKeywords();
-        assertThat(userKeywords.contains(userKeyword));
+        List<UserKeyword> userKeywords = byId.getUserKeywords();
+        assertThat(userKeywords.contains(userKeyword)).isTrue();
 
         for(UserKeyword getUserKeyword:userKeywords){
             System.out.println(getUserKeyword.getKeyword().getKeywordName());
 
             List<CocktailKeyword> cocktailKeywords = getUserKeyword.getKeyword().getCocktailKeywords();
-            assertThat(cocktailKeywords.contains(cocktailKeyword1));
-            assertThat(cocktailKeywords.contains(cocktailKeyword3));
+            assertThat(cocktailKeywords.contains(cocktailKeyword1)).isTrue();
+            assertThat(cocktailKeywords.contains(cocktailKeyword3)).isTrue();
             for (CocktailKeyword cocktailKeyword:cocktailKeywords) {
                 System.out.println(cocktailKeyword.getCocktailInfo().getEnglishName());
             }
@@ -277,23 +273,22 @@ class UserKeywordTest {
         assertThat(drinks.size()).isEqualTo(2);
         System.out.println("find all drink success");
 
-        assertThat(drinks.contains(drink1));
-        assertThat(drinks.contains(drink2));
+        assertThat(drinks.contains(drink1)).isTrue();
+        assertThat(drinks.contains(drink2)).isTrue();
         System.out.println(" drink name correct");
-        
-        for(int i=0; i<drinks.size();i ++){
-            Drink drink=drinks.get(i);
+
+        for (Drink drink : drinks) {
             List<CocktailDrink> cocktailDrinks = drink.getCocktailDrinks();
 
             System.out.println(drink.getDrinkName());
-            if(drink.getDrinkName()=="데킬라"){
-                assertThat(cocktailDrinks.contains(cocktailDrink1));
-            }else if(drink.getDrinkName()=="위스키"){
-                assertThat(cocktailDrinks.contains(cocktailDrink2));
-                assertThat(cocktailDrinks.contains(cocktailDrink3));
+            if (drink.getDrinkName().equals("데킬라")) {
+                assertThat(cocktailDrinks.contains(cocktailDrink1)).isTrue();
+            } else if (drink.getDrinkName().equals("위스키")) {
+                assertThat(cocktailDrinks.contains(cocktailDrink2)).isTrue();
+                assertThat(cocktailDrinks.contains(cocktailDrink3)).isTrue();
             }
-            for(int j=0; j<cocktailDrinks.size(); j++){
-                System.out.println(cocktailDrinks.get(j).getCocktailInfo().getEnglishName());
+            for (CocktailDrink cocktailDrink : cocktailDrinks) {
+                System.out.println(cocktailDrink.getCocktailInfo().getEnglishName());
             }
             System.out.println();
         }
@@ -363,23 +358,22 @@ class UserKeywordTest {
         assertThat(ingredients.size()).isEqualTo(2);
         System.out.println("find all ingredient success");
 
-        assertThat(ingredients.contains(ingredient1));
-        assertThat(ingredients.contains(ingredient2));
+        assertThat(ingredients.contains(ingredient1)).isTrue();
+        assertThat(ingredients.contains(ingredient2)).isTrue();
         System.out.println("ingredient name correct");
 
-        for(int i=0; i<ingredients.size();i ++){
-            Ingredient ingredient=ingredients.get(i);
+        for (Ingredient ingredient : ingredients) {
             List<CocktailIngredient> cocktailIngredients = ingredient.getCocktailIngredients();
 
             System.out.println(ingredient.getIngredientName());
-            if(ingredient.getIngredientName()=="레몬즙"){
-                assertThat(cocktailIngredients.contains(cocktailIngredient1));
-                assertThat(cocktailIngredients.contains(cocktailIngredient3));
-            }else if(ingredient.getIngredientName()=="아마레또"){
-                assertThat(cocktailIngredients.contains(cocktailIngredient2));
+            if (ingredient.getIngredientName().equals("레몬즙")) {
+                assertThat(cocktailIngredients.contains(cocktailIngredient1)).isTrue();
+                assertThat(cocktailIngredients.contains(cocktailIngredient3)).isTrue();
+            } else if (ingredient.getIngredientName().equals("아마레또")) {
+                assertThat(cocktailIngredients.contains(cocktailIngredient2)).isTrue();
             }
-            for(int j=0; j<cocktailIngredients.size(); j++){
-                System.out.println(cocktailIngredients.get(j).getCocktailInfo().getEnglishName());
+            for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
+                System.out.println(cocktailIngredient.getCocktailInfo().getEnglishName());
             }
             System.out.println();
         }
@@ -458,17 +452,15 @@ class UserKeywordTest {
         assertThat(all.size()).isEqualTo(2);
         System.out.println("Find All success");
 
-        for(int i=0; i<all.size(); i++){
-            UserInfo userInfo=all.get(i);
-
+        for (UserInfo userInfo : all) {
             List<UserCocktail> userCocktails = userInfo.getUserCocktails();
 
             System.out.println(userInfo.getNickname());
-            if(userInfo.getDeviceNum()=="1234"){
-                assertThat(userCocktails.contains(userCocktail1));
-                assertThat(userCocktails.contains(userCocktail2));
-            }else if(userInfo.getDeviceNum()=="5678"){
-                assertThat(userCocktails.contains(userCocktail3));
+            if (userInfo.getDeviceNum().equals("1234")) {
+                assertThat(userCocktails.contains(userCocktail1)).isTrue();
+                assertThat(userCocktails.contains(userCocktail2)).isTrue();
+            } else if (userInfo.getDeviceNum().equals("5678")) {
+                assertThat(userCocktails.contains(userCocktail3)).isTrue();
             }
             for (UserCocktail userCocktail : userCocktails) {
                 System.out.println(userCocktail.getCocktailInfo().getEnglishName());
@@ -511,13 +503,12 @@ class UserKeywordTest {
         UserInfo byId=all.get(0);
         System.out.println("Find by id success");
 
-        UserInfo userInfo1=byId;
-        assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
-        System.out.println("UserInfo is same : "+userInfo1.getNickname());
+        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        System.out.println("UserInfo is same : "+ byId.getNickname());
 
-        List<UserDrink> userDrinks = userInfo1.getUserDrinks();
+        List<UserDrink> userDrinks = byId.getUserDrinks();
 
-        assertThat(userDrinks.contains(userDrink));
+        assertThat(userDrinks.contains(userDrink)).isTrue();
         System.out.println(userDrink.getDrink().getDrinkName());
     }
 
@@ -599,19 +590,18 @@ class UserKeywordTest {
         UserInfo byId=all.get(0);
         System.out.println("Find by id success");
 
-        UserInfo userInfo1=byId;
-        assertThat(userInfo.getDeviceNum()).isEqualTo(userInfo1.getDeviceNum());
-        System.out.println("UserInfo is same : "+userInfo1.getNickname());
+        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        System.out.println("UserInfo is same : "+ byId.getNickname());
 
-        List<UserDrink> userDrinks = userInfo1.getUserDrinks();
+        List<UserDrink> userDrinks = byId.getUserDrinks();
 
         for(UserDrink getUserDrink:userDrinks){
             assertThat(getUserDrink.getDrink().getDrinkName()).isEqualTo(drink2.getDrinkName());
             System.out.println(getUserDrink.getDrink().getDrinkName());
 
             List<CocktailDrink> cocktailDrinks = getUserDrink.getDrink().getCocktailDrinks();
-            assertThat(cocktailDrinks.contains(cocktailDrink2));
-            assertThat(cocktailDrinks.contains(cocktailDrink3));
+            assertThat(cocktailDrinks.contains(cocktailDrink2)).isTrue();
+            assertThat(cocktailDrinks.contains(cocktailDrink3)).isTrue();
             for (CocktailDrink cocktailDrink:cocktailDrinks) {
                 System.out.println(cocktailDrink.getCocktailInfo().getEnglishName());
             }
