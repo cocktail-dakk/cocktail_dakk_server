@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "CocktailDrink")
 public class CocktailDrink {
 
     public CocktailDrink(CocktailInfo cocktailInfo, Drink drink) {
@@ -18,7 +19,7 @@ public class CocktailDrink {
         drink.getCocktailDrinks().add(this);
     }
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long cocktailDrinkId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -9,9 +9,10 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "CocktailMixingMethod")
 public class CocktailMixingMethod {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long cocktailMixingMethodId;
 
     @ManyToOne(fetch = FetchType.LAZY)
