@@ -2,15 +2,14 @@
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
-      - feature/testCICD
+      - develop
   pull_request:
     branches:
-      - feature/testCICD
+      - develop
     
-name: test CI
+name: Deploy cocktail_dakk_server to AWS EC
 env:
   PROJECT_NAME: cocktail_dakk_server
 
