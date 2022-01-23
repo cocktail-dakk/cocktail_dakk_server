@@ -10,5 +10,4 @@ class CocktailDakkApplicationTests {
 	void contextLoads() {
 
 	}
-
 }
