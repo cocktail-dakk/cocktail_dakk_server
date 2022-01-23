@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.domain.user;
 
+import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
@@ -14,7 +15,10 @@ import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -70,6 +74,7 @@ class UserKeywordTest {
                 .age(25)
                 .sex("m")
                 .alcoholLevel(3)
+                .status(Status.ACTIVE)
                 .build();
 
         //유저와 취향키워드 간의 연관관계 설정
@@ -88,9 +93,9 @@ class UserKeywordTest {
         userInfoRepository.flush();
 
         // Then
-        List<UserInfo> all = userInfoRepository.findAll();
+        Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
         assertThat(all).isNotEmpty();
-        UserInfo byId=all.get(0);
+        UserInfo byId=all.get();
         System.out.println("Find by id success");
 
         assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
@@ -123,6 +128,7 @@ class UserKeywordTest {
                 .age(25)
                 .sex("m")
                 .alcoholLevel(3)
+                .status(Status.ACTIVE)
                 .build();
         
         // 유저와 취향 키워드 연관관계 설정
@@ -135,6 +141,8 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo2=CocktailInfo.builder()
@@ -144,6 +152,8 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efgh")
                 .recommendImageURL("ijkl")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo3=CocktailInfo.builder()
@@ -153,6 +163,8 @@ class UserKeywordTest {
                 .cocktailImageURL("oprs")
                 .cocktailBackgroundImageURL("tuv")
                 .recommendImageURL("dkfjak")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         // 칵테일과 취향 키워드 연관관계 설정
@@ -186,9 +198,9 @@ class UserKeywordTest {
 
 
         // Then
-        List<UserInfo> all = userInfoRepository.findAll();
+        Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
         assertThat(all).isNotEmpty();
-        UserInfo byId=all.get(0);
+        UserInfo byId=all.get();
         System.out.println("Find by id success");
 
         assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
@@ -222,6 +234,8 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo2=CocktailInfo.builder()
@@ -231,6 +245,8 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo3=CocktailInfo.builder()
@@ -240,14 +256,18 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         Drink drink1=Drink.builder()
                 .drinkName("데킬라")
+                .status(Status.ACTIVE)
                 .build();
 
         Drink drink2=Drink.builder()
                 .drinkName("위스키")
+                .status(Status.ACTIVE)
                 .build();
 
         // 칵테일과 기주 연관관계 설정
@@ -270,7 +290,14 @@ class UserKeywordTest {
         cocktailInfoRepository.flush();
 
         // Then
-        List<Drink> drinks = drinkRepository.findAll();
+        List<Drink> drinks = new ArrayList<>();
+        Optional<Drink> byId = drinkRepository.findById(drink1.getDrinkId());
+        assertThat(byId.isPresent()).isTrue();
+        drinks.add(byId.get());
+        byId = drinkRepository.findById(drink2.getDrinkId());
+        assertThat(byId.isPresent()).isTrue();
+        drinks.add(byId.get());
+
         assertThat(drinks.size()).isEqualTo(2);
         System.out.println("find all drink success");
 
@@ -309,6 +336,8 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo2=CocktailInfo.builder()
@@ -318,6 +347,8 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo3=CocktailInfo.builder()
@@ -327,13 +358,17 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         Ingredient ingredient1= Ingredient.builder()
                 .ingredientName("레몬즙")
+                .status(Status.ACTIVE)
                 .build();
         Ingredient ingredient2= Ingredient.builder()
                 .ingredientName("아마레또")
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailIngredient cocktailIngredient1=new CocktailIngredient(cocktailInfo1, ingredient1, "ml", 23.0);
@@ -355,7 +390,13 @@ class UserKeywordTest {
         cocktailInfoRepository.flush();
 
         // Then
-        List<Ingredient> ingredients = ingredientRepository.findAll();
+        List<Ingredient> ingredients = new ArrayList<>();
+        Optional<Ingredient> byId = ingredientRepository.findById(ingredient1.getIngredientId());
+        assertThat(byId.isPresent()).isTrue();
+        ingredients.add(byId.get());
+        byId = ingredientRepository.findById(ingredient2.getIngredientId());
+        assertThat(byId.isPresent()).isTrue();
+        ingredients.add(byId.get());
         assertThat(ingredients.size()).isEqualTo(2);
         System.out.println("find all ingredient success");
 
@@ -394,6 +435,8 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo2=CocktailInfo.builder()
@@ -403,6 +446,8 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo3=CocktailInfo.builder()
@@ -412,6 +457,8 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         UserInfo userInfo1=UserInfo.builder()
@@ -420,6 +467,7 @@ class UserKeywordTest {
                 .age(25)
                 .sex("m")
                 .alcoholLevel(3)
+                .status(Status.ACTIVE)
                 .build();
 
         UserInfo userInfo2=UserInfo.builder()
@@ -428,11 +476,12 @@ class UserKeywordTest {
                 .age(23)
                 .sex("w")
                 .alcoholLevel(3)
+                .status(Status.ACTIVE)
                 .build();
 
-        UserCocktail userCocktail1=new UserCocktail(userInfo1, cocktailInfo1, 4.5, "good");
-        UserCocktail userCocktail2=new UserCocktail(userInfo1, cocktailInfo2, 5.0, "great");
-        UserCocktail userCocktail3=new UserCocktail(userInfo2, cocktailInfo3, 4.5, "yeah~");
+        UserCocktail userCocktail1=new UserCocktail(userInfo1, cocktailInfo1, new BigDecimal("4.5"), "good");
+        UserCocktail userCocktail2=new UserCocktail(userInfo1, cocktailInfo2, new BigDecimal("4.5"), "great");
+        UserCocktail userCocktail3=new UserCocktail(userInfo2, cocktailInfo3, new BigDecimal("4.5"), "yeah~");
 
         // when 조인 엔티티 직접 영속화하는 방법
         cocktailInfoRepository.save(cocktailInfo1);
@@ -449,7 +498,13 @@ class UserKeywordTest {
         userInfoRepository.flush();
 
         // Then
-        List<UserInfo> all = userInfoRepository.findAll();
+        List<UserInfo> all = new ArrayList<>();
+        Optional<UserInfo> byId = userInfoRepository.findById(userInfo1.getUserInfoId());
+        assertThat(byId.isPresent()).isTrue();
+        all.add(byId.get());
+        byId = userInfoRepository.findById(userInfo2.getUserInfoId());
+        assertThat(byId.isPresent()).isTrue();
+        all.add(byId.get());
         assertThat(all.size()).isEqualTo(2);
         System.out.println("Find All success");
 
@@ -478,6 +533,7 @@ class UserKeywordTest {
         // Given
         Drink drink=Drink.builder()
                 .drinkName("보드카")
+                .status(Status.ACTIVE)
                 .build();
 
         UserInfo userInfo=UserInfo.builder()
@@ -486,6 +542,7 @@ class UserKeywordTest {
                 .age(25)
                 .sex("m")
                 .alcoholLevel(3)
+                .status(Status.ACTIVE)
                 .build();
 
         //유저와 선호 기주 간의 연관관계 설정
@@ -499,9 +556,9 @@ class UserKeywordTest {
         userInfoRepository.flush();
 
         // Then
-        List<UserInfo> all = userInfoRepository.findAll();
+        Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
         assertThat(all).isNotEmpty();
-        UserInfo byId=all.get(0);
+        UserInfo byId=all.get();
         System.out.println("Find by id success");
 
         assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
@@ -520,10 +577,12 @@ class UserKeywordTest {
         // Given
         Drink drink1=Drink.builder()
                 .drinkName("데킬라")
+                .status(Status.ACTIVE)
                 .build();
 
         Drink drink2=Drink.builder()
                 .drinkName("위스키")
+                .status(Status.ACTIVE)
                 .build();
 
         UserInfo userInfo=UserInfo.builder()
@@ -532,6 +591,7 @@ class UserKeywordTest {
                 .age(25)
                 .sex("m")
                 .alcoholLevel(3)
+                .status(Status.ACTIVE)
                 .build();
 
         // 유저와 선호 기주 연관관계 설정
@@ -544,6 +604,8 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo2=CocktailInfo.builder()
@@ -553,6 +615,8 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         CocktailInfo cocktailInfo3=CocktailInfo.builder()
@@ -562,6 +626,8 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .alcoholLevel(1)
+                .status(Status.ACTIVE)
                 .build();
 
         // 칵테일과 선호 기주 연관관계 설정
@@ -586,9 +652,9 @@ class UserKeywordTest {
 
 
         // Then
-        List<UserInfo> all = userInfoRepository.findAll();
+        Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
         assertThat(all).isNotEmpty();
-        UserInfo byId=all.get(0);
+        UserInfo byId=all.get();
         System.out.println("Find by id success");
 
         assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());

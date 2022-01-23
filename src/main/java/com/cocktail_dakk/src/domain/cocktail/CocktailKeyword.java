@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "CocktailKeyword")
 public class CocktailKeyword {
 
     public CocktailKeyword(CocktailInfo cocktailInfo, Keyword keyword) {
@@ -18,7 +19,7 @@ public class CocktailKeyword {
         keyword.getCocktailKeywords().add(this);
     }
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long cocktailKeywordId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +27,6 @@ public class CocktailKeyword {
     private Keyword keyword;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cocktialInfoId")
+    @JoinColumn(name="cocktailInfoId")
     private CocktailInfo cocktailInfo;
 }

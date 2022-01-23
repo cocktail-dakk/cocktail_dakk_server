@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.domain.keyword;
 
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,14 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "Keyword")
 public class Keyword {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long keywordId;
 
+    @Column(name = "keywordName")
+    @NotNull
     private String keywordName;
 
     @OneToMany(mappedBy = "keyword")
