@@ -8,6 +8,7 @@ class CocktailDakkApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }
