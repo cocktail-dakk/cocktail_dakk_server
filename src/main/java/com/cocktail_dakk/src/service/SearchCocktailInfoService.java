@@ -26,4 +26,12 @@ public class SearchCocktailInfoService {
 
         return new PageImpl<>(cocktailInfoResList);
     }
+
+    public Page<SearchCocktailInfoRes> findAll(Pageable pageable){
+        List<SearchCocktailInfoRes> cocktailInfoResList = cocktailInfoRepository.findAll(pageable)
+                .stream().map(SearchCocktailInfoRes::new)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(cocktailInfoResList);
+    }
 }

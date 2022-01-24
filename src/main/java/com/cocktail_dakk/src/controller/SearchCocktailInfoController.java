@@ -16,8 +16,12 @@ public class SearchCocktailInfoController {
     SearchCocktailInfoService searchCocktailInfoService;
 
     @GetMapping("/cocktail")
-    public Page<SearchCocktailInfoRes> searchCocktailByInputStr(Pageable pageable, @RequestParam("inputStr") String inputStr){
-        return searchCocktailInfoService.findByInputStrAll(pageable, inputStr);
+    public Page<SearchCocktailInfoRes> searchCocktailByInputStr(@PageableDefault(size = 10) Pageable pageable, @RequestParam("inputStr") String inputStr){
+        if(inputStr.isEmpty()){
+            return searchCocktailInfoService.findAll(pageable);
+        }else {
+            return searchCocktailInfoService.findByInputStrAll(pageable, inputStr);
+        }
     }
 
 }
