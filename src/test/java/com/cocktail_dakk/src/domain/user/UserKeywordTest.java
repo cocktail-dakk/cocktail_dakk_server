@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -135,6 +134,7 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -146,6 +146,7 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efgh")
                 .recommendImageURL("ijkl")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -157,6 +158,7 @@ class UserKeywordTest {
                 .cocktailImageURL("oprs")
                 .cocktailBackgroundImageURL("tuv")
                 .recommendImageURL("dkfjak")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -228,6 +230,7 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -239,6 +242,7 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -250,6 +254,7 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -330,6 +335,7 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -341,6 +347,7 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -352,6 +359,7 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -374,9 +382,9 @@ class UserKeywordTest {
                 .status(Status.ACTIVE)
                 .build();
 
-        UserCocktail userCocktail1=new UserCocktail(userInfo1, cocktailInfo1, new BigDecimal("4.5"), "good");
-        UserCocktail userCocktail2=new UserCocktail(userInfo1, cocktailInfo2, new BigDecimal("4.5"), "great");
-        UserCocktail userCocktail3=new UserCocktail(userInfo2, cocktailInfo3, new BigDecimal("4.5"), "yeah~");
+        UserCocktail userCocktail1=new UserCocktail(userInfo1, cocktailInfo1);
+        UserCocktail userCocktail2=new UserCocktail(userInfo1, cocktailInfo2);
+        UserCocktail userCocktail3=new UserCocktail(userInfo2, cocktailInfo3);
 
         // when 조인 엔티티 직접 영속화하는 방법
         cocktailInfoRepository.save(cocktailInfo1);
@@ -499,6 +507,7 @@ class UserKeywordTest {
                 .cocktailImageURL("1234")
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -510,6 +519,7 @@ class UserKeywordTest {
                 .cocktailImageURL("abcd")
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
@@ -521,6 +531,7 @@ class UserKeywordTest {
                 .cocktailImageURL("lmno")
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
+                .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .status(Status.ACTIVE)
                 .build();
