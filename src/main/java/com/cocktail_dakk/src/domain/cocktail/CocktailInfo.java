@@ -57,9 +57,6 @@ public class CocktailInfo {
     private List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 
     @OneToMany(mappedBy = "cocktailInfo")
-    private List<CocktailIngredient> cocktailIngredients=new ArrayList<>();
-
-    @OneToMany(mappedBy = "cocktailInfo")
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();
 
     @Builder

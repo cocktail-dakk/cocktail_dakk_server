@@ -4,8 +4,6 @@ import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
-import com.cocktail_dakk.src.domain.ingredient.Ingredient;
-import com.cocktail_dakk.src.domain.ingredient.IngredientRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +46,6 @@ class UserKeywordTest {
 
     @Autowired
     CocktailDrinkRepository cocktailDrinkRepository;
-
-    @Autowired
-    IngredientRepository ingredientRepository;
-
-    @Autowired
-    CocktailIngredientRepository cocktailIngredientRepository;
 
     @Autowired
     UserCocktailRepository userCocktailRepository;
@@ -323,105 +315,6 @@ class UserKeywordTest {
             System.out.println();
         }
         System.out.println("Successfully searched cocktail with drink.");
-    }
-
-    //재료로 칵테일 조회하는 테스트
-    @Test
-    @Transactional
-    public void testIngredientCocktail(){
-
-        // Given
-        CocktailInfo cocktailInfo1=CocktailInfo.builder()
-                .englishName("21st Century")
-                .koreanName("21세기")
-                .description("쓰다")
-                .cocktailImageURL("1234")
-                .cocktailBackgroundImageURL("5678")
-                .recommendImageURL("91011")
-                .alcoholLevel(1)
-                .status(Status.ACTIVE)
-                .build();
-
-        CocktailInfo cocktailInfo2=CocktailInfo.builder()
-                .englishName("God Father")
-                .koreanName("갓 파더")
-                .description("모르겠다")
-                .cocktailImageURL("abcd")
-                .cocktailBackgroundImageURL("efg")
-                .recommendImageURL("hijk")
-                .alcoholLevel(1)
-                .status(Status.ACTIVE)
-                .build();
-
-        CocktailInfo cocktailInfo3=CocktailInfo.builder()
-                .englishName("Gold Rush")
-                .koreanName("골드 러시")
-                .description("금 맛이다")
-                .cocktailImageURL("lmno")
-                .cocktailBackgroundImageURL("pqkr")
-                .recommendImageURL("stu")
-                .alcoholLevel(1)
-                .status(Status.ACTIVE)
-                .build();
-
-        Ingredient ingredient1= Ingredient.builder()
-                .ingredientName("레몬즙")
-                .status(Status.ACTIVE)
-                .build();
-        Ingredient ingredient2= Ingredient.builder()
-                .ingredientName("아마레또")
-                .status(Status.ACTIVE)
-                .build();
-
-        CocktailIngredient cocktailIngredient1=new CocktailIngredient(cocktailInfo1, ingredient1, "ml", 23.0);
-        CocktailIngredient cocktailIngredient2=new CocktailIngredient(cocktailInfo2, ingredient2, "ml", 10.0);
-        CocktailIngredient cocktailIngredient3=new CocktailIngredient(cocktailInfo3, ingredient1, "ml", 22.5);
-
-        // when 조인 엔티티 직접 영속화하는 방법
-        cocktailInfoRepository.save(cocktailInfo1);
-        cocktailInfoRepository.save(cocktailInfo2);
-        cocktailInfoRepository.save(cocktailInfo3);
-
-        ingredientRepository.save(ingredient1);
-        ingredientRepository.save(ingredient2);
-
-        cocktailIngredientRepository.save(cocktailIngredient1);
-        cocktailIngredientRepository.save(cocktailIngredient2);
-        cocktailIngredientRepository.save(cocktailIngredient3);
-
-        cocktailInfoRepository.flush();
-
-        // Then
-        List<Ingredient> ingredients = new ArrayList<>();
-        Optional<Ingredient> byId = ingredientRepository.findById(ingredient1.getIngredientId());
-        assertThat(byId.isPresent()).isTrue();
-        ingredients.add(byId.get());
-        byId = ingredientRepository.findById(ingredient2.getIngredientId());
-        assertThat(byId.isPresent()).isTrue();
-        ingredients.add(byId.get());
-        assertThat(ingredients.size()).isEqualTo(2);
-        System.out.println("find all ingredient success");
-
-        assertThat(ingredients.contains(ingredient1)).isTrue();
-        assertThat(ingredients.contains(ingredient2)).isTrue();
-        System.out.println("ingredient name correct");
-
-        for (Ingredient ingredient : ingredients) {
-            List<CocktailIngredient> cocktailIngredients = ingredient.getCocktailIngredients();
-
-            System.out.println(ingredient.getIngredientName());
-            if (ingredient.getIngredientName().equals("레몬즙")) {
-                assertThat(cocktailIngredients.contains(cocktailIngredient1)).isTrue();
-                assertThat(cocktailIngredients.contains(cocktailIngredient3)).isTrue();
-            } else if (ingredient.getIngredientName().equals("아마레또")) {
-                assertThat(cocktailIngredients.contains(cocktailIngredient2)).isTrue();
-            }
-            for (CocktailIngredient cocktailIngredient : cocktailIngredients) {
-                System.out.println(cocktailIngredient.getCocktailInfo().getEnglishName());
-            }
-            System.out.println();
-        }
-        System.out.println("Successfully searched cocktail with ingredient.");
     }
 
     //사용자가 즐겨찾기한 칵테일 조회
