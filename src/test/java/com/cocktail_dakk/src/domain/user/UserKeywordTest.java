@@ -136,6 +136,7 @@ class UserKeywordTest {
                 .recommendImageURL("91011")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -148,6 +149,7 @@ class UserKeywordTest {
                 .recommendImageURL("ijkl")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -160,6 +162,7 @@ class UserKeywordTest {
                 .recommendImageURL("dkfjak")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -232,6 +235,7 @@ class UserKeywordTest {
                 .recommendImageURL("91011")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -244,6 +248,7 @@ class UserKeywordTest {
                 .recommendImageURL("hijk")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -256,6 +261,7 @@ class UserKeywordTest {
                 .recommendImageURL("stu")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -337,6 +343,7 @@ class UserKeywordTest {
                 .recommendImageURL("91011")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -349,6 +356,7 @@ class UserKeywordTest {
                 .recommendImageURL("hijk")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -361,6 +369,7 @@ class UserKeywordTest {
                 .recommendImageURL("stu")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -509,6 +518,7 @@ class UserKeywordTest {
                 .recommendImageURL("91011")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -521,6 +531,7 @@ class UserKeywordTest {
                 .recommendImageURL("hijk")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -533,6 +544,7 @@ class UserKeywordTest {
                 .recommendImageURL("stu")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 

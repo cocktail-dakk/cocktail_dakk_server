@@ -52,6 +52,8 @@ public class CocktailInfo {
     @NotNull
     private Integer alcoholLevel;
 
+    private String ingredient;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Status status;
@@ -66,7 +68,7 @@ public class CocktailInfo {
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();
 
     @Builder
-    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, Status status){
+    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, String ingredient, Status status){
         this.englishName=englishName;
         this.koreanName=koreanName;
         this.description=description;
@@ -75,6 +77,7 @@ public class CocktailInfo {
         this.recommendImageURL=recommendImageURL;
         this.smallNukkiImageURL=smallNukkiImageURL;
         this.alcoholLevel=alcoholLevel;
+        this.ingredient=ingredient;
         this.status=status;
     }
 }
