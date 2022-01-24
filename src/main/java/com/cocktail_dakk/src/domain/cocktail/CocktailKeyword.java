@@ -22,11 +22,11 @@ public class CocktailKeyword {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long cocktailKeywordId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "keywordId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "keywordId", nullable = false)
     private Keyword keyword;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cocktailInfoId")
+    @JoinColumn(name="cocktailInfoId", nullable = false)
     private CocktailInfo cocktailInfo;
 }

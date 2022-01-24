@@ -47,14 +47,16 @@ public class CocktailInfo {
     @NotNull
     private Integer alcoholLevel;
 
+    private String ingredient;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Status status;
 
-    @OneToMany(mappedBy = "cocktailInfo")
+    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER)
     private List<CocktailKeyword> cocktailKeywords=new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cocktailInfo", fetch = FetchType.LAZY)
     private List<CocktailDrink> cocktailDrinks=new ArrayList<>();
 
     @OneToMany(mappedBy = "cocktailInfo")
@@ -64,7 +66,7 @@ public class CocktailInfo {
     private List<UserCocktail> userCocktails=new ArrayList<>();
 
     @Builder
-    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , Integer alcoholLevel, Status status){
+    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , Integer alcoholLevel, String ingredient, Status status){
         this.englishName=englishName;
         this.koreanName=koreanName;
         this.description=description;
@@ -72,6 +74,7 @@ public class CocktailInfo {
         this.cocktailBackgroundImageURL=cocktailBackgroundImageURL;
         this.recommendImageURL=recommendImageURL;
         this.alcoholLevel=alcoholLevel;
+        this.ingredient=ingredient;
         this.status=status;
     }
 }

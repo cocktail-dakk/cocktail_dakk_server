@@ -136,6 +136,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -147,6 +148,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("efgh")
                 .recommendImageURL("ijkl")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -158,6 +160,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("tuv")
                 .recommendImageURL("dkfjak")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -229,6 +232,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -240,6 +244,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -251,6 +256,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -331,6 +337,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -342,6 +349,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -353,6 +361,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -500,6 +509,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -511,6 +521,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("efg")
                 .recommendImageURL("hijk")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
@@ -522,6 +533,7 @@ class UserKeywordTest {
                 .cocktailBackgroundImageURL("pqkr")
                 .recommendImageURL("stu")
                 .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .status(Status.ACTIVE)
                 .build();
 
