@@ -38,10 +38,16 @@ public class CocktailInfo {
     @Column(name = "nukkiImgUrl")
     @NotNull
     private String cocktailBackgroundImageURL;
+
     @Lob
     @Column(name = "todayImgUrl")
     @NotNull
     private String recommendImageURL;
+
+    @Lob
+    @Column(name = "smallNukkiImgUrl")
+    @NotNull
+    private String smallNukkiImageURL;
 
     @NotNull
     private Integer alcoholLevel;
@@ -60,13 +66,14 @@ public class CocktailInfo {
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();
 
     @Builder
-    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , Integer alcoholLevel, Status status){
+    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, Status status){
         this.englishName=englishName;
         this.koreanName=koreanName;
         this.description=description;
         this.cocktailImageURL=cocktailImageURL;
         this.cocktailBackgroundImageURL=cocktailBackgroundImageURL;
         this.recommendImageURL=recommendImageURL;
+        this.smallNukkiImageURL=smallNukkiImageURL;
         this.alcoholLevel=alcoholLevel;
         this.status=status;
     }
