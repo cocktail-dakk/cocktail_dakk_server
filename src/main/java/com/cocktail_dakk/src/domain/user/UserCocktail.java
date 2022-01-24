@@ -18,6 +18,7 @@ public class UserCocktail {
         this.userInfo = userInfo;
         this.cocktailInfo = cocktailInfo;
         userInfo.getUserCocktails().add(this);
+        cocktailInfo.getUserCocktails().add(this);
         this.rating = rating;
         this.review = review;
     }
