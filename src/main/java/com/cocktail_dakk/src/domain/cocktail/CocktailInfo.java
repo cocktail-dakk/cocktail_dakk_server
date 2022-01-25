@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class CocktailInfo {
 
     private String ingredient;
 
+    private BigDecimal ratingAvg;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private Status status;
@@ -68,7 +71,7 @@ public class CocktailInfo {
     private List<CocktailMixingMethod> cocktailMixingMethods=new ArrayList<>();
 
     @Builder
-    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, String ingredient, Status status){
+    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, String ingredient, BigDecimal ratingAvg, Status status){
         this.englishName=englishName;
         this.koreanName=koreanName;
         this.description=description;
@@ -78,6 +81,7 @@ public class CocktailInfo {
         this.smallNukkiImageURL=smallNukkiImageURL;
         this.alcoholLevel=alcoholLevel;
         this.ingredient=ingredient;
+        this.ratingAvg=ratingAvg;
         this.status=status;
     }
 }
