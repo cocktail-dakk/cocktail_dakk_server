@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -137,6 +138,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -150,6 +152,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -163,6 +166,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -236,6 +240,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -249,6 +254,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -262,6 +268,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -344,6 +351,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -357,6 +365,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -370,6 +379,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -519,6 +529,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -532,6 +543,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 
@@ -545,6 +557,7 @@ class UserKeywordTest {
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
                 .build();
 

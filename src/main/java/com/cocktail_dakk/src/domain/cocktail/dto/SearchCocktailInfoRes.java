@@ -18,9 +18,9 @@ public class SearchCocktailInfoRes {
     private String koreanName;
     private List<KeywordRes> keywords;
     private String cocktailBackgroundImageURL;
-    private BigDecimal rating;
+    private BigDecimal ratingAvg;
 
-    public SearchCocktailInfoRes(CocktailInfo cocktailInfo/*, BigDecimal rating*/) {
+    public SearchCocktailInfoRes(CocktailInfo cocktailInfo) {
         this.cocktailInfoId = cocktailInfo.getCocktailInfoId();
         this.englishName = cocktailInfo.getEnglishName();
         this.koreanName = cocktailInfo.getKoreanName();
@@ -29,6 +29,6 @@ public class SearchCocktailInfoRes {
                 .map(KeywordRes::new)
                 .collect(Collectors.toList());
         this.cocktailBackgroundImageURL = cocktailInfo.getCocktailBackgroundImageURL();
-//        this.rating = rating;
+        this.ratingAvg = cocktailInfo.getRatingAvg();
     }
 }
