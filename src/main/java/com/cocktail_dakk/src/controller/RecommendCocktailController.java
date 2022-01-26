@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.controller;
 
+import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetTodayCocktailInfoRes;
 import com.cocktail_dakk.src.service.CocktailService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class RecommendCocktailController {
     private final CocktailService cocktailService;
 
     @GetMapping("/today")
-    public List<GetTodayCocktailInfoRes> getTodayCocktailInfoRes(){
-        return cocktailService.getTodayCocktail();
+    public BaseResponse<List<GetTodayCocktailInfoRes>> getTodayCocktailInfoRes(){
+        return new BaseResponse<>(cocktailService.getTodayCocktail());
     }
 
 
