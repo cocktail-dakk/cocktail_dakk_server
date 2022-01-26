@@ -17,7 +17,7 @@ public class SearchCocktailInfoRes {
     private String englishName;
     private String koreanName;
     private List<KeywordRes> keywords;
-    private String cocktailBackgroundImageURL;
+    private String smallNukkiImageURL;
     private BigDecimal ratingAvg;
 
     public SearchCocktailInfoRes(CocktailInfo cocktailInfo) {
@@ -28,7 +28,7 @@ public class SearchCocktailInfoRes {
                 .stream()
                 .map(KeywordRes::new)
                 .collect(Collectors.toList());
-        this.cocktailBackgroundImageURL = cocktailInfo.getCocktailBackgroundImageURL();
+        this.smallNukkiImageURL = cocktailInfo.getSmallNukkiImageURL();
         this.ratingAvg = cocktailInfo.getRatingAvg();
     }
 }
