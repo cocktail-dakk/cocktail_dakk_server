@@ -1,9 +1,6 @@
 package com.cocktail_dakk.src.domain.keyword.dto;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +15,5 @@ public class KeywordRes {
         this.keywordId = cocktailKeyword.getKeyword().getKeywordId();
         this.keywordName = cocktailKeyword.getKeyword().getKeywordName();
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> develop
+
