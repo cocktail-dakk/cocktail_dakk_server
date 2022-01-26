@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ubuntu/app/cocktaildakk/build/libs
+REPOSITORY=/home/ubuntu/app/cocktaildakk
 cd $REPOSITORY
 
 APP_NAME=cocktail_dakk
-JAR_NAME=$(ls $REPOSITORY/*.jar | tail -n 1)
+JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep '.jar' | tail -n 1)
+JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
 CURRENT_PID=$(pgrep -f $APP_NAME)
 
@@ -19,5 +20,7 @@ fi
 
 
 
-echo "> $JAR_NAME 배포"
-nohup java -jar \ -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties \  $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+echo "> $JAR_PATH 배포"
+nohup java -jar \
+  -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties \
+$JAR_PATH > $REPOSITORY/nohup.out 2>&1 &
