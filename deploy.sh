@@ -18,7 +18,7 @@ else
   sleep 5
 fi
 
-chmod +x $JAR_PATH
+chmod +x $JAR_NAME
 
 echo "> $JAR_PATH 배포"
 nohup java -jar \ -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties \  $JAR_PATH > $REPOSITORY/nohup.out 2>&1 &
