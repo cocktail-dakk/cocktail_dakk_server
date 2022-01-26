@@ -19,4 +19,4 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
-nohup java -jar \ -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties \  $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+nohup java -jar \ -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties \  $JAR_PATH > $REPOSITORY/nohup.out 2>&1 &
