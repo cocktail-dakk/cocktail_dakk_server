@@ -17,7 +17,7 @@ public class SearchCocktailInfoController {
     SearchCocktailInfoService searchCocktailInfoService;
 
     @GetMapping(value = "/cocktail")
-    @Operation(summary = "칵테일 검색", description = "검색창에서 칵테일을 검색하면 칵테일의 이름, 재료, 키워드에서 일치하는 값이 있는 칵테일들을 반환한다.")
+    @Operation(summary = "칵테일 검색", description = "검색창에서 칵테일을 검색하면 칵테일의 이름, 재료, 키워드에서 일치하는 값이 있는 칵테일들을 반환한다. 페이지은 page만 처리했으므로 size와 sorting은 제외한 pageable JSON 객체를 보내야 한다.")
     public Page<SearchCocktailInfoRes> searchCocktailByInputStr(@PageableDefault(size = 10) Pageable pageable, @RequestParam("inputStr") String inputStr){
         if(inputStr.isEmpty()){
             return searchCocktailInfoService.findAll(pageable);
