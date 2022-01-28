@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import static com.cocktail_dakk.config.BaseResponseStatus.REQUEST_ERROR;
+
 @RestController
 @RequestMapping("/search")
 public class SearchCocktailInfoController {
@@ -27,6 +29,10 @@ public class SearchCocktailInfoController {
                     "</ul>")
     public BaseResponse<Page<SearchCocktailInfoRes>> searchCocktailByInputStr(@PageableDefault(size = 10) Pageable pageable, @RequestParam("inputStr") String inputStr)throws BaseException {
         try {
+            if(!pageable.getSort().isEmpty()){
+                throw new BaseException(REQUEST_ERROR);
+            }
+
             if (inputStr.isEmpty()||inputStr.isBlank()) {
                 return new BaseResponse<>(searchCocktailInfoService.findAll(pageable));
             } else {
