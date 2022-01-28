@@ -2,10 +2,12 @@ package com.cocktail_dakk.src.domain.user.dto;
 
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
 @Getter
+@NoArgsConstructor
 public class UserInfoRes {
     private Long id;
     private String deviceNum;
