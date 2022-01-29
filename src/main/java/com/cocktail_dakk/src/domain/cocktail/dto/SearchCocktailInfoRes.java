@@ -2,6 +2,7 @@ package com.cocktail_dakk.src.domain.cocktail.dto;
 
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
+import com.cocktail_dakk.src.domain.drink.dto.DrinkRes;
 import com.cocktail_dakk.src.domain.keyword.dto.KeywordRes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,8 @@ public class SearchCocktailInfoRes {
     private List<KeywordRes> keywords;
     private String smallNukkiImageURL;
     private BigDecimal ratingAvg;
+    private Integer alcoholLevel;
+    private List<DrinkRes> drinks;
 
     public SearchCocktailInfoRes(CocktailInfo cocktailInfo) {
         this.cocktailInfoId = cocktailInfo.getCocktailInfoId();
@@ -30,5 +33,10 @@ public class SearchCocktailInfoRes {
                 .collect(Collectors.toList());
         this.smallNukkiImageURL = cocktailInfo.getSmallNukkiImageURL();
         this.ratingAvg = cocktailInfo.getRatingAvg();
+        this.alcoholLevel=cocktailInfo.getAlcoholLevel();
+        this.drinks=cocktailInfo.getCocktailDrinks()
+                .stream()
+                .map(DrinkRes::new)
+                .collect(Collectors.toList());
     }
 }
