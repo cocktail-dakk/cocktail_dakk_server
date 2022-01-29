@@ -15,7 +15,7 @@ public class Scheduler {
 
     //메일 오전 24시 생성
     @Scheduled(cron = "0 0 0 * * *")
-    //@Scheduled(cron="0/10 * * * * *") //10초
+    //@Scheduled(cron="0 0/1 * * * *") //1분
     public void todayCocktail(){
        cocktailService.getRandomCocktailId();
     }
