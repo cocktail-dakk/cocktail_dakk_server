@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class SearchCocktailInfoController {
                     "<li> 검색 요청 보내는 법 : pageable={\"page\" : 페이지번호}, inputStr=검색값</li>" +
                     "<li> 모든 칵테일 조회하는 법 : pageable={\"page\" : 페이지번호}, inputStr=비워두거나 띄워쓰기 같은 공백문자</li>" +
                     "</ul>")
-    public BaseResponse<Page<SearchCocktailInfoRes>> searchCocktailByInputStr(@PageableDefault(size = 10) Pageable pageable, @RequestParam("inputStr") String inputStr)throws BaseException {
+    public BaseResponse<Slice<SearchCocktailInfoRes>> searchCocktailByInputStr(@PageableDefault(size = 10) Pageable pageable, @RequestParam("inputStr") String inputStr)throws BaseException {
         try {
             if(!pageable.getSort().isEmpty()){
                 throw new BaseException(REQUEST_ERROR);
