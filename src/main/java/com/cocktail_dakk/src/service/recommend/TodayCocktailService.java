@@ -67,7 +67,7 @@ public class TodayCocktailService {
             cocktailTodayRepository.save(cocktailToday);
 
         } catch (Exception e){
-            throw new BaseException(REQUEST_ERROR);
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 

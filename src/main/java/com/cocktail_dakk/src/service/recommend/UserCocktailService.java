@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.cocktail_dakk.config.BaseResponseStatus.DATABASE_ERROR;
 import static com.cocktail_dakk.config.BaseResponseStatus.REQUEST_ERROR;
 
 @Service
@@ -57,7 +58,7 @@ public class UserCocktailService {
                 return new GetUserRecommendationRes(userInfo.getNickname(), getUserRecommendRes);
             }
         } catch (Exception e){
-            throw new BaseException(REQUEST_ERROR);
+            throw new BaseException(DATABASE_ERROR);
         }
 
     }
