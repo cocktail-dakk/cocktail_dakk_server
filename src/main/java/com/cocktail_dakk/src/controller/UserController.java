@@ -11,6 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -25,13 +26,15 @@ public class UserController {
     @ResponseBody
     @GetMapping("/device-num") //device-num?deviceNum=1111
     public List<UserInfoRes> getUserInfoId(@RequestParam String deviceNum){
-        return userService.isInUserInfo(deviceNum);
+        return userService.isInUserInfo(deviceNum); //회원없-null, 회원있-회원 전체 정보 반환
     }
 
     @ResponseBody
-    @PostMapping("/sign-up")
-    public Long signUp(@RequestParam String nickName){
-        return 0L;//수정하기,,,,,인생,,,,
+    @PostMapping("/sign-up") //json에 담아서
+    public UserInfoRes signUp(@RequestBody UserInfoRes userInfoRes){
+        return userService.signUpUser(userInfoRes); //회원가입하면 회원 전체 정보 반환
     }
+
+
 
 }

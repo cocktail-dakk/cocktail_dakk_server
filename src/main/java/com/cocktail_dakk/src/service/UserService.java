@@ -33,5 +33,10 @@ public class UserService {
 
 
 
-    //로그인
+    //회원가입(등록)
+    public UserInfoRes signUpUser(UserInfoRes userSignUpReq){
+        UserInfoRes saveUser = userInfoRepository.save(userSignUpReq);
+        return saveUser;
+
+    }
 }
