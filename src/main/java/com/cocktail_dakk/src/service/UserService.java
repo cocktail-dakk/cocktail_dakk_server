@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.service;
 
+import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.domain.user.UserInfoRepository;
@@ -28,7 +29,6 @@ public class UserService {
             return null;
         }
         //List의 요소를 조회하려면 get(index번호)로 하기
-
         return new UserInfoRes(findUser.get(0));
     }
 
