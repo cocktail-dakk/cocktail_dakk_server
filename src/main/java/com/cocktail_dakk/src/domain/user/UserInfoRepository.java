@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
-    List<UserInfoRes> findByDeviceNum(String deviceNum);
-
-    UserInfoRes save(UserInfoRes userInfoRes);
+    List<UserInfo> findByDeviceNum(String deviceNum);
 }
