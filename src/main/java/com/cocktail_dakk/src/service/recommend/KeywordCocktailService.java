@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.service.recommend;
 
+import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetRecommendationListRes;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetRecommendationRes;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.cocktail_dakk.config.BaseResponseStatus.DATABASE_ERROR;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,48 +30,58 @@ public class KeywordCocktailService {
     private final CocktailDrinkRepository cocktailDrinkRepository;
 
     //사용자가 지정하지 않은 키워드로 칵테일 추천
-    public GetRecommendationListRes getKeywordRecommendation(UserInfo userInfo){
-        Keyword randomKeyword = getRandomKeyword(keywordRepository.count(), userInfo);
-        List<CocktailKeyword> cocktailKeywords = cocktailKeywordRepository.findAllByKeyword(randomKeyword);
-        List<GetRecommendationRes> getRecommendKeywordRes = cocktailKeywords.stream()
-                .map(CocktailKeyword::getCocktailInfo)
-                .map(GetRecommendationRes::new)
-                .collect(Collectors.toList());
+    public GetRecommendationListRes getKeywordRecommendation(UserInfo userInfo) throws BaseException{
+        try {
+            Keyword randomKeyword = getRandomKeyword(keywordRepository.count(), userInfo);
+            List<CocktailKeyword> cocktailKeywords = cocktailKeywordRepository.findAllByKeyword(randomKeyword);
+            List<GetRecommendationRes> getRecommendKeywordRes = cocktailKeywords.stream()
+                    .map(CocktailKeyword::getCocktailInfo)
+                    .map(GetRecommendationRes::new)
+                    .collect(Collectors.toList());
 
-        if (getRecommendKeywordRes.size() > 9){
-            getRecommendKeywordRes = getRecommendKeywordRes.subList(0,9);
+            if (getRecommendKeywordRes.size() > 9) {
+                getRecommendKeywordRes = getRecommendKeywordRes.subList(0, 9);
+            }
+
+            String description = randomKeyword.getKeywordName();
+            String tag = "키워드";
+
+            return GetRecommendationListRes.builder()
+                    .tag(tag)
+                    .description(description)
+                    .recommendationRes(getRecommendKeywordRes)
+                    .build();
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
 
-        String description =randomKeyword.getKeywordName();
-        String tag = "키워드";
 
-        return GetRecommendationListRes.builder()
-                .tag(tag)
-                .description(description)
-                .recommendationRes(getRecommendKeywordRes)
-                .build();
     }
 
     //사용자가 지정하지 않은 기주로 칵테일 추천
-    public GetRecommendationListRes getDrinkRecommendation(UserInfo userInfo){
-        Drink randomDrink = getRandomDrink(drinkRepository.count(), userInfo);
-        List<CocktailDrink> cocktailDrinks = cocktailDrinkRepository.findAllByDrink(randomDrink);
-        List<GetRecommendationRes> getRecommendationRes = cocktailDrinks.stream()
-                .map(CocktailDrink::getCocktailInfo)
-                .map(GetRecommendationRes::new)
-                .collect(Collectors.toList());
-        if (getRecommendationRes.size() > 9){
-            getRecommendationRes = getRecommendationRes.subList(0,9);
+    public GetRecommendationListRes getDrinkRecommendation(UserInfo userInfo) throws BaseException{
+        try {
+            Drink randomDrink = getRandomDrink(drinkRepository.count(), userInfo);
+            List<CocktailDrink> cocktailDrinks = cocktailDrinkRepository.findAllByDrink(randomDrink);
+            List<GetRecommendationRes> getRecommendationRes = cocktailDrinks.stream()
+                    .map(CocktailDrink::getCocktailInfo)
+                    .map(GetRecommendationRes::new)
+                    .collect(Collectors.toList());
+            if (getRecommendationRes.size() > 9) {
+                getRecommendationRes = getRecommendationRes.subList(0, 9);
+            }
+
+            String description = randomDrink.getDrinkName();
+            String tag = "기주";
+
+            return GetRecommendationListRes.builder()
+                    .tag(tag)
+                    .description(description)
+                    .recommendationRes(getRecommendationRes)
+                    .build();
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
-
-        String description = randomDrink.getDrinkName();
-        String tag = "기주";
-
-        return GetRecommendationListRes.builder()
-                .tag(tag)
-                .description(description)
-                .recommendationRes(getRecommendationRes)
-                .build();
     }
 
     private Keyword getRandomKeyword(long count, UserInfo userInfo){

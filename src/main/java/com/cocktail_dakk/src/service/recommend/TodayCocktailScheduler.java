@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.service.recommend;
 
+import com.cocktail_dakk.config.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ public class TodayCocktailScheduler {
     //메일 오전 24시 생성
     @Scheduled(cron = "0 0 0 * * *")
     //@Scheduled(cron="0 0/1 * * * *") //1분
-    public void todayCocktail(){
+    public void todayCocktail() throws BaseException {
        todayCocktailService.getRandomCocktailId();
     }
 

@@ -4,7 +4,8 @@ import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetRecommendationListRes;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetTodayCocktailInfoRes;
-import com.cocktail_dakk.src.domain.cocktail.dto.GetUserRecommendRes;
+import com.cocktail_dakk.src.domain.cocktail.dto.GetUserRecommendationRes;
+import com.cocktail_dakk.src.domain.cocktail.dto.UserRecommendationList;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.service.recommend.KeywordCocktailService;
 import com.cocktail_dakk.src.service.UserInfoService;
@@ -30,12 +31,16 @@ public class RecommendCocktailController {
     private final UserInfoService userInfoService;
 
     @GetMapping("/today")
-    public BaseResponse<List<GetTodayCocktailInfoRes>> getTodayCocktailInfoRes(){
-        return new BaseResponse<>(todayCocktailService.getTodayCocktail());
+    public BaseResponse<List<GetTodayCocktailInfoRes>> getTodayCocktailInfoRes() throws BaseException {
+        try {
+            return new BaseResponse<>(todayCocktailService.getTodayCocktail());
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
     @GetMapping("/user/{deviceNum}")
-    public BaseResponse<List<GetUserRecommendRes>> getUserCocktailRes(@PathVariable("deviceNum") String deviceNum){
+    public BaseResponse<GetUserRecommendationRes> getUserCocktailRes(@PathVariable("deviceNum") String deviceNum){
         try {
             UserInfo userInfo = userInfoService.getUserInfo(deviceNum);
             return new BaseResponse<>(userCocktailService.getUserRecommendCocktail(userInfo));

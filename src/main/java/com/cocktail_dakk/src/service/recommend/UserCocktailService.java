@@ -1,10 +1,12 @@
 package com.cocktail_dakk.src.service.recommend;
 
+import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.src.domain.cocktail.CocktailDrink;
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeywordRepository;
-import com.cocktail_dakk.src.domain.cocktail.dto.GetUserRecommendRes;
+import com.cocktail_dakk.src.domain.cocktail.dto.GetUserRecommendationRes;
+import com.cocktail_dakk.src.domain.cocktail.dto.UserRecommendationList;
 import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.user.UserDrink;
 import com.cocktail_dakk.src.domain.user.UserInfo;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.cocktail_dakk.config.BaseResponseStatus.REQUEST_ERROR;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,29 +31,33 @@ public class UserCocktailService {
 
     private final CocktailKeywordRepository cocktailKeywordRepository;
     //키워드 추천 칵테일
-    public List<GetUserRecommendRes> getUserRecommendCocktail(UserInfo userInfo) {
+    public GetUserRecommendationRes getUserRecommendCocktail(UserInfo userInfo) throws BaseException {
 
-        Integer userAlcohol = userInfo.getAlcoholLevel();
+        try {
+            Integer userAlcohol = userInfo.getAlcoholLevel();
 
-        List<UserDrink> userDrinks = userInfo.getUserDrinks();
+            List<UserDrink> userDrinks = userInfo.getUserDrinks();
 
-        List<UserKeyword> userKeywords = userInfo.getUserKeywords();
-        Set<CocktailInfo> cocktailByUser1 = new LinkedHashSet<>(); //1차
-        Set<CocktailInfo> cocktailByUser2 = new LinkedHashSet<>(); //2차
-        Set<CocktailInfo> cocktailByUser3 = new LinkedHashSet<>(); //3차
+            List<UserKeyword> userKeywords = userInfo.getUserKeywords();
+            Set<CocktailInfo> cocktailByUser1 = new LinkedHashSet<>(); //1차
+            Set<CocktailInfo> cocktailByUser2 = new LinkedHashSet<>(); //2차
+            Set<CocktailInfo> cocktailByUser3 = new LinkedHashSet<>(); //3차
 
-        //유저의 키워드, 도수, 기주에 따라 추출
-        getUserRecommend(userAlcohol, userDrinks, userKeywords, cocktailByUser1, cocktailByUser2, cocktailByUser3);
+            //유저의 키워드, 도수, 기주에 따라 추출
+            getUserRecommend(userAlcohol, userDrinks, userKeywords, cocktailByUser1, cocktailByUser2, cocktailByUser3);
 
-        List<GetUserRecommendRes> getUserRecommendRes = cocktailByUser1.stream()
-                .map(GetUserRecommendRes::new)
-                .collect(Collectors.toList());
+            List<UserRecommendationList> getUserRecommendRes = cocktailByUser1.stream()
+                    .map(UserRecommendationList::new)
+                    .collect(Collectors.toList());
 
-        if(getUserRecommendRes.size() > 5){
-            return getUserRecommendRes.subList(0,5);
-        }
-        else{
-            return getUserRecommendRes;
+            if(getUserRecommendRes.size() > 5){
+                return new GetUserRecommendationRes(userInfo.getNickname(), getUserRecommendRes.subList(0,5));
+            }
+            else{
+                return new GetUserRecommendationRes(userInfo.getNickname(), getUserRecommendRes);
+            }
+        } catch (Exception e){
+            throw new BaseException(REQUEST_ERROR);
         }
 
     }
