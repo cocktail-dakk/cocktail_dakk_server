@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.service;
 
+import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import com.cocktail_dakk.src.domain.user.dto.*;
@@ -35,8 +36,9 @@ public class UserService {
 
     //회원가입(등록)
     public UserInfoRes signUpUser(UserInfoRes userSignUpReq){
-        UserInfoRes saveUser = userInfoRepository.save(userSignUpReq);
-        return saveUser;
-
+        UserInfo userInfo = new UserInfo(userSignUpReq.getDeviceNum(),userSignUpReq.getNickname(),userSignUpReq.getAge(),
+                userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
+        UserInfo saveUser = userInfoRepository.save(userInfo);
+        return new UserInfoRes(saveUser);
     }
 }
