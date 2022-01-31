@@ -22,13 +22,14 @@ public class UserService {
     UserInfo userInfo;
 
     //회원있없확인
-    public List<UserInfoRes> isInUserInfo(String deviceNum){
-        List<UserInfoRes> findUser = userInfoRepository.findByDeviceNum(deviceNum);
+    public UserInfoRes isInUserInfo(String deviceNum){
+        List<UserInfo> findUser = userInfoRepository.findByDeviceNum(deviceNum);
         if(findUser.isEmpty()){
             return null;
         }
         //List의 요소를 조회하려면 get(index번호)로 하기
-        return findUser;
+
+        return new UserInfoRes(findUser.get(0));
     }
 
 
