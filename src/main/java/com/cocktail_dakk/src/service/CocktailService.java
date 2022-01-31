@@ -1,10 +1,12 @@
 package com.cocktail_dakk.src.service;
 
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
-import com.cocktail_dakk.src.domain.cocktail.CocktailToday;
-import com.cocktail_dakk.src.domain.cocktail.CocktailTodayRepository;
-import com.cocktail_dakk.src.domain.cocktail.dto.GetTodayCocktailInfoRes;
+import com.cocktail_dakk.src.domain.cocktail.*;
+import com.cocktail_dakk.src.domain.cocktail.dto.*;
+//import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
+//import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
+//import com.cocktail_dakk.src.domain.cocktail.CocktailToday;
+//import com.cocktail_dakk.src.domain.cocktail.CocktailTodayRepository;
+//import com.cocktail_dakk.src.domain.cocktail.dto.GetTodayCocktailInfoRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -78,6 +80,12 @@ public class CocktailService {
                 }
             }
         }
+    }
+
+    //칵테일 상세페이지 띄우기
+    public CocktailDetailsInfoRes getCocktailDetailsInfo(Long id){
+        CocktailInfo detailCocktail = cocktailInfoRepository.findByCocktailInfoId(id);
+        return new CocktailDetailsInfoRes(detailCocktail);
     }
 
 }

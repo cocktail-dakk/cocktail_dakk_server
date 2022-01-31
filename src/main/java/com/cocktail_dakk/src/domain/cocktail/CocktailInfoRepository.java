@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CocktailInfoRepository extends JpaRepository<CocktailInfo, Long> {
     Page<CocktailInfo> findAllByKoreanNameContainingOrEnglishNameContainingOrIngredientContaining(Pageable pageable, String koreanName, String englishName, String ingredients);
+    CocktailInfo findByCocktailInfoId(Long id);
 }
