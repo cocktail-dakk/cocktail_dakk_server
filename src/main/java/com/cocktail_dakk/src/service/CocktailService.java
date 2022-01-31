@@ -83,8 +83,9 @@ public class CocktailService {
     }
 
     //칵테일 상세페이지 띄우기
-    public CocktailDetailsInfoRes getCocktailDetailsInfo(){
-        return new CocktailDetailsInfoRes();//수정 중,,,
+    public CocktailDetailsInfoRes getCocktailDetailsInfo(Long id){
+        CocktailInfo detailCocktail = cocktailInfoRepository.findByCocktailInfoId(id);
+        return new CocktailDetailsInfoRes(detailCocktail);
     }
 
 }
