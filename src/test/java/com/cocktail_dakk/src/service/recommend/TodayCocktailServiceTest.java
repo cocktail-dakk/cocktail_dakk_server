@@ -1,10 +1,10 @@
-package com.cocktail_dakk.src.service;
+package com.cocktail_dakk.src.service.recommend;
 
 import com.cocktail_dakk.src.domain.Status;
-import com.cocktail_dakk.src.domain.cocktail.*;
-import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
-import com.cocktail_dakk.src.domain.user.UserInfoRepository;
-import com.cocktail_dakk.src.domain.user.UserKeywordRepository;
+import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
+import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
+import com.cocktail_dakk.src.domain.cocktail.CocktailToday;
+import com.cocktail_dakk.src.domain.cocktail.CocktailTodayRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,31 +13,21 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.properties")
-class CocktailServiceTest {
-
+class TodayCocktailServiceTest {
     @Autowired
-    private CocktailService cocktailService;
+    private TodayCocktailService todayCocktailService;
     @Autowired
     private CocktailTodayRepository cocktailTodayRepository;
     @Autowired
     private CocktailInfoRepository cocktailInfoRepository;
-    @Autowired
-    private KeywordRepository keywordRepository;
-    @Autowired
-    private UserInfoRepository userInfoRepository;
-    @Autowired
-    private UserKeywordRepository userKeywordRepository;
-    @Autowired
-    private CocktailKeywordRepository cocktailKeywordRepository;
 
     @Test
     @Transactional
@@ -81,7 +71,7 @@ class CocktailServiceTest {
         cocktailInfoRepository.save(cocktail11);
 
         //when
-        cocktailService.getRandomCocktailId();
+        todayCocktailService.getRandomCocktailId();
 
         //then
         List<CocktailToday> todayCocktails = cocktailTodayRepository.findAll();
@@ -94,7 +84,7 @@ class CocktailServiceTest {
     }
 
     private CocktailInfo createCocktail(Long id, String englishName, String koreanName, String description, String url1,
-                                String url2, String url3, int level) {
+                                        String url2, String url3, int level) {
 
         return CocktailInfo.builder()
                 .cocktailInfoId(id)
