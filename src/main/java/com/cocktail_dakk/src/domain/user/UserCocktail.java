@@ -14,19 +14,15 @@ import java.math.BigDecimal;
 @Table(name = "UserCocktail")
 public class UserCocktail {
 
-    public UserCocktail(UserInfo userInfo, CocktailInfo cocktailInfo, BigDecimal rating, String review) {
+    public UserCocktail(UserInfo userInfo, CocktailInfo cocktailInfo) {
         this.userInfo = userInfo;
         this.cocktailInfo = cocktailInfo;
         userInfo.getUserCocktails().add(this);
-        this.rating = rating;
-        this.review = review;
     }
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userCocktailId;
-
-    private BigDecimal rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userInfoId")
@@ -35,6 +31,4 @@ public class UserCocktail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cocktailInfoId")
     private CocktailInfo cocktailInfo;
-
-    private String review;
 }
