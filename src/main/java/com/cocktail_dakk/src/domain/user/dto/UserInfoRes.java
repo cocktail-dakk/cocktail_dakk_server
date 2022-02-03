@@ -17,7 +17,6 @@ public class UserInfoRes {
     private Integer age;
     private String sex;
     private Integer alcoholLevel;
-    // 취향키워드를 받는다고,,,리스트로 받고 전달하기 // 질문하기,,, 나만 어렵나 ㅎ
     private List<UserKeyword> userKeywords;
 
     public UserInfoRes(UserInfo userInfo){
