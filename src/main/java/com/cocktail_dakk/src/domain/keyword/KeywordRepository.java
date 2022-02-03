@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
     Page<Keyword> findAllByKeywordNameContaining(Pageable pageable, String keywordName);
+    Keyword findByKeywordName(String name);
 }
