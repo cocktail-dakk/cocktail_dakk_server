@@ -1,6 +1,8 @@
 package com.cocktail_dakk.src.controller;
 
 
+import com.cocktail_dakk.config.BaseException;
+import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.cocktail.dto.CocktailDetailsInfoRes;
 import com.cocktail_dakk.src.service.CocktailService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,13 @@ public class CocktailDetailInfoController {
     private final CocktailService cocktailService;
 
     @GetMapping("/details")
-    public CocktailDetailsInfoRes getCocktailInfo(@RequestParam Long id){
-        return cocktailService.getCocktailDetailsInfo(id);
+    public BaseResponse<CocktailDetailsInfoRes> getCocktailInfo(@RequestParam Long id){
+//        return cocktailService.getCocktailDetailsInfo(id);
+        try {
+            return new BaseResponse<>(cocktailService.getCocktailDetailsInfo(id));
+        } catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
 }
