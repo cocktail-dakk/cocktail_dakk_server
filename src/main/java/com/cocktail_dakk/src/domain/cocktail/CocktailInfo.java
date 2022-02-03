@@ -75,7 +75,8 @@ public class CocktailInfo {
     private List<UserCocktail> userCocktails=new ArrayList<>();
 
     @Builder
-    public CocktailInfo(String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, String ingredient, BigDecimal ratingAvg, Status status){
+    public CocktailInfo(Long cocktailInfoId, String englishName, String koreanName, String description, String cocktailImageURL, String cocktailBackgroundImageURL, String recommendImageURL , String smallNukkiImageURL, Integer alcoholLevel, String ingredient, BigDecimal ratingAvg, Status status){
+        this.cocktailInfoId = cocktailInfoId;
         this.englishName=englishName;
         this.koreanName=koreanName;
         this.description=description;
