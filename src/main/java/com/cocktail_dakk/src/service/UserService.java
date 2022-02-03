@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.service;
 
+import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.user.UserInfo;
@@ -23,23 +24,23 @@ public class UserService {
     UserInfo userInfo;
 
     //회원있없확인
-    public UserInfoRes isInUserInfo(String deviceNum){
+    public BaseResponse<UserInfoRes> isInUserInfo(String deviceNum) throws BaseException{
         List<UserInfo> findUser = userInfoRepository.findByDeviceNum(deviceNum);
         if(findUser.isEmpty()){
             return null;
         }
         //List의 요소를 조회하려면 get(index번호)로 하기
-        return new UserInfoRes(findUser.get(0));
+        return new BaseResponse<>(new UserInfoRes(findUser.get(0)));
     }
 
 
 
 
     //회원가입(등록)
-    public UserInfoRes signUpUser(UserInfoRes userSignUpReq){
+    public BaseResponse<UserInfoRes> signUpUser(UserInfoRes userSignUpReq){
         UserInfo userInfo = new UserInfo(userSignUpReq.getDeviceNum(),userSignUpReq.getNickname(),userSignUpReq.getAge(),
                 userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
         UserInfo saveUser = userInfoRepository.save(userInfo);
-        return new UserInfoRes(saveUser);
+        return new BaseResponse<>(new UserInfoRes(saveUser));
     }
 }
