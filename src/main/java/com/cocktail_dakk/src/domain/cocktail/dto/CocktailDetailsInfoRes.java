@@ -22,7 +22,7 @@ public class CocktailDetailsInfoRes {
     private String nukkiImgUrl;
     private String todayImgUrl;
     private String smallNukkiImageURL;
-    private List<KeywordRes> cocktailKeywords;
+    private List<MixingMethodRes> cocktailMixingMethod;
     private Integer alcoholLevel;
     private String ingredient;
     private BigDecimal ratingAvg;
@@ -36,9 +36,9 @@ public class CocktailDetailsInfoRes {
         this.nukkiImgUrl = cocktailInfo.getCocktailBackgroundImageURL();
         this.todayImgUrl = cocktailInfo.getRecommendImageURL();
         this.smallNukkiImageURL = cocktailInfo.getSmallNukkiImageURL();
-        this.cocktailKeywords = cocktailInfo.getCocktailKeywords()
+        this.cocktailMixingMethod = cocktailInfo.getCocktailMixingMethods()
                 .stream()
-                .map(KeywordRes::new)
+                .map(MixingMethodRes::new)
                 .collect(Collectors.toList());
         this.alcoholLevel = cocktailInfo.getAlcoholLevel();
         this.ingredient = cocktailInfo.getIngredient();

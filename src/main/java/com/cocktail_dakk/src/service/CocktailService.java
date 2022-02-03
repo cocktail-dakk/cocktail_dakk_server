@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.service;
 
+import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.cocktail.dto.*;
 //import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.cocktail_dakk.config.BaseResponseStatus.RESPONSE_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -83,9 +86,14 @@ public class CocktailService {
     }
 
     //칵테일 상세페이지 띄우기
-    public CocktailDetailsInfoRes getCocktailDetailsInfo(Long id){
-        CocktailInfo detailCocktail = cocktailInfoRepository.findByCocktailInfoId(id);
-        return new CocktailDetailsInfoRes(detailCocktail);
+    public CocktailDetailsInfoRes getCocktailDetailsInfo(Long id) throws BaseException {
+        try {
+            CocktailInfo detailCocktail = cocktailInfoRepository.findByCocktailInfoId(id);
+            return new CocktailDetailsInfoRes(detailCocktail);
+        } catch (Exception e){
+            throw new BaseException(RESPONSE_ERROR);
+        }
+
     }
 
 }
