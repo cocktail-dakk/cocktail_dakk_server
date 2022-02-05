@@ -8,6 +8,7 @@ import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
+import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,28 +43,68 @@ public class UserInfoService {
                     userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
             UserInfo saveUser = userInfoRepository.save(userInfo);
 
-            String tempKeywords = userSignUpReq.getFavouritesKeywords();
-            String[] tempKeywordArr = tempKeywords.split(",");
+            addFavourites(userSignUpReq.getFavouritesKeywords(), userSignUpReq.getFavouritesDrinks(),saveUser);
 
-            String tempDrinks = userSignUpReq.getFavouritesDrinks();
-            String[] tempDrinksArr = tempDrinks.split(",");
-
-            for(int i=0;i<tempKeywordArr.length;i++){
-                Keyword tempKeyword = keywordRepository.findByKeywordName(tempKeywordArr[i]);
-                UserKeyword userKeyword = new UserKeyword(saveUser,tempKeyword);
-                userKeywordRepository.save(userKeyword);
-
-                Drink tempDrink = drinkRepository.findByDrinkName(tempDrinksArr[i]);
-                UserDrink userDrink = new UserDrink(saveUser,tempDrink);
-                userDrinkRepository.save(userDrink);
-
-
-            }
+//            String tempKeywords = userSignUpReq.getFavouritesKeywords();
+//            String[] tempKeywordArr = tempKeywords.split(",");
+//
+//            String tempDrinks = userSignUpReq.getFavouritesDrinks();
+//            String[] tempDrinksArr = tempDrinks.split(",");
+//
+//            for(int i=0;i<tempKeywordArr.length;i++){
+//                Keyword tempKeyword = keywordRepository.findByKeywordName(tempKeywordArr[i]);
+//                UserKeyword userKeyword = new UserKeyword(saveUser,tempKeyword);
+//                userKeywordRepository.save(userKeyword);
+//
+//                Drink tempDrink = drinkRepository.findByDrinkName(tempDrinksArr[i]);
+//                UserDrink userDrink = new UserDrink(saveUser,tempDrink);
+//                userDrinkRepository.save(userDrink);
+//            }
 
             return new UserInfoRes(saveUser);
 
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public UserInfoRes modifyUser(UserModifyReq userModifyReq) throws BaseException{
+        try {
+            UserInfo userInfo = getUserInfo(userModifyReq.getDeviceNum());
+            userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
+
+            addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
+
+            return new UserInfoRes(userInfo);
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo){
+        String[] tempKeywordArr = favouritesKeywords.split(",");
+        String[] tempDrinksArr = favouritesDrinks.split(",");
+
+        // userDrink에 값이 있으면 delete하고 시작
+        if(!userInfo.getUserDrinks().isEmpty()){
+            userDrinkRepository.deleteAll(userInfo.getUserDrinks());
+        }
+        // userKeyword에 값이 있으면 delete하고 시작
+        if(!userInfo.getUserKeywords().isEmpty()){
+            userKeywordRepository.deleteAll(userInfo.getUserKeywords());
+        }
+        //keyword 하나씩 저장
+        for(String keyword:tempKeywordArr){
+            Keyword tempKeyword = keywordRepository.findByKeywordName(keyword);
+            UserKeyword userKeyword = new UserKeyword(userInfo,tempKeyword);
+            userKeywordRepository.save(userKeyword);
+        }
+        //Drink 하나씩 저장
+        for(String drink:tempDrinksArr){
+            Drink tempDrink = drinkRepository.findByDrinkName(drink);
+            UserDrink userDrink = new UserDrink(userInfo,tempDrink);
+            userDrinkRepository.save(userDrink);
         }
     }
 

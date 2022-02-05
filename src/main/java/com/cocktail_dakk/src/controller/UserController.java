@@ -3,6 +3,7 @@ package com.cocktail_dakk.src.controller;
 import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
+import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
 import com.cocktail_dakk.src.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,15 @@ public class UserController {
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }//회원가입하면 회원 전체 정보 반환
+    }
+
+    @PatchMapping("/modify")
+    public BaseResponse<UserInfoRes> modifyUser(@RequestBody UserModifyReq userModifyReq){
+        try {
+            return new BaseResponse<>(userService.modifyUser(userModifyReq));
+        }catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
 
