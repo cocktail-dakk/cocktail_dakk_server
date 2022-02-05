@@ -51,7 +51,7 @@ class CocktailInfoRepositoryTest {
                 .cocktailBackgroundImageURL("5678")
                 .recommendImageURL("91011")
                 .smallNukkiImageURL("1234123")
-                .alcoholLevel(1)
+                .alcoholLevel(30)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
@@ -177,10 +177,12 @@ class CocktailInfoRepositoryTest {
 
         List<String> drinkName=new ArrayList<>();
         drinkName.add("데킬라");
+        drinkName.add("위스키");
 
         // Then
-        System.out.println("Result---------------------------------------------");
         List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, alcoholLevel, drinkName);
+        assertThat(searchFilter.get(0).getEnglishName()).isEqualTo(cocktailInfo2.getEnglishName());
+        assertThat(searchFilter.get(1).getEnglishName()).isEqualTo(cocktailInfo3.getEnglishName());
         for (CocktailInfo cocktailInfo : searchFilter) {
             System.out.println("이름: "+cocktailInfo.getEnglishName());
 
