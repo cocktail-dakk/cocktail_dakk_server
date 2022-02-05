@@ -45,22 +45,6 @@ public class UserInfoService {
 
             addFavourites(userSignUpReq.getFavouritesKeywords(), userSignUpReq.getFavouritesDrinks(),saveUser);
 
-//            String tempKeywords = userSignUpReq.getFavouritesKeywords();
-//            String[] tempKeywordArr = tempKeywords.split(",");
-//
-//            String tempDrinks = userSignUpReq.getFavouritesDrinks();
-//            String[] tempDrinksArr = tempDrinks.split(",");
-//
-//            for(int i=0;i<tempKeywordArr.length;i++){
-//                Keyword tempKeyword = keywordRepository.findByKeywordName(tempKeywordArr[i]);
-//                UserKeyword userKeyword = new UserKeyword(saveUser,tempKeyword);
-//                userKeywordRepository.save(userKeyword);
-//
-//                Drink tempDrink = drinkRepository.findByDrinkName(tempDrinksArr[i]);
-//                UserDrink userDrink = new UserDrink(saveUser,tempDrink);
-//                userDrinkRepository.save(userDrink);
-//            }
-
             return new UserInfoRes(saveUser);
 
         } catch (Exception exception){
