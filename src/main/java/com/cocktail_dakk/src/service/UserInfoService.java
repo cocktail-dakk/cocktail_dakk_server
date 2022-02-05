@@ -66,6 +66,7 @@ public class UserInfoService {
         }
     }
 
+    @Transactional
     public void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo){
         String[] tempKeywordArr = favouritesKeywords.split(",");
         String[] tempDrinksArr = favouritesDrinks.split(",");
