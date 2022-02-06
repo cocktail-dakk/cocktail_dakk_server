@@ -58,6 +58,7 @@ public class UserInfoService {
             UserInfo userInfo = getUserInfo(userModifyReq.getDeviceNum());
             userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
 
+
             addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
 
             return new UserInfoRes(userInfo);
@@ -66,8 +67,7 @@ public class UserInfoService {
         }
     }
 
-    @Transactional
-    public void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo){
+    private void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo){
         String[] tempKeywordArr = favouritesKeywords.split(",");
         String[] tempDrinksArr = favouritesDrinks.split(",");
 
@@ -79,6 +79,10 @@ public class UserInfoService {
         if(!userInfo.getUserKeywords().isEmpty()){
             userKeywordRepository.deleteAll(userInfo.getUserKeywords());
         }
+
+        userInfo.getUserKeywords().clear();
+        userInfo.getUserDrinks().clear();
+
         //keyword 하나씩 저장
         for(String keyword:tempKeywordArr){
             Keyword tempKeyword = keywordRepository.findByKeywordName(keyword);
