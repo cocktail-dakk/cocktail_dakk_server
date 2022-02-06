@@ -2,7 +2,6 @@ package com.cocktail_dakk.src.domain.keyword.dto;
 
 
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
-import com.cocktail_dakk.src.domain.keyword.Keyword;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +19,11 @@ public class KeywordRes {
     public KeywordRes(Keyword keyword) {
         this.keywordId = keyword.getKeywordId();
         this.keywordName = keyword.getKeywordName();
+    }
+
+    public KeywordRes(UserKeyword userKeyword) {
+        this.keywordId = userKeyword.getKeyword().getKeywordId();
+        this.keywordName = userKeyword.getKeyword().getKeywordName();
     }
 }
 
