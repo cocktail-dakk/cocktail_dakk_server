@@ -14,7 +14,7 @@ public class CocktailFilterRepositoryImpl implements CocktailFilterRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<CocktailInfo> findSearchFilter(Pageable pageable, List<String> keywordName, Integer alcoholLevel, List<String> drinkName) {
+    public List<CocktailInfo> findSearchFilter(Pageable pageable, List<String> keywordName, Integer alcoholLevel, Integer alcoholLevelRange, List<String> drinkName){
         QCocktailInfo qCocktailInfo=new QCocktailInfo("qCocktailInfo");
 
         QCocktailDrink qCocktailDrink=new QCocktailDrink("qCocktailDrink");
@@ -29,7 +29,7 @@ public class CocktailFilterRepositoryImpl implements CocktailFilterRepository {
                 .innerJoin(qCocktailKeyword.keyword, qKeyword)
                 .innerJoin(qCocktailInfo.cocktailDrinks, qCocktailDrink)
                 .innerJoin(qCocktailDrink.drink, qDrink)
-                .where(qKeyword.keywordName.in(keywordName).and(qDrink.drinkName.in(drinkName)).and(qCocktailInfo.alcoholLevel.between(alcoholLevel - 5, alcoholLevel + 5)))
+                .where(qKeyword.keywordName.in(keywordName).and(qDrink.drinkName.in(drinkName)).and(qCocktailInfo.alcoholLevel.between(alcoholLevel - alcoholLevelRange, alcoholLevel + alcoholLevelRange)))
                 .distinct()
                 .offset(pageable.getOffset()).limit(pageable.getPageSize())
                 .fetch();

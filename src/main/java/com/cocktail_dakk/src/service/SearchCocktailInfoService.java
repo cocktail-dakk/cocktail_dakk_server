@@ -2,9 +2,7 @@ package com.cocktail_dakk.src.service;
 
 import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
-import com.cocktail_dakk.src.domain.cocktail.CocktailKeywordRepository;
 import com.cocktail_dakk.src.domain.cocktail.dto.SearchCocktailInfoRes;
-import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -21,12 +19,6 @@ public class SearchCocktailInfoService{
 
     @Autowired
     CocktailInfoRepository cocktailInfoRepository;
-
-    @Autowired
-    KeywordRepository keywordRepository;
-
-    @Autowired
-    CocktailKeywordRepository cocktailKeywordRepository;
 
     public Slice<SearchCocktailInfoRes> findByInputStrAll(Pageable pageable, String inputStr) throws BaseException{
         try {

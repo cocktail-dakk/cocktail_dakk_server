@@ -13,12 +13,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -135,35 +134,23 @@ class CocktailInfoRepositoryTest {
         cocktailKeywordRepository.save(cocktailKeyword3);
 
         System.out.println(cocktailInfo1.getEnglishName());
-        cocktailInfo1.getCocktailKeywords().forEach(cocktailKeyword -> {
-            System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName());
-        });
+        cocktailInfo1.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
         System.out.println(cocktailInfo1.getAlcoholLevel());
-        cocktailInfo1.getCocktailDrinks().forEach(cocktailDrink -> {
-            System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName());
-        });
+        cocktailInfo1.getCocktailDrinks().forEach(cocktailDrink -> System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName()));
 
         System.out.println();
 
         System.out.println(cocktailInfo2.getEnglishName());
-        cocktailInfo2.getCocktailKeywords().forEach(cocktailKeyword -> {
-            System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName());
-        });
+        cocktailInfo2.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
         System.out.println(cocktailInfo2.getAlcoholLevel());
-        cocktailInfo2.getCocktailDrinks().forEach(cocktailDrink -> {
-            System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName());
-        });
+        cocktailInfo2.getCocktailDrinks().forEach(cocktailDrink -> System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName()));
 
         System.out.println();
 
         System.out.println(cocktailInfo3.getEnglishName());
-        cocktailInfo3.getCocktailKeywords().forEach(cocktailKeyword -> {
-            System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName());
-        });
+        cocktailInfo3.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
         System.out.println(cocktailInfo3.getAlcoholLevel());
-        cocktailInfo3.getCocktailDrinks().forEach(cocktailDrink -> {
-            System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName());
-        });
+        cocktailInfo3.getCocktailDrinks().forEach(cocktailDrink -> System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName()));
 
 
         cocktailInfoRepository.flush();
@@ -174,27 +161,24 @@ class CocktailInfoRepositoryTest {
         keywordName.add("달콤한");
 
         Integer alcoholLevel=1;
+        Integer alcoholLevelRange=7;
 
         List<String> drinkName=new ArrayList<>();
         drinkName.add("데킬라");
         drinkName.add("위스키");
 
         // Then
-        List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, alcoholLevel, drinkName);
+        List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, alcoholLevel, alcoholLevelRange, drinkName);
         assertThat(searchFilter.get(0).getEnglishName()).isEqualTo(cocktailInfo2.getEnglishName());
         assertThat(searchFilter.get(1).getEnglishName()).isEqualTo(cocktailInfo3.getEnglishName());
         for (CocktailInfo cocktailInfo : searchFilter) {
             System.out.println("이름: "+cocktailInfo.getEnglishName());
 
-            cocktailInfo.getCocktailKeywords().forEach(cocktailKeyword -> {
-                System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName());
-            });
+            cocktailInfo.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
 
             System.out.println("도수: "+cocktailInfo.getAlcoholLevel());
 
-            cocktailInfo.getCocktailDrinks().forEach(cocktailDrink -> {
-                System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName());
-            });
+            cocktailInfo.getCocktailDrinks().forEach(cocktailDrink -> System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName()));
         }
 
     }

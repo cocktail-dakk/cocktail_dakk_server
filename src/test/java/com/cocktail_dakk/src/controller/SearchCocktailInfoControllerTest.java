@@ -33,7 +33,7 @@ class SearchCocktailInfoControllerTest {
 
     @Test
     @Transactional
-    public void findTest() throws Exception{
+    public void findTest() throws Exception {
 
         // Given
         CocktailInfo cocktailInfo1=CocktailInfo.builder()
@@ -57,6 +57,39 @@ class SearchCocktailInfoControllerTest {
         mockMvc.perform(get("/search/cocktail/")
                         .param("page", "0")
                         .param("inputStr", " "))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(result -> jsonPath("$.result.content[0].englishName", is("21st Century")));
+    }
+
+    @Test
+    @Transactional
+    public void filterTest() throws Exception {
+
+        // Given
+        CocktailInfo cocktailInfo1=CocktailInfo.builder()
+                .englishName("21st Century")
+                .koreanName("21세기")
+                .description("쓰다")
+                .cocktailImageURL("1234")
+                .cocktailBackgroundImageURL("5678")
+                .recommendImageURL("91011")
+                .smallNukkiImageURL("1234123")
+                .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
+                .status(Status.ACTIVE)
+                .build();
+
+        // When
+        cocktailInfoRepository.save(cocktailInfo1);
+
+        // Then
+        mockMvc.perform(get("/search/cocktail/filter")
+                .param("page", "0")
+                .param("keywordName", "")
+                .param("alcoholLevel", "1")
+                .param("drinkName", ""))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(result -> jsonPath("$.result.content[0].englishName", is("21st Century")));
