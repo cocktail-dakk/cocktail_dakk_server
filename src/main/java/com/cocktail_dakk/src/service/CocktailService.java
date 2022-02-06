@@ -25,7 +25,6 @@ import static com.cocktail_dakk.config.BaseResponseStatus.RESPONSE_ERROR;
 @Transactional(readOnly = true)
 @Slf4j
 public class CocktailService {
-    private final CocktailTodayRepository cocktailTodayRepository;
     private final CocktailInfoRepository cocktailInfoRepository;
 
     //칵테일 상세페이지 띄우기
@@ -36,7 +35,5 @@ public class CocktailService {
         } catch (Exception e){
             throw new BaseException(RESPONSE_ERROR);
         }
-
     }
-
 }

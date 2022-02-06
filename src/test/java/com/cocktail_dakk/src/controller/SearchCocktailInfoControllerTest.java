@@ -1,46 +1,65 @@
 package com.cocktail_dakk.src.controller;
 
-import com.cocktail_dakk.config.BaseResponse;
+import com.cocktail_dakk.src.domain.Status;
+import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
+import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import java.math.BigDecimal;
+
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.properties")
+@AutoConfigureMockMvc
 class SearchCocktailInfoControllerTest {
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    MockMvc mockMvc;
+    @Autowired
+    CocktailInfoRepository cocktailInfoRepository;
 
     @Test
     @Transactional
-    public void findTest(){
+    public void findTest() throws Exception{
 
-        //Given
-        String url="http://localhost:"+port+"/search/cocktail/?inputStr";
+        // Given
+        CocktailInfo cocktailInfo1=CocktailInfo.builder()
+                .englishName("21st Century")
+                .koreanName("21세기")
+                .description("쓰다")
+                .cocktailImageURL("1234")
+                .cocktailBackgroundImageURL("5678")
+                .recommendImageURL("91011")
+                .smallNukkiImageURL("1234123")
+                .alcoholLevel(1)
+                .ingredient("크림 (15ml),드라이 진 (45ml)")
+                .ratingAvg(new BigDecimal("4.0"))
+                .status(Status.ACTIVE)
+                .build();
 
-        //when
-        ResponseEntity<BaseResponse> responseEntity=testRestTemplate.exchange(url, HttpMethod.GET, null, BaseResponse.class);
+        // When
+        cocktailInfoRepository.save(cocktailInfo1);
 
-        //then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().getIsSuccess()).isTrue();
-        assertThat(responseEntity.getBody().getMessage()).isEqualTo("요청에 성공하였습니다.");
+        // Then
+        mockMvc.perform(get("/search/cocktail/")
+                        .param("page", "0")
+                        .param("inputStr", " "))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(result -> jsonPath("$.result.content[0].englishName", is("21st Century")));
     }
 
 }

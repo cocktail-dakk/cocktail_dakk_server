@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRecommendationList {
     private Long cocktailInfoId;
+    private String koreanName;
     private String cocktailImageURL;
 
     public UserRecommendationList(CocktailInfo cocktailInfo){
         this.cocktailInfoId = cocktailInfo.getCocktailInfoId();
         this.cocktailImageURL = cocktailInfo.getCocktailImageURL();
+        this.koreanName = cocktailInfo.getKoreanName();
     }
 
 }
