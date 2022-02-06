@@ -2,6 +2,8 @@ package com.cocktail_dakk.src.domain.keyword.dto;
 
 
 import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
+import com.cocktail_dakk.src.domain.keyword.Keyword;
+import com.cocktail_dakk.src.domain.user.UserKeyword;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
