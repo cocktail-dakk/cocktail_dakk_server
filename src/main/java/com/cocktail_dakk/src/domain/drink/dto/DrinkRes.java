@@ -1,7 +1,7 @@
 package com.cocktail_dakk.src.domain.drink.dto;
 
 import com.cocktail_dakk.src.domain.cocktail.CocktailDrink;
-import com.sun.istack.NotNull;
+import com.cocktail_dakk.src.domain.drink.Drink;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,5 +14,10 @@ public class DrinkRes {
     public DrinkRes(CocktailDrink cocktailDrink){
         this.drinkId=cocktailDrink.getDrink().getDrinkId();
         this.drinkName=cocktailDrink.getDrink().getDrinkName();
+    }
+
+    public DrinkRes(Drink drink){
+        this.drinkId=drink.getDrinkId();
+        this.drinkName=drink.getDrinkName();
     }
 }
