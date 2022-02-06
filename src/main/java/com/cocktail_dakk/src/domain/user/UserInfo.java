@@ -59,4 +59,9 @@ public class UserInfo {
         this.alcoholLevel= alcoholLevel;
         this.status=status;
     }
+
+    public void updateUser(String nickname, Integer alcoholLevel){
+        this.nickname = nickname;
+        this.alcoholLevel = alcoholLevel;
+    }
 }
