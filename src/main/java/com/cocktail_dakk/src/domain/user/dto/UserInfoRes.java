@@ -1,5 +1,8 @@
 package com.cocktail_dakk.src.domain.user.dto;
 
+import com.cocktail_dakk.src.domain.drink.dto.DrinkRes;
+import com.cocktail_dakk.src.domain.keyword.Keyword;
+import com.cocktail_dakk.src.domain.keyword.dto.KeywordRes;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.domain.user.UserKeyword;
 import lombok.Getter;
@@ -7,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -17,8 +21,8 @@ public class UserInfoRes {
     private Integer age;
     private String sex;
     private Integer alcoholLevel;
-    // 취향키워드를 받는다고,,,리스트로 받고 전달하기 // 질문하기,,, 나만 어렵나 ㅎ
-    private List<UserKeyword> userKeywords;
+    private List<KeywordRes> userKeywords;
+    private List<DrinkRes> userDrinks;
 
     public UserInfoRes(UserInfo userInfo){
         this.id = userInfo.getUserInfoId();
@@ -27,5 +31,13 @@ public class UserInfoRes {
         this.age = userInfo.getAge();
         this.sex = userInfo.getSex();
         this.alcoholLevel = userInfo.getAlcoholLevel();
+        this.userKeywords = userInfo.getUserKeywords()
+                .stream()
+                .map(KeywordRes::new)
+                .collect(Collectors.toList());
+        this.userDrinks = userInfo.getUserDrinks()
+                .stream()
+                .map(DrinkRes::new)
+                .collect(Collectors.toList());
     }
 }
