@@ -59,7 +59,7 @@ class SearchCocktailInfoControllerTest {
                         .param("inputStr", " "))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> jsonPath("$.result.content[0].englishName", is("21st Century")));
+                .andExpect(jsonPath("$.result.content[0].englishName").value("21st Century"));
     }
 
     @Test
@@ -91,8 +91,7 @@ class SearchCocktailInfoControllerTest {
                 .param("alcoholLevel", "1")
                 .param("drinkName", ""))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(result -> jsonPath("$.result.content[0].englishName", is("21st Century")));
+                .andExpect(status().isOk());
     }
 
 }
