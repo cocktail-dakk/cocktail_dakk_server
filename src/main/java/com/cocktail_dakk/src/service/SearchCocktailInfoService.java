@@ -33,13 +33,13 @@ public class SearchCocktailInfoService{
         }
     }
 
-    public Page<SearchCocktailInfoRes> findAll(Pageable pageable) throws BaseException{
+    public Slice<SearchCocktailInfoRes> findAll(Pageable pageable) throws BaseException{
         try {
             List<SearchCocktailInfoRes> cocktailInfoResList = cocktailInfoRepository.findAll(pageable)
                     .stream().map(SearchCocktailInfoRes::new)
                     .collect(Collectors.toList());
 
-            return new PageImpl<>(cocktailInfoResList);
+            return new SliceImpl<>(cocktailInfoResList);
         }catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
