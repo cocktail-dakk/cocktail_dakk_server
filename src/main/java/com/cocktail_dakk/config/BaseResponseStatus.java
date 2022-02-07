@@ -20,6 +20,11 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
     NOT_EXIST_USER(false,2004,"존재하지 않는 회원입니다."),
 
+    POST_EXISTS_RATING(false,2005,"이미 평가한 칵테일입니다."),
+    POST_RATING_EMPTY(false, 2006, "내용을 입력해주세요."),
+    NOT_EXIST_COCKTAIL(false,2007,"존재하지 않는 칵테일입니다."),
+    STAR_OUT_OF_RANGE(false,2008,"별점을 확인해주세요."),
+
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
 

@@ -1,6 +1,7 @@
 package com.cocktail_dakk.src.domain.cocktail;
 
 import com.cocktail_dakk.src.domain.user.UserInfo;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,8 @@ import java.math.BigDecimal;
 @Getter
 public class Rating {
 
-    public Rating(CocktailInfo cocktailInfo, UserInfo userInfo, BigDecimal rating) {
+    @Builder
+    public Rating(CocktailInfo cocktailInfo, UserInfo userInfo, float rating) {
         this.cocktailInfo = cocktailInfo;
         this.userInfo = userInfo;
         this.rating=rating;
@@ -21,7 +23,7 @@ public class Rating {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ratingId;
 
-    private BigDecimal rating;
+    private float rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cocktailInfoId")
