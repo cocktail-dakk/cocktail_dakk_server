@@ -45,7 +45,7 @@ public enum BaseResponseStatus {
     NOT_MATCH_PRODUCT(false,2021,"요청에 실패하셨습니다."),
     PATCH_PRODUCT_EMPTY(false,2022, "내용을 입력해주세요."),
 
-
+    EXIST_USER(false,2023,"이미 존재하는 회원입니다."),
 
     /**
      * 3000 : Response 오류

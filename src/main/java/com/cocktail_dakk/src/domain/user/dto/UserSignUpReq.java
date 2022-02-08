@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 public class UserSignUpReq {
-    private Long id;
     private String deviceNum;
     private String nickname;
     private Integer age;
@@ -23,13 +22,12 @@ public class UserSignUpReq {
     private String favouritesKeywords;
     private String favouritesDrinks;
 
-    public UserSignUpReq(UserInfo userInfo, String favouritesKeywords, String favouritesDrinks){
-        this.id = userInfo.getUserInfoId();
-        this.deviceNum = userInfo.getDeviceNum();
-        this.nickname = userInfo.getNickname();
-        this.age = userInfo.getAge();
-        this.sex = userInfo.getSex();
-        this.alcoholLevel = userInfo.getAlcoholLevel();
+    public UserSignUpReq(UserInfoReq userInfoReq, String favouritesKeywords, String favouritesDrinks){
+        this.deviceNum = userInfoReq.getDeviceNum();
+        this.nickname = userInfoReq.getNickname();
+        this.age = userInfoReq.getAge();
+        this.sex = userInfoReq.getSex();
+        this.alcoholLevel = userInfoReq.getAlcoholLevel();
         this.favouritesKeywords = favouritesKeywords;
         this.favouritesDrinks = favouritesDrinks;
     }
