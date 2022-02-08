@@ -10,14 +10,16 @@ import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import com.cocktail_dakk.src.domain.user.dto.PostRatingRes;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -31,11 +33,11 @@ class CocktailServiceTest {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
-    @BeforeEach
-    public void beforeEach() {
-        CocktailInfo cocktailInfo1 = createCocktail("Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
+    @BeforeAll
+    private static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository) {
+        CocktailInfo cocktailInfo1 = createCocktail(1L,"Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
                 "url111", "url222", "url333", 2, Status.ACTIVE);
-        CocktailInfo cocktailInfo2 = createCocktail("HAHA", "하하", "두 번째 테스트용 칵테일 데이터",
+        CocktailInfo cocktailInfo2 = createCocktail(2L,"HAHA", "하하", "두 번째 테스트용 칵테일 데이터",
                 "url222", "url2222", "url22222", 5, Status.INACTIVE);
 
         cocktailInfoRepository.save(cocktailInfo1);
@@ -55,21 +57,17 @@ class CocktailServiceTest {
     @Transactional
     public void addPoint() throws Exception{
         //given
-        List<UserInfo> userInfo = userInfoRepository.findAll();
-        List<CocktailInfo> cocktailInfo = cocktailInfoRepository.findAll();
+        Optional<UserInfo> userInfo = userInfoRepository.findById(1L);
+        assertThat(userInfo).isNotEmpty();
+        System.out.println("유저 아이디: "+userInfo.get().getUserInfoId());
+        Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(1L);
+        assertThat(cocktailInfo).isNotEmpty();
+        System.out.println("칵테일 아이디: "+cocktailInfo.get().getCocktailInfoId());
 
         //when
-        assertThat(userInfo.size()).isEqualTo(3);
-        UserInfo userInfo1 = userInfo.get(0);
-        System.out.println("유저 아이디: "+userInfo1.getUserInfoId());
-
-        assertThat(cocktailInfo.size()).isEqualTo(2);
-        CocktailInfo cocktailInfo1 = cocktailInfo.get(0);
-        System.out.println("칵테일 아이디: "+cocktailInfo1.getCocktailInfoId());
-
-        PostRatingRes postRatingRes = cocktailService.addPoint(userInfo1, cocktailInfo1, 4.5f);
+        PostRatingRes postRatingRes = cocktailService.addPoint(userInfo.get(), cocktailInfo.get(), 4.5f);
         //then
-        assertThat(postRatingRes.getCocktailId()).isEqualTo(cocktailInfo.get(0).getCocktailInfoId());
+        assertThat(postRatingRes.getCocktailId()).isEqualTo(cocktailInfo.get().getCocktailInfoId());
     }
 
 
@@ -78,22 +76,18 @@ class CocktailServiceTest {
     @Transactional
     public void addPointException() throws BaseException{
         //when
-        List<UserInfo> userInfo = userInfoRepository.findAll();
-        List<CocktailInfo> cocktailInfo = cocktailInfoRepository.findAll();
+        Optional<UserInfo> userInfo = userInfoRepository.findById(2L);
+        assertThat(userInfo).isNotEmpty();
+        System.out.println("유저 아이디: "+userInfo.get().getUserInfoId());
+        Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(1L);
+        assertThat(cocktailInfo).isNotEmpty();
+        System.out.println("칵테일 아이디: "+cocktailInfo.get().getCocktailInfoId());
 
-        assertThat(userInfo.size()).isEqualTo(3);
-        UserInfo userInfo1 = userInfo.get(0);
-        System.out.println("유저 아이디: "+userInfo1.getUserInfoId());
-
-        assertThat(cocktailInfo.size()).isEqualTo(2);
-        CocktailInfo cocktailInfo1 = cocktailInfo.get(0);
-        System.out.println("칵테일 아이디: "+cocktailInfo1.getCocktailInfoId());
-
-        cocktailService.addPoint(userInfo1, cocktailInfo1, 4.0f);
+        cocktailService.addPoint(userInfo.get(), cocktailInfo.get(), 4.0f);
 
         //then
         try {
-            cocktailService.addPoint(userInfo.get(0), cocktailInfo.get(0), 3.5f); //한 번 더 작성
+            cocktailService.addPoint(userInfo.get(), cocktailInfo.get(), 3.5f); //한 번 더 작성
         } catch (BaseException e){
             Assertions.assertEquals(BaseResponseStatus.POST_EXISTS_RATING, e.getStatus());
         }
@@ -115,23 +109,24 @@ class CocktailServiceTest {
             Assertions.assertEquals(BaseResponseStatus.NOT_EXIST_USER, e.getStatus());
         }
     }
-    
+
     @Test
 //    @DisplayName("칵테일을 조회한다.")
     @Transactional
     public void getCocktailInfo() throws Exception{
-        List<CocktailInfo> cocktailInfos = cocktailInfoRepository.findAll();
-        CocktailInfo cocktailInfo1=cocktailInfos.get(0);
         //when
-        CocktailInfo cocktailInfo2 = cocktailService.getCocktailInfo(cocktailInfo1.getCocktailInfoId());
+        CocktailInfo cocktailInfo = cocktailService.getCocktailInfo(1L);
+        assertThat(cocktailInfo).isNotNull();
+        System.out.println("칵테일 아이디: "+cocktailInfo.getCocktailInfoId());
         //then
-        assertThat(cocktailInfo2.getCocktailInfoId()).isEqualTo(cocktailInfo1.getCocktailInfoId());
+        assertThat(cocktailInfo.getCocktailInfoId()).isEqualTo(1L);
     }
 
-    private CocktailInfo createCocktail(String englishName, String koreanName, String description, String url1,
-                                        String url2, String url3, int level, Status status) {
+    private static CocktailInfo createCocktail(Long id, String englishName, String koreanName, String description, String url1,
+                                               String url2, String url3, int level, Status status) {
 
         return CocktailInfo.builder()
+                .cocktailInfoId(id)
                 .englishName(englishName)
                 .koreanName(koreanName)
                 .description(description)
@@ -143,8 +138,8 @@ class CocktailServiceTest {
                 .build();
     }
 
-    private UserInfo createUserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status) {
-        
+    private static UserInfo createUserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status) {
+
         return UserInfo.builder()
                 .deviceNum(deviceNum)
                 .nickname(nickname)
