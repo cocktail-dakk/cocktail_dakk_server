@@ -56,31 +56,27 @@ public class SearchCocktailInfoController {
     @Operation(summary = "칵테일 필터",
             description = "<ul>" +
                     "<li> 검색창에서 칵테일을 검색하면 칵테일의 이름, 재료, 키워드에서 일치하는 값이 있는 칵테일들을 반환한다. 페이징은 page만 처리했으므로 size와 sorting은 제외한 pageable JSON 객체를 보내야 한다.</li>" +
-                    "<li> 필터 요청 보내는 법 : pageable={\"page\" : 페이지번호}, keywordName에 값 추가, alcoholLevel=도수, drinkName에 값 추가</li>" +
+                    "<li> 필터 요청 보내는 법 : pageable={\"page\" : 페이지번호}, keywordName에 값 추가, minAlcoholLevel=최소 도수, maxAlcoholLevel=최대 도수, drinkName에 값 추가</li>" +
                     "<li> 필터 요청 보내는 법 : 필터 조건 추가 안하는 것은 입력 안하면 된다.</li>" +
                     "</ul>")
-    public BaseResponse<Slice<SearchCocktailInfoRes>> searchCocktailByFilter(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keywordName", defaultValue = "") List<String> keywordName, @RequestParam(value = "alcoholLevel", defaultValue = "") Integer alcoholLevel, @RequestParam(value = "drinkName", defaultValue = "")List<String> drinkName)throws BaseException {
+    public BaseResponse<Slice<SearchCocktailInfoRes>> searchCocktailByFilter(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "keywordName", defaultValue = "") List<String> keywordName, @RequestParam(value = "minAlcoholLevel", defaultValue = "0") Integer minAlcoholLevel, @RequestParam(value = "maxAlcoholLevel", defaultValue = "100") Integer maxAlcoholLevel, @RequestParam(value = "drinkName", defaultValue = "")List<String> drinkName)throws BaseException {
         try {
             if(!pageable.getSort().isEmpty()){
                 throw new BaseException(REQUEST_ERROR);
             }
-
+            if(minAlcoholLevel>maxAlcoholLevel){
+                throw new BaseException(REQUEST_ERROR);
+            }
 
             if(keywordName.isEmpty()){
                 filterCocktailInfoService.findAllKeyword().forEach(keyword -> keywordName.add(keyword.getKeywordName()));
-            }
-
-            Integer alcoholLevelRange=7;
-            if(alcoholLevel==null){
-                alcoholLevel=50;
-                alcoholLevelRange=50;
             }
 
             if(drinkName.isEmpty()){
                 filterCocktailInfoService.findAllDrink().forEach(drink -> drinkName.add(drink.getDrinkName()));
             }
 
-            return new BaseResponse<>(filterCocktailInfoService.findByFilterAll(pageable, keywordName, alcoholLevel, alcoholLevelRange, drinkName));
+            return new BaseResponse<>(filterCocktailInfoService.findByFilterAll(pageable, keywordName, minAlcoholLevel, maxAlcoholLevel, drinkName));
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

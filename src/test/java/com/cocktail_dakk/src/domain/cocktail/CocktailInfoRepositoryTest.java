@@ -69,15 +69,15 @@ class CocktailInfoRepositoryTest {
         keywordName.add("깔끔한");
         keywordName.add("달콤한");
 
-        Integer alcoholLevel=1;
-        Integer alcoholLevelRange=7;
+        Integer minAlcoholLevel=1;
+        Integer maxAlcoholLevel=10;
 
         List<String> drinkName=new ArrayList<>();
         drinkName.add("데킬라");
         drinkName.add("위스키");
 
         // Then
-        List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, alcoholLevel, alcoholLevelRange, drinkName);
+        List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, minAlcoholLevel, maxAlcoholLevel, drinkName);
         assertThat(searchFilter.get(0).getEnglishName()).isEqualTo("God Father");
         assertThat(searchFilter.get(1).getEnglishName()).isEqualTo("Gold Rush");
         for (CocktailInfo cocktailInfo : searchFilter) {
