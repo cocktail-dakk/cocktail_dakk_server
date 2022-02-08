@@ -14,9 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static com.cocktail_dakk.config.BaseResponseStatus.DATABASE_ERROR;
-import static com.cocktail_dakk.config.BaseResponseStatus.NOT_EXIST_USER;
+import static com.cocktail_dakk.config.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +36,10 @@ public class UserInfoService {
     //
     @Transactional
     public UserInfoRes signUpUser(UserSignUpReq userSignUpReq) throws BaseException{
+        if(userInfoRepository.findByDeviceNum(userSignUpReq.getDeviceNum()).isPresent()){
+            throw new BaseException(EXIST_USER);
+        }
+
         try{
             UserInfo userInfo = new UserInfo(userSignUpReq.getDeviceNum(),userSignUpReq.getNickname(),userSignUpReq.getAge(),
                     userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
