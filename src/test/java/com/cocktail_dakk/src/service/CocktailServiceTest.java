@@ -34,7 +34,7 @@ class CocktailServiceTest {
     private UserInfoRepository userInfoRepository;
 
     @BeforeAll
-    private static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository) {
+    public static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository) {
         CocktailInfo cocktailInfo1 = createCocktail("Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
                 "url111", "url222", "url333", 2, Status.ACTIVE);
         CocktailInfo cocktailInfo2 = createCocktail("HAHA", "하하", "두 번째 테스트용 칵테일 데이터",
