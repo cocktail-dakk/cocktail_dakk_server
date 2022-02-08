@@ -10,15 +10,14 @@ import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import com.cocktail_dakk.src.domain.user.dto.PostRatingRes;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -34,9 +33,9 @@ class CocktailServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        CocktailInfo cocktailInfo1 = createCocktail(1L,"Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
+        CocktailInfo cocktailInfo1 = createCocktail("Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
                 "url111", "url222", "url333", 2, Status.ACTIVE);
-        CocktailInfo cocktailInfo2 = createCocktail(2L,"HAHA", "하하", "두 번째 테스트용 칵테일 데이터",
+        CocktailInfo cocktailInfo2 = createCocktail("HAHA", "하하", "두 번째 테스트용 칵테일 데이터",
                 "url222", "url2222", "url22222", 5, Status.INACTIVE);
 
         cocktailInfoRepository.save(cocktailInfo1);
@@ -52,38 +51,57 @@ class CocktailServiceTest {
     }
 
     @Test
-    @DisplayName("별점을 추가한다.")
+//    @DisplayName("별점을 추가한다.")
+    @Transactional
     public void addPoint() throws Exception{
         //given
-        Optional<UserInfo> userInfo = userInfoRepository.findById(1L);
-        Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(1L);
+        List<UserInfo> userInfo = userInfoRepository.findAll();
+        List<CocktailInfo> cocktailInfo = cocktailInfoRepository.findAll();
 
         //when
-        PostRatingRes postRatingRes = cocktailService.addPoint(userInfo.get(), cocktailInfo.get(), 4.5f);
+        assertThat(userInfo.size()).isEqualTo(3);
+        UserInfo userInfo1 = userInfo.get(0);
+        System.out.println("유저 아이디: "+userInfo1.getUserInfoId());
+
+        assertThat(cocktailInfo.size()).isEqualTo(2);
+        CocktailInfo cocktailInfo1 = cocktailInfo.get(0);
+        System.out.println("칵테일 아이디: "+cocktailInfo1.getCocktailInfoId());
+
+        PostRatingRes postRatingRes = cocktailService.addPoint(userInfo1, cocktailInfo1, 4.5f);
         //then
-        assertThat(postRatingRes.getCocktailId()).isEqualTo(cocktailInfo.get().getCocktailInfoId());
+        assertThat(postRatingRes.getCocktailId()).isEqualTo(cocktailInfo.get(0).getCocktailInfoId());
     }
 
 
     @Test
-    @DisplayName("별점 추가시 이미 등록한 칵테일이라면 예외가 발생한다.")
+//    @DisplayName("별점 추가시 이미 등록한 칵테일이라면 예외가 발생한다.")
+    @Transactional
     public void addPointException() throws BaseException{
         //when
-        Optional<UserInfo> userInfo = userInfoRepository.findById(2L);
-        Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(1L);
+        List<UserInfo> userInfo = userInfoRepository.findAll();
+        List<CocktailInfo> cocktailInfo = cocktailInfoRepository.findAll();
 
-        cocktailService.addPoint(userInfo.get(), cocktailInfo.get(), 4.0f);
+        assertThat(userInfo.size()).isEqualTo(3);
+        UserInfo userInfo1 = userInfo.get(0);
+        System.out.println("유저 아이디: "+userInfo1.getUserInfoId());
+
+        assertThat(cocktailInfo.size()).isEqualTo(2);
+        CocktailInfo cocktailInfo1 = cocktailInfo.get(0);
+        System.out.println("칵테일 아이디: "+cocktailInfo1.getCocktailInfoId());
+
+        cocktailService.addPoint(userInfo1, cocktailInfo1, 4.0f);
 
         //then
         try {
-            cocktailService.addPoint(userInfo.get(), cocktailInfo.get(), 3.5f); //한 번 더 작성
+            cocktailService.addPoint(userInfo.get(0), cocktailInfo.get(0), 3.5f); //한 번 더 작성
         } catch (BaseException e){
             Assertions.assertEquals(BaseResponseStatus.POST_EXISTS_RATING, e.getStatus());
         }
     }
 
     @Test
-    @DisplayName("존재하지 않는 칵테일일 때 예외처리를 한다.")
+//    @DisplayName("존재하지 않는 칵테일일 때 예외처리를 한다.")
+    @Transactional
     public void getCocktailInfoException() throws BaseException{
         try {
             cocktailService.getCocktailInfo(3L);
@@ -99,19 +117,21 @@ class CocktailServiceTest {
     }
     
     @Test
-    @DisplayName("칵테일을 조회한다.")
+//    @DisplayName("칵테일을 조회한다.")
+    @Transactional
     public void getCocktailInfo() throws Exception{
+        List<CocktailInfo> cocktailInfos = cocktailInfoRepository.findAll();
+        CocktailInfo cocktailInfo1=cocktailInfos.get(0);
         //when
-        CocktailInfo cocktailInfo = cocktailService.getCocktailInfo(1L);
+        CocktailInfo cocktailInfo2 = cocktailService.getCocktailInfo(cocktailInfo1.getCocktailInfoId());
         //then
-        assertThat(cocktailInfo.getCocktailInfoId()).isEqualTo(1L);
+        assertThat(cocktailInfo2.getCocktailInfoId()).isEqualTo(cocktailInfo1.getCocktailInfoId());
     }
 
-    private CocktailInfo createCocktail(Long id, String englishName, String koreanName, String description, String url1,
+    private CocktailInfo createCocktail(String englishName, String koreanName, String description, String url1,
                                         String url2, String url3, int level, Status status) {
 
         return CocktailInfo.builder()
-                .cocktailInfoId(id)
                 .englishName(englishName)
                 .koreanName(koreanName)
                 .description(description)
@@ -124,7 +144,8 @@ class CocktailServiceTest {
     }
 
     private UserInfo createUserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status) {
-        UserInfo userInfo=UserInfo.builder()
+        
+        return UserInfo.builder()
                 .deviceNum(deviceNum)
                 .nickname(nickname)
                 .age(age)
@@ -132,8 +153,5 @@ class CocktailServiceTest {
                 .alcoholLevel(alcoholLevel)
                 .status(status)
                 .build();
-
-        userInfoRepository.save(userInfo);
-        return userInfo;
     }
 }
