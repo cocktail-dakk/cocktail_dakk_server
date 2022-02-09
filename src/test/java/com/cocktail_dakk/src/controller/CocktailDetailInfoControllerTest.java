@@ -6,8 +6,6 @@ import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
-import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
-import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
-class SearchCocktailInfoControllerTest {
+public class CocktailDetailInfoControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -51,34 +48,18 @@ class SearchCocktailInfoControllerTest {
 
     @Test
     @Transactional
-    public void findTest() throws Exception {
+    public void details() throws Exception{
         saveCocktailInfo();
 
         // Then
-        mockMvc.perform(get("/search/cocktail/")
-                        .param("page", "0")
-                        .param("inputStr", "21세기"))
+        mockMvc.perform(get("/cocktails/details")
+                        .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.content[0].englishName").value("21st Century"));
+                .andExpect(jsonPath("$.result.englishName").value("21st Century"));
+
     }
 
-    @Test
-    @Transactional
-    public void filterTest() throws Exception {
-        saveCocktailInfo();
-
-        // Then
-        mockMvc.perform(get("/search/cocktail/filter")
-                .param("page", "0")
-                .param("keywordName", "")
-                .param("minAlcoholLevel", "1")
-                .param("maxAlcoholLevel", "10")
-                .param("drinkName", ""))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.content[0].englishName").value("God Father"));
-    }
 
     private void saveCocktailInfo(){
         // Given
@@ -173,5 +154,8 @@ class SearchCocktailInfoControllerTest {
         cocktailKeywordRepository.save(cocktailKeyword2);
         cocktailKeywordRepository.save(cocktailKeyword3);
     }
+
+
+
 
 }
