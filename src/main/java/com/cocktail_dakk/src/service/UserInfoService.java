@@ -49,8 +49,9 @@ public class UserInfoService {
 
             return new UserInfoRes(saveUser);
 
-        } catch (Exception exception){
-            throw new BaseException(DATABASE_ERROR);
+        } catch (BaseException exception){
+            userInfoRepository.delete(getUserInfo(userSignUpReq.getDeviceNum()));
+            throw new BaseException(exception.getStatus());
         }
     }
 
@@ -60,7 +61,6 @@ public class UserInfoService {
             UserInfo userInfo = getUserInfo(userModifyReq.getDeviceNum());
             userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
 
-
             addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
 
             return new UserInfoRes(userInfo);
@@ -69,34 +69,47 @@ public class UserInfoService {
         }
     }
 
-    private void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo){
+    private void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo) throws BaseException {
+
+        if(favouritesKeywords.isEmpty()){
+            throw new BaseException(POST_KEYWORD_EMPTY);
+        }
+        if(favouritesDrinks.isEmpty()){
+            throw new BaseException(POST_DRINK_EMPTY);
+        }
+
         String[] tempKeywordArr = favouritesKeywords.split(",");
         String[] tempDrinksArr = favouritesDrinks.split(",");
 
-        // userDrink에 값이 있으면 delete하고 시작
-        if(!userInfo.getUserDrinks().isEmpty()){
-            userDrinkRepository.deleteAll(userInfo.getUserDrinks());
-        }
-        // userKeyword에 값이 있으면 delete하고 시작
-        if(!userInfo.getUserKeywords().isEmpty()){
-            userKeywordRepository.deleteAll(userInfo.getUserKeywords());
+        try {
+            // userDrink에 값이 있으면 delete하고 시작
+            if(!userInfo.getUserDrinks().isEmpty()){
+                userDrinkRepository.deleteAll(userInfo.getUserDrinks());
+            }
+            // userKeyword에 값이 있으면 delete하고 시작
+            if(!userInfo.getUserKeywords().isEmpty()){
+                userKeywordRepository.deleteAll(userInfo.getUserKeywords());
+            }
+
+            userInfo.getUserKeywords().clear();
+            userInfo.getUserDrinks().clear();
+
+            //keyword 하나씩 저장
+            for(String keyword:tempKeywordArr){
+                Keyword tempKeyword = keywordRepository.findByKeywordName(keyword);
+                UserKeyword userKeyword = new UserKeyword(userInfo,tempKeyword);
+                userKeywordRepository.save(userKeyword);
+            }
+            //Drink 하나씩 저장
+            for(String drink:tempDrinksArr){
+                Drink tempDrink = drinkRepository.findByDrinkName(drink);
+                UserDrink userDrink = new UserDrink(userInfo,tempDrink);
+                userDrinkRepository.save(userDrink);
+            }
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
         }
 
-        userInfo.getUserKeywords().clear();
-        userInfo.getUserDrinks().clear();
-
-        //keyword 하나씩 저장
-        for(String keyword:tempKeywordArr){
-            Keyword tempKeyword = keywordRepository.findByKeywordName(keyword);
-            UserKeyword userKeyword = new UserKeyword(userInfo,tempKeyword);
-            userKeywordRepository.save(userKeyword);
-        }
-        //Drink 하나씩 저장
-        for(String drink:tempDrinksArr){
-            Drink tempDrink = drinkRepository.findByDrinkName(drink);
-            UserDrink userDrink = new UserDrink(userInfo,tempDrink);
-            userDrinkRepository.save(userDrink);
-        }
     }
 
 }
