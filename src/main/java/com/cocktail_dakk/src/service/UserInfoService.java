@@ -64,8 +64,8 @@ public class UserInfoService {
             addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
 
             return new UserInfoRes(userInfo);
-        } catch (Exception e){
-            throw new BaseException(DATABASE_ERROR);
+        } catch (BaseException e){
+            throw new BaseException(e.getStatus());
         }
     }
 
