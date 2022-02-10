@@ -40,7 +40,58 @@ class CocktailInfoRepositoryTest {
 
     @Test
     @Transactional
+    public void searchCocktailTest(){
+        saveCocktailInfo();
+
+        // Then
+        List<CocktailInfo> search = cocktailInfoRepository.findSearch(Pageable.ofSize(10), "깔끔한", "깔끔한", "깔끔한", "깔끔한");
+        assertThat(search.size()).isEqualTo(2);
+        assertThat(search.get(0).getEnglishName()).isEqualTo("21st Century");
+        assertThat(search.get(1).getEnglishName()).isEqualTo("Gold Rush");
+        for (CocktailInfo cocktailInfo : search){
+            System.out.println("영어 이름: "+cocktailInfo.getEnglishName());
+            System.out.println("한국어 이름: "+cocktailInfo.getKoreanName());
+
+            cocktailInfo.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
+
+            System.out.println("재료: "+cocktailInfo.getIngredient());
+        }
+
+    }
+
+    @Test
+    @Transactional
     public void searchCocktailFilterTest(){
+        saveCocktailInfo();
+
+        // When
+        List<String> keywordName=new ArrayList<>();
+        keywordName.add("깔끔한");
+        keywordName.add("달콤한");
+
+        Integer minAlcoholLevel=1;
+        Integer maxAlcoholLevel=10;
+
+        List<String> drinkName=new ArrayList<>();
+        drinkName.add("데킬라");
+        drinkName.add("위스키");
+
+        // Then
+        List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, minAlcoholLevel, maxAlcoholLevel, drinkName);
+        assertThat(searchFilter.get(0).getEnglishName()).isEqualTo("God Father");
+        assertThat(searchFilter.get(1).getEnglishName()).isEqualTo("Gold Rush");
+        for (CocktailInfo cocktailInfo : searchFilter) {
+            System.out.println("이름: "+cocktailInfo.getEnglishName());
+
+            cocktailInfo.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
+
+            System.out.println("도수: "+cocktailInfo.getAlcoholLevel());
+
+            cocktailInfo.getCocktailDrinks().forEach(cocktailDrink -> System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName()));
+        }
+    }
+
+    private void saveCocktailInfo(){
         // Given
         CocktailInfo cocktailInfo1=CocktailInfo.builder()
                 .englishName("21st Century")
@@ -154,32 +205,5 @@ class CocktailInfoRepositoryTest {
 
 
         cocktailInfoRepository.flush();
-
-
-        List<String> keywordName=new ArrayList<>();
-        keywordName.add("깔끔한");
-        keywordName.add("달콤한");
-
-        Integer alcoholLevel=1;
-        Integer alcoholLevelRange=7;
-
-        List<String> drinkName=new ArrayList<>();
-        drinkName.add("데킬라");
-        drinkName.add("위스키");
-
-        // Then
-        List<CocktailInfo> searchFilter = cocktailInfoRepository.findSearchFilter(Pageable.ofSize(10), keywordName, alcoholLevel, alcoholLevelRange, drinkName);
-        assertThat(searchFilter.get(0).getEnglishName()).isEqualTo(cocktailInfo2.getEnglishName());
-        assertThat(searchFilter.get(1).getEnglishName()).isEqualTo(cocktailInfo3.getEnglishName());
-        for (CocktailInfo cocktailInfo : searchFilter) {
-            System.out.println("이름: "+cocktailInfo.getEnglishName());
-
-            cocktailInfo.getCocktailKeywords().forEach(cocktailKeyword -> System.out.println("키워드: "+cocktailKeyword.getKeyword().getKeywordName()));
-
-            System.out.println("도수: "+cocktailInfo.getAlcoholLevel());
-
-            cocktailInfo.getCocktailDrinks().forEach(cocktailDrink -> System.out.println("기주: "+cocktailDrink.getDrink().getDrinkName()));
-        }
-
     }
 }

@@ -51,15 +51,6 @@ class CocktailServiceTest {
         userInfoRepository.save(userInfo3);
     }
 
-    @AfterEach
-    public void afterEach(){
-        List<CocktailInfo> all = cocktailInfoRepository.findAll();
-        all.forEach(cocktailInfo -> System.out.println("칵테일 ID: "+cocktailInfo.getCocktailInfoId()));
-
-        List<UserInfo> all1 = userInfoRepository.findAll();
-        all1.forEach(userInfo -> System.out.println("유저 ID: "+userInfo.getUserInfoId()));
-    }
-
     @Test
 //    @DisplayName("별점을 추가한다.")
     @Transactional

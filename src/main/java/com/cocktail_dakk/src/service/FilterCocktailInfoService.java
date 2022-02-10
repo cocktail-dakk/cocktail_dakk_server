@@ -32,9 +32,9 @@ public class FilterCocktailInfoService {
     @Autowired
     DrinkRepository drinkRepository;
 
-    public Slice<SearchCocktailInfoRes> findByFilterAll(Pageable pageable, List<String> keywordName, Integer alcoholLevel, Integer alcoholLevelRange, List<String> drinkName) throws BaseException {
+    public Slice<SearchCocktailInfoRes> findByFilterAll(Pageable pageable, List<String> keywordName, Integer minAlcoholLevel, Integer maxAlcoholLevel, List<String> drinkName) throws BaseException {
         try{
-            List<SearchCocktailInfoRes> result = cocktailInfoRepository.findSearchFilter(pageable, keywordName, alcoholLevel, alcoholLevelRange, drinkName)
+            List<SearchCocktailInfoRes> result = cocktailInfoRepository.findSearchFilter(pageable, keywordName, minAlcoholLevel, maxAlcoholLevel, drinkName)
                     .stream()
                     .map(SearchCocktailInfoRes::new)
                     .collect(Collectors.toList());
