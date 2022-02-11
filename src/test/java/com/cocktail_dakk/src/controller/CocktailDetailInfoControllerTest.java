@@ -10,6 +10,7 @@ import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
-class SearchCocktailInfoControllerTest {
+public class CocktailDetailInfoControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -44,41 +44,31 @@ class SearchCocktailInfoControllerTest {
     DrinkRepository drinkRepository;
 
     @Autowired
+    MixingMethodRepository mixingMethodRepository;
+
+    @Autowired
     CocktailKeywordRepository cocktailKeywordRepository;
 
     @Autowired
     CocktailDrinkRepository cocktailDrinkRepository;
 
-    @Test
-    @Transactional
-    public void findTest() throws Exception {
-        saveCocktailInfo();
-
-        // Then
-        mockMvc.perform(get("/search/cocktail/")
-                        .param("page", "0")
-                        .param("inputStr", "21세기"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.content[0].englishName").value("21st Century"));
-    }
+    @Autowired
+    CocktailMixingMethodRepository cocktailMixingMethodRepository;
 
     @Test
     @Transactional
-    public void filterTest() throws Exception {
+    public void details() throws Exception{
         saveCocktailInfo();
 
         // Then
-        mockMvc.perform(get("/search/cocktail/filter")
-                .param("page", "0")
-                .param("keywordName", "")
-                .param("minAlcoholLevel", "1")
-                .param("maxAlcoholLevel", "10")
-                .param("drinkName", ""))
+        mockMvc.perform(get("/cocktails/details")
+                        .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.content[0].englishName").value("God Father"));
+                .andExpect(jsonPath("$.result.englishName").value("21st Century"));
+
     }
+
 
     private void saveCocktailInfo(){
         // Given
@@ -91,34 +81,6 @@ class SearchCocktailInfoControllerTest {
                 .recommendImageURL("91011")
                 .smallNukkiImageURL("1234123")
                 .alcoholLevel(30)
-                .ingredient("크림 (15ml),드라이 진 (45ml)")
-                .ratingAvg(new BigDecimal("4.0"))
-                .status(Status.ACTIVE)
-                .build();
-
-        CocktailInfo cocktailInfo2=CocktailInfo.builder()
-                .englishName("God Father")
-                .koreanName("갓 파더")
-                .description("모르겠다")
-                .cocktailImageURL("abcd")
-                .cocktailBackgroundImageURL("efg")
-                .recommendImageURL("hijk")
-                .smallNukkiImageURL("1234123")
-                .alcoholLevel(1)
-                .ingredient("크림 (15ml),드라이 진 (45ml)")
-                .ratingAvg(new BigDecimal("4.0"))
-                .status(Status.ACTIVE)
-                .build();
-
-        CocktailInfo cocktailInfo3=CocktailInfo.builder()
-                .englishName("Gold Rush")
-                .koreanName("골드 러시")
-                .description("금 맛이다")
-                .cocktailImageURL("lmno")
-                .cocktailBackgroundImageURL("pqkr")
-                .recommendImageURL("stu")
-                .smallNukkiImageURL("1234123")
-                .alcoholLevel(1)
                 .ingredient("크림 (15ml),드라이 진 (45ml)")
                 .ratingAvg(new BigDecimal("4.0"))
                 .status(Status.ACTIVE)
@@ -142,36 +104,38 @@ class SearchCocktailInfoControllerTest {
                 .keywordName("달콤한")
                 .build();
 
+        MixingMethod mixingMethod1 = MixingMethod.builder()
+                .mixingMethodName("쉐이킹")
+                .build();
+
         // 칵테일과 기주 연관관계 설정
         CocktailDrink cocktailDrink1=new CocktailDrink(cocktailInfo1, drink1);
-        CocktailDrink cocktailDrink2=new CocktailDrink(cocktailInfo2, drink2);
-        CocktailDrink cocktailDrink3=new CocktailDrink(cocktailInfo3, drink2);
-        CocktailDrink cocktailDrink4=new CocktailDrink(cocktailInfo2, drink1);
 
         // 칵테일과 취향 키워드 연관관계 설정
         CocktailKeyword cocktailKeyword1=new CocktailKeyword(cocktailInfo1, keyword1);
-        CocktailKeyword cocktailKeyword2=new CocktailKeyword(cocktailInfo2, keyword2);
-        CocktailKeyword cocktailKeyword3=new CocktailKeyword(cocktailInfo3, keyword1);
+
+        // 칵테일과 섞는 법 연관관계 설정
+        CocktailMixingMethod cocktailMixingMethod1 = new CocktailMixingMethod(cocktailInfo1,mixingMethod1);
 
         // when 조인 엔티티 직접 영속화하는 방법
         cocktailInfoRepository.save(cocktailInfo1);
-        cocktailInfoRepository.save(cocktailInfo2);
-        cocktailInfoRepository.save(cocktailInfo3);
 
         drinkRepository.save(drink1);
         drinkRepository.save(drink2);
 
         cocktailDrinkRepository.save(cocktailDrink1);
-        cocktailDrinkRepository.save(cocktailDrink2);
-        cocktailDrinkRepository.save(cocktailDrink3);
-        cocktailDrinkRepository.save(cocktailDrink4);
 
         keywordRepository.save(keyword1);
         keywordRepository.save(keyword2);
 
         cocktailKeywordRepository.save(cocktailKeyword1);
-        cocktailKeywordRepository.save(cocktailKeyword2);
-        cocktailKeywordRepository.save(cocktailKeyword3);
+
+        mixingMethodRepository.save(mixingMethod1);
+
+        cocktailMixingMethodRepository.save(cocktailMixingMethod1);
     }
+
+
+
 
 }

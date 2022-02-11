@@ -24,9 +24,11 @@ public enum BaseResponseStatus {
     POST_RATING_EMPTY(false, 2006, "내용을 입력해주세요."),
     NOT_EXIST_COCKTAIL(false,2007,"존재하지 않는 칵테일입니다."),
     STAR_OUT_OF_RANGE(false,2008,"별점을 확인해주세요."),
+    POST_KEYWORD_EMPTY(false,2009,"칵테일 취향을 입력해주세요"),
+    POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
 
     // users
-    USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
+    USERS_EMPTY_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
 
     // [POST] /users
     POST_USERS_EMPTY(false, 2015, "내용을 입력해주세요."),
