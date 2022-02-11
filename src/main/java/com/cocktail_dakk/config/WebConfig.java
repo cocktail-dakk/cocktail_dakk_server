@@ -9,7 +9,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry){
         corsRegistry.addMapping("/**")
-                .allowedOrigins("https://www.cocktaildakk.shop")
                 .allowedOrigins("http://localhost:8080")
                 .allowedMethods("*");
     }
