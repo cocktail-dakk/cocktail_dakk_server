@@ -14,11 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CocktailDakkApplication {
 
 	public static void main(String[] args) {
-		try {
-			SpringApplication.run(CocktailDakkApplication.class, args);
-		}catch (Exception e){
-			e.printStackTrace();
-			System.out.println("RuntimeException!");
-		}
+		SpringApplication.run(CocktailDakkApplication.class, args);
 	}
 }
