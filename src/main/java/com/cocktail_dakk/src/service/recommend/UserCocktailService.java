@@ -94,17 +94,14 @@ public class UserCocktailService {
 
                         if (drinks.contains(userDrink.getDrink())){
                             cocktailByUser1.add(cocktailInfo);
-                            System.out.println("111111");
                         }
                         else{
                             cocktailByUser2.add(cocktailInfo);
-                            System.out.println("2222222");
                         }
                     }
                 }
                 else{
                     cocktailByUser3.add(cocktailInfo);
-                    System.out.println("33333333");
                 }
             }
         }
