@@ -12,6 +12,13 @@ import javax.persistence.*;
 @Table(name = "CocktailMixingMethod")
 public class CocktailMixingMethod {
 
+    public CocktailMixingMethod(CocktailInfo cocktailInfo, MixingMethod mixingMethod) {
+        this.mixingMethod = mixingMethod;
+        this.cocktailInfo = cocktailInfo;
+        cocktailInfo.getCocktailMixingMethods().add(this);
+        mixingMethod.getCocktailMixingMethods().add(this);
+    }
+
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long cocktailMixingMethodId;
 
