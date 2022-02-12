@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.domain.cocktail;
 
+import com.cocktail_dakk.src.domain.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,5 @@ public interface CocktailInfoRepository extends JpaRepository<CocktailInfo, Long
     List<CocktailInfo> findSearch(Pageable pageable, @Param("koreanName") String koreanName, @Param("englishName")String englishName, @Param("ingredients") String ingredients, @Param("keywordName") String keywordName);
 
     CocktailInfo findByCocktailInfoId(Long id);
+    List<CocktailInfo> findAllByStatus(Status status);
 }
