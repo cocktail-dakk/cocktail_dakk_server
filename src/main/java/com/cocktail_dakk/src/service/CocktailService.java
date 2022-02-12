@@ -61,7 +61,7 @@ public class CocktailService {
         Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(cocktailInfoId);
 
         if(cocktailInfo.isEmpty() || cocktailInfo.get().getStatus() == Status.INACTIVE ){
-            throw  new BaseException(NOT_EXIST_USER);
+            throw  new BaseException(NOT_EXIST_COCKTAIL);
         }
 
         return cocktailInfo.get();

@@ -36,7 +36,7 @@ class TodayCocktailServiceTest {
     @BeforeAll
     private static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository) {
         CocktailInfo cocktailInfo1 = createCocktail("Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
-                "url111", "url222", "url333", 2, Status.INACTIVE);
+                "url111", "url222", "url333", 2, Status.ACTIVE);
         CocktailInfo cocktailInfo2 = createCocktail("cocktailInfo2", "칵테일정보2", "두 번째 테스트용 칵테일 데이터",
                 "url222", "url2222", "url22222", 5, Status.INACTIVE);
         CocktailInfo cocktailInfo3 = createCocktail("cocktailInfo3", "칵테일정보3", "세 번째 테스트용 칵테일 데이터",
@@ -94,16 +94,6 @@ class TodayCocktailServiceTest {
         }
         assertThat(todayCocktails.get(0).getRandomId().size()).isEqualTo(5);
 
-    }
-
-
-    @Test
-    @DisplayName("active 상태인 칵테일을 추출한다.")
-    public void getActiveCocktail() throws Exception{
-        //when
-        List<CocktailInfo> allByStatus = cocktailInfoRepository.findAllByStatus(Status.ACTIVE);
-        //then
-        assertThat(allByStatus.size()).isEqualTo(6);
     }
 
     private static CocktailInfo createCocktail(String englishName, String koreanName, String description, String url1,
