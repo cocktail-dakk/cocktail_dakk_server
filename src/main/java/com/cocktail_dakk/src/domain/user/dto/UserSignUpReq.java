@@ -4,6 +4,7 @@ import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.dto.KeywordRes;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.domain.user.UserKeyword;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
