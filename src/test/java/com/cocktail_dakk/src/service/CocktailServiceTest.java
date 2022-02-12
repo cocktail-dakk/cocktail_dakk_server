@@ -99,13 +99,13 @@ class CocktailServiceTest {
         try {
             cocktailService.getCocktailInfo(3L);
         } catch (BaseException e){
-            Assertions.assertEquals(BaseResponseStatus.NOT_EXIST_USER, e.getStatus());
+            Assertions.assertEquals(BaseResponseStatus.NOT_EXIST_COCKTAIL, e.getStatus());
         }
 
         try {
             cocktailService.getCocktailInfo(2L);
         } catch (BaseException e){
-            Assertions.assertEquals(BaseResponseStatus.NOT_EXIST_USER, e.getStatus());
+            Assertions.assertEquals(BaseResponseStatus.NOT_EXIST_COCKTAIL, e.getStatus());
         }
     }
 

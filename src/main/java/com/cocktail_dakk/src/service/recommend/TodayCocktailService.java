@@ -62,7 +62,9 @@ public class TodayCocktailService {
             CocktailToday cocktailToday = new CocktailToday();
             for (int i = 0; i < 5; i++) {
                 CocktailInfo randomCocktailInfo = activeCocktailInfos.get(randomCocktailId[i]);
-                cocktailToday.getRandomId().add(randomCocktailInfo.getCocktailInfoId());
+                Long cocktailInfoId = randomCocktailInfo.getCocktailInfoId();
+                cocktailToday.getRandomId().add(cocktailInfoId);
+                log.info("randomId ={}", cocktailInfoId);
             }
             cocktailTodayRepository.save(cocktailToday);
 
