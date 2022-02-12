@@ -47,7 +47,7 @@ class UserCocktailServiceTest {
         CocktailInfo cocktailInfo1 = createCocktail("Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
                 "url111", "url222", "url333", 2, Status.ACTIVE);
         CocktailInfo cocktailInfo2 = createCocktail("Woo Woo", "우우", "두 번째 테스트용 칵테일 데이터",
-                "url222", "url2222", "url22222", 14, Status.INACTIVE);
+                "url222", "url2222", "url22222", 14, Status.ACTIVE);
         CocktailInfo cocktailInfo3 = createCocktail("Trinidad Sour", "트리니다드 사워", "두 번째 테스트용 칵테일 데이터",
                 "url222", "url2222", "url22222", 10, Status.INACTIVE);
 
@@ -91,7 +91,7 @@ class UserCocktailServiceTest {
         cocktailKeywordRepository.save(cocktailKeyword3);
 
         //유저
-        UserInfo userInfo = createUserInfo("user-recommendation","minnie",23,"F",12,Status.ACTIVE);
+        UserInfo userInfo = createUserInfo("user-recommendation","minnie",23,"F",14,Status.ACTIVE);
         userInfoRepository.save(userInfo);
 
         //유저 키워드

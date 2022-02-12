@@ -1,6 +1,7 @@
 package com.cocktail_dakk.src.service.recommend;
 
 import com.cocktail_dakk.config.BaseException;
+import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetUserRecommendationRes;
 import com.cocktail_dakk.src.domain.cocktail.dto.UserRecommendationList;
@@ -78,6 +79,10 @@ public class UserCocktailService {
             for (CocktailKeyword cocktailKeyword : allByKeyword) {
                 //범위 내에 존재한다면 리스트에 추가
                 CocktailInfo cocktailInfo = cocktailKeyword.getCocktailInfo();
+                if (cocktailInfo.getStatus() == Status.INACTIVE) {
+                    continue;
+                }
+
                 Integer cocktailAlcohol = cocktailInfo.getAlcoholLevel();
 
                 if( (userAlcohol - userAlcohol/2) <=  cocktailAlcohol && cocktailAlcohol <= (userAlcohol + userAlcohol/2) ){
@@ -89,14 +94,17 @@ public class UserCocktailService {
 
                         if (drinks.contains(userDrink.getDrink())){
                             cocktailByUser1.add(cocktailInfo);
+                            System.out.println("111111");
                         }
                         else{
                             cocktailByUser2.add(cocktailInfo);
+                            System.out.println("2222222");
                         }
                     }
                 }
                 else{
                     cocktailByUser3.add(cocktailInfo);
+                    System.out.println("33333333");
                 }
             }
         }
@@ -113,6 +121,7 @@ public class UserCocktailService {
             List<CocktailDrink> allByDrink = cocktailDrinkRepository.findAllByDrink(drink);
             Set<CocktailInfo> cocktailInfos = allByDrink.stream()
                     .map(CocktailDrink::getCocktailInfo)
+                    .filter(cocktailInfo -> cocktailInfo.getStatus().equals(Status.ACTIVE))
                     .collect(Collectors.toSet());
             cocktailByUser.addAll(cocktailInfos);
         }
