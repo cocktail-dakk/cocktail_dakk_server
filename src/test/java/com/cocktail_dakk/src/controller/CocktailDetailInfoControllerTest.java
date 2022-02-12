@@ -65,7 +65,7 @@ public class CocktailDetailInfoControllerTest {
                         .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.englishName").value("21st Century"));
+                .andExpect(jsonPath("$.result.cocktailInfoId").value(1));
 
     }
 
