@@ -52,7 +52,7 @@ class CocktailServiceTest {
     }
 
     @Test
-//    @DisplayName("별점을 추가한다.")
+    @DisplayName("별점을 추가한다.")
     @Transactional
     public void addPoint() throws Exception{
         //given
@@ -71,7 +71,7 @@ class CocktailServiceTest {
 
 
     @Test
-//    @DisplayName("별점 추가시 이미 등록한 칵테일이라면 예외가 발생한다.")
+    @DisplayName("별점 추가시 이미 등록한 칵테일이라면 예외가 발생한다.")
     @Transactional
     public void addPointException() throws BaseException{
         //when
@@ -93,7 +93,7 @@ class CocktailServiceTest {
     }
 
     @Test
-//    @DisplayName("존재하지 않는 칵테일일 때 예외처리를 한다.")
+    @DisplayName("존재하지 않는 칵테일일 때 예외처리를 한다.")
     @Transactional
     public void getCocktailInfoException() {
         try {
@@ -110,7 +110,7 @@ class CocktailServiceTest {
     }
 
     @Test
-//    @DisplayName("칵테일을 조회한다.")
+    @DisplayName("칵테일을 조회한다.")
     @Transactional
     public void getCocktailInfo() throws Exception{
         List<CocktailInfo> all = cocktailInfoRepository.findAll();
