@@ -30,8 +30,6 @@ class TodayCocktailServiceTest {
     private TodayCocktailService todayCocktailService;
     @Autowired
     private CocktailTodayRepository cocktailTodayRepository;
-    @Autowired
-    private CocktailInfoRepository cocktailInfoRepository;
 
     @BeforeAll
     private static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository) {

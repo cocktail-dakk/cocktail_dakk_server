@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.domain.cocktail;
 
+import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.drink.QDrink;
 import com.cocktail_dakk.src.domain.keyword.QKeyword;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,7 +30,7 @@ public class CocktailFilterRepositoryImpl implements CocktailFilterRepository {
                 .innerJoin(qCocktailKeyword.keyword, qKeyword)
                 .innerJoin(qCocktailInfo.cocktailDrinks, qCocktailDrink)
                 .innerJoin(qCocktailDrink.drink, qDrink)
-                .where(qKeyword.keywordName.in(keywordName).and(qDrink.drinkName.in(drinkName)).and(qCocktailInfo.alcoholLevel.between(minAlcoholLevel, maxAlcoholLevel)))
+                .where(qKeyword.keywordName.in(keywordName).and(qDrink.drinkName.in(drinkName)).and(qCocktailInfo.alcoholLevel.between(minAlcoholLevel, maxAlcoholLevel)).and(qCocktailInfo.status.eq(Status.ACTIVE)))
                 .distinct()
                 .offset(pageable.getOffset()).limit(pageable.getPageSize())
                 .fetch();

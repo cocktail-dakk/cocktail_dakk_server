@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CocktailInfoRepository extends JpaRepository<CocktailInfo, Long>, CocktailFilterRepository {
-    @Query("SELECT distinct c FROM CocktailInfo c join c.cocktailKeywords ck join ck.keyword k where c.koreanName like concat('%', :koreanName, '%')  or c.englishName like concat('%', :englishName, '%') or c.ingredient like concat('%', :ingredients, '%') or k.keywordName like concat('%', :keywordName, '%')")
+    @Query("SELECT distinct c FROM CocktailInfo c join c.cocktailKeywords ck join ck.keyword k where (c.koreanName like concat('%', :koreanName, '%')  or c.englishName like concat('%', :englishName, '%') or c.ingredient like concat('%', :ingredients, '%') or k.keywordName like concat('%', :keywordName, '%')) and c.status='ACTIVE'")
     List<CocktailInfo> findSearch(Pageable pageable, @Param("koreanName") String koreanName, @Param("englishName")String englishName, @Param("ingredients") String ingredients, @Param("keywordName") String keywordName);
 
     CocktailInfo findByCocktailInfoId(Long id);
