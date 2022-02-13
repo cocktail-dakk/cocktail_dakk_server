@@ -73,57 +73,61 @@ public class UserCocktailService {
         return getUserRecommendRes;
     }
 
-    private void getUserRecommendByKeyword(Integer userAlcohol, List<UserDrink> userDrinks, List<UserKeyword> userKeywords, Set<CocktailInfo> cocktailByUser1, Set<CocktailInfo> cocktailByUser2, Set<CocktailInfo> cocktailByUser3) {
-        for (UserKeyword userKeyword : userKeywords) {
-            List<CocktailKeyword> allByKeyword = cocktailKeywordRepository.findAllByKeyword(userKeyword.getKeyword());
-            for (CocktailKeyword cocktailKeyword : allByKeyword) {
-                //범위 내에 존재한다면 리스트에 추가
-                CocktailInfo cocktailInfo = cocktailKeyword.getCocktailInfo();
-                if (cocktailInfo.getStatus() == Status.INACTIVE) {
-                    continue;
-                }
+    private void getUserRecommendByKeyword(Integer userAlcohol, List<UserDrink> userDrinks, List<UserKeyword> userKeywords, Set<CocktailInfo> cocktailByUser1, Set<CocktailInfo> cocktailByUser2, Set<CocktailInfo> cocktailByUser3) throws BaseException {
+        try {
+            for (UserKeyword userKeyword : userKeywords) {
+                List<CocktailKeyword> allByKeyword = cocktailKeywordRepository.findAllByKeyword(userKeyword.getKeyword());
+                for (CocktailKeyword cocktailKeyword : allByKeyword) {
+                    //범위 내에 존재한다면 리스트에 추가
+                    CocktailInfo cocktailInfo = cocktailKeyword.getCocktailInfo();
+                    if (cocktailInfo.getStatus() == Status.INACTIVE) {
+                        continue;
+                    }
 
-                Integer cocktailAlcohol = cocktailInfo.getAlcoholLevel();
+                    Integer cocktailAlcohol = cocktailInfo.getAlcoholLevel();
 
-                if( (userAlcohol - userAlcohol/2) <=  cocktailAlcohol && cocktailAlcohol <= (userAlcohol + userAlcohol/2) ){
-                    for (UserDrink userDrink  : userDrinks) {
-                        List<CocktailDrink> cocktailDrinks = cocktailInfo.getCocktailDrinks();
-                        List<Drink> drinks = cocktailDrinks.stream()
-                                .map(CocktailDrink::getDrink)
-                                .collect(Collectors.toList());
+                    if( (userAlcohol - userAlcohol/2) <=  cocktailAlcohol && cocktailAlcohol <= (userAlcohol + userAlcohol/2) ){
+                        for (UserDrink userDrink  : userDrinks) {
+                            List<CocktailDrink> cocktailDrinks = cocktailInfo.getCocktailDrinks();
+                            List<Drink> drinks = cocktailDrinks.stream()
+                                    .map(CocktailDrink::getDrink)
+                                    .collect(Collectors.toList());
 
-                        if (drinks.contains(userDrink.getDrink())){
-                            cocktailByUser1.add(cocktailInfo);
-                            System.out.println("111111");
-                        }
-                        else{
-                            cocktailByUser2.add(cocktailInfo);
-                            System.out.println("2222222");
+                            if (drinks.contains(userDrink.getDrink())){
+                                cocktailByUser1.add(cocktailInfo);
+                            }
+                            else{
+                                cocktailByUser2.add(cocktailInfo);
+                            }
                         }
                     }
-                }
-                else{
-                    cocktailByUser3.add(cocktailInfo);
-                    System.out.println("33333333");
+                    else{
+                        cocktailByUser3.add(cocktailInfo);
+                    }
                 }
             }
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
         cocktailByUser1.addAll(cocktailByUser2);
         cocktailByUser1.addAll(cocktailByUser3);
     }
 
-    private void getUserRecommendByDrink(List<UserDrink> userDrinks, Set<CocktailInfo> cocktailByUser){
+    private void getUserRecommendByDrink(List<UserDrink> userDrinks, Set<CocktailInfo> cocktailByUser) throws BaseException {
         List<Drink> drinks = userDrinks.stream()
                 .map(UserDrink::getDrink)
                 .collect(Collectors.toList());
-
-        for (Drink drink : drinks) {
-            List<CocktailDrink> allByDrink = cocktailDrinkRepository.findAllByDrink(drink);
-            Set<CocktailInfo> cocktailInfos = allByDrink.stream()
-                    .map(CocktailDrink::getCocktailInfo)
-                    .filter(cocktailInfo -> cocktailInfo.getStatus().equals(Status.ACTIVE))
-                    .collect(Collectors.toSet());
-            cocktailByUser.addAll(cocktailInfos);
+        try {
+            for (Drink drink : drinks) {
+                List<CocktailDrink> allByDrink = cocktailDrinkRepository.findAllByDrink(drink);
+                Set<CocktailInfo> cocktailInfos = allByDrink.stream()
+                        .map(CocktailDrink::getCocktailInfo)
+                        .filter(cocktailInfo -> cocktailInfo.getStatus().equals(Status.ACTIVE))
+                        .collect(Collectors.toSet());
+                cocktailByUser.addAll(cocktailInfos);
+            }
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 }

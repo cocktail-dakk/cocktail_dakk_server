@@ -84,27 +84,36 @@ public class KeywordCocktailService {
         }
     }
 
-    private Keyword getRandomKeyword(long count, UserInfo userInfo){
+    private Keyword getRandomKeyword(long count, UserInfo userInfo) throws BaseException {
         Long randomId;
         Optional<Keyword> byId;
         List<Keyword> userKeywords = getUserKeywords(userInfo);
-        do{
-            randomId = Long.valueOf((long)(Math.random() * count +1));
-            byId = keywordRepository.findById(randomId);
+        try{
+            do{
+                randomId = Long.valueOf((long)(Math.random() * count +1));
+                byId = keywordRepository.findById(randomId);
 
-        } while(byId.isEmpty() || userKeywords.contains(byId.get()));
+            } while(byId.isEmpty() || userKeywords.contains(byId.get()));
 
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
         return byId.get();
     }
 
-    private Drink getRandomDrink(long count, UserInfo userInfo){
+    private Drink getRandomDrink(long count, UserInfo userInfo) throws BaseException {
         Long randomId;
         Optional<Drink> byId;
         List<Drink> userDrinks = getUserDrinks(userInfo);
-        do{
-            randomId = Long.valueOf((long)(Math.random() * count +1));
-            byId = drinkRepository.findById(randomId);
-        } while(byId.isEmpty() || userDrinks.contains(byId.get()));
+        try{
+            do{
+                randomId = Long.valueOf((long)(Math.random() * count +1));
+                byId = drinkRepository.findById(randomId);
+            } while(byId.isEmpty() || userDrinks.contains(byId.get()));
+
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
 
         return byId.get();
     }

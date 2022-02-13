@@ -27,26 +27,6 @@ public enum BaseResponseStatus {
     POST_KEYWORD_EMPTY(false,2009,"칵테일 취향을 입력해주세요"),
     POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
 
-    // users
-    USERS_EMPTY_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
-
-    // [POST] /users
-    POST_USERS_EMPTY(false, 2015, "내용을 입력해주세요."),
-    POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
-    POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
-    POST_USERS_INVALID_PASSWORD(false, 2022, "비밀번호 형식을 확인해주세요."),
-
-
-    // [POST] /products
-    POST_PRODUCTS_EMPTY_TITLE(false, 2018, "제목을 입력해주세요."),
-
-    // [POST] /chat
-    POST_CHAT_EMPTY(false,2019, "내용을 입력해주세요."),
-    POST_CHAT_NOT_USER(false,2020,"채팅방에 해당하는 유저가 아닙니다."),
-
-    NOT_MATCH_PRODUCT(false,2021,"요청에 실패하셨습니다."),
-    PATCH_PRODUCT_EMPTY(false,2022, "내용을 입력해주세요."),
-
     EXIST_USER(false,2023,"이미 존재하는 회원입니다."),
 
     /**
@@ -71,12 +51,7 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
-
-    //[PATCH] /products/{productIdx}
-    MODIFY_FAIL_PRODUCT(false,4013,"상품 변경 실패"),
-    DELETE_FATL_PRODUCT(false,4014, "상품 삭제 실패");
-
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
