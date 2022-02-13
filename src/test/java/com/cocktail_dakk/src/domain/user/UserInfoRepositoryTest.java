@@ -25,7 +25,7 @@ public class UserInfoRepositoryTest {
     public void findByDeviceNumTest() {
         // Given
         UserInfo userInfo = UserInfo.builder()
-                .deviceNum("1234")
+                .deviceNum("1234567")
                 .nickname("jjeong")
                 .age(22)
                 .sex("F")

@@ -54,8 +54,6 @@ public class KeywordCocktailService {
         } catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
-
-
     }
 
     //사용자가 지정하지 않은 기주로 칵테일 추천
@@ -84,29 +82,36 @@ public class KeywordCocktailService {
         }
     }
 
-    private Keyword getRandomKeyword(long count, UserInfo userInfo){
-        Long randomId;
-        Optional<Keyword> byId;
+    private Keyword getRandomKeyword(long count, UserInfo userInfo) throws BaseException {
+        int random;
+        Keyword keyword;
         List<Keyword> userKeywords = getUserKeywords(userInfo);
-        do{
-            randomId = Long.valueOf((long)(Math.random() * count +1));
-            byId = keywordRepository.findById(randomId);
+        try{
+            do{
+                random = Integer.valueOf((int)(Math.random() * count));
+                keyword = keywordRepository.findAll().get(random);
+            } while(userKeywords.contains(keyword));
 
-        } while(byId.isEmpty() || userKeywords.contains(byId.get()));
-
-        return byId.get();
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+        return keyword;
     }
 
-    private Drink getRandomDrink(long count, UserInfo userInfo){
-        Long randomId;
-        Optional<Drink> byId;
+    private Drink getRandomDrink(long count, UserInfo userInfo) throws BaseException {
+        int random;
+        Drink drink;
         List<Drink> userDrinks = getUserDrinks(userInfo);
-        do{
-            randomId = Long.valueOf((long)(Math.random() * count +1));
-            byId = drinkRepository.findById(randomId);
-        } while(byId.isEmpty() || userDrinks.contains(byId.get()));
+        try{
+            do{
+                random = Integer.valueOf((int)(Math.random() * count));
+                drink = drinkRepository.findAll().get(random);
+            } while(userDrinks.contains(drink));
 
-        return byId.get();
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+        return drink;
     }
 
     private List<Keyword> getUserKeywords(UserInfo userInfo) {
