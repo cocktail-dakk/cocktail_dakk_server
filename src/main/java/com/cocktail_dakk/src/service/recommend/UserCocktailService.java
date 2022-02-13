@@ -83,9 +83,7 @@ public class UserCocktailService {
                     if (cocktailInfo.getStatus() == Status.INACTIVE) {
                         continue;
                     }
-
                     Integer cocktailAlcohol = cocktailInfo.getAlcoholLevel();
-
                     if( (userAlcohol - userAlcohol/2) <=  cocktailAlcohol && cocktailAlcohol <= (userAlcohol + userAlcohol/2) ){
                         for (UserDrink userDrink  : userDrinks) {
                             List<CocktailDrink> cocktailDrinks = cocktailInfo.getCocktailDrinks();

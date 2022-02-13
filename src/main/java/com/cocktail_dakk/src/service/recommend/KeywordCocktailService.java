@@ -111,7 +111,7 @@ public class KeywordCocktailService {
                 byId = drinkRepository.findById(randomId);
             } while(byId.isEmpty() || userDrinks.contains(byId.get()));
 
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
 
