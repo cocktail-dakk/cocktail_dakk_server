@@ -26,6 +26,7 @@ public enum BaseResponseStatus {
     STAR_OUT_OF_RANGE(false,2008,"별점을 확인해주세요."),
     POST_KEYWORD_EMPTY(false,2009,"칵테일 취향을 입력해주세요"),
     POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
+    POST_OUT_OF_RANGE(false,2011,"5개 미만으로 선택해주세요"),
 
     // users
     USERS_EMPTY_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
