@@ -20,7 +20,7 @@ import java.util.List;
 import static com.cocktail_dakk.config.BaseResponseStatus.REQUEST_ERROR;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("cocktaildakk/v1/search")
 public class SearchCocktailInfoController {
 
     @Autowired

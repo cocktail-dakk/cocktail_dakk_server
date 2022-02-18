@@ -7,6 +7,8 @@ build/
 
 generated
 
+src/main/resources/application-oauth.properties
+
 ### STS ###
 .apt_generated
 .classpath

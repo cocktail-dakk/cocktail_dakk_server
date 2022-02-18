@@ -17,7 +17,7 @@ import static com.cocktail_dakk.config.BaseResponseStatus.STAR_OUT_OF_RANGE;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/cocktails")
+@RequestMapping("cocktaildakk/v1/cocktails")
 public class CocktailDetailInfoController {
 
     private final CocktailService cocktailService;
@@ -33,18 +33,18 @@ public class CocktailDetailInfoController {
         }
     }
 
-    @PostMapping("/rating")
-    public BaseResponse<PostRatingRes> rateCocktail(@RequestBody PostRatingReq postRatingReq) throws BaseException{
-        if (postRatingReq.getStarPoint() > 5.0 || postRatingReq.getStarPoint() < 0.0 ){
-            return new BaseResponse<>(STAR_OUT_OF_RANGE);
-        }
-        try {
-            UserInfo userInfo = userInfoService.getUserInfo(postRatingReq.getDeviceNum());
-            CocktailInfo cocktailInfo = cocktailService.getCocktailInfo(postRatingReq.getCocktailInfoId());
-            return new BaseResponse<>(cocktailService.addPoint(userInfo, cocktailInfo,postRatingReq.getStarPoint()));
-        } catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
+//    @PostMapping("/rating")
+//    public BaseResponse<PostRatingRes> rateCocktail(@RequestBody PostRatingReq postRatingReq) throws BaseException{
+//        if (postRatingReq.getStarPoint() > 5.0 || postRatingReq.getStarPoint() < 0.0 ){
+//            return new BaseResponse<>(STAR_OUT_OF_RANGE);
+//        }
+//        try {
+//            UserInfo userInfo = userInfoService.getUserInfo(postRatingReq.getDeviceNum());
+//            CocktailInfo cocktailInfo = cocktailService.getCocktailInfo(postRatingReq.getCocktailInfoId());
+//            return new BaseResponse<>(cocktailService.addPoint(userInfo, cocktailInfo,postRatingReq.getStarPoint()));
+//        } catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
 
 }

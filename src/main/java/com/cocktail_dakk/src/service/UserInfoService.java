@@ -26,48 +26,48 @@ public class UserInfoService {
     private final DrinkRepository drinkRepository;
     private final UserDrinkRepository userDrinkRepository;
 
-    @Transactional
-    public UserInfo getUserInfo(String deviceNum) throws BaseException {
-
-        return userInfoRepository.findByDeviceNum(deviceNum)
-                .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
-
-    }
+//    @Transactional
+//    public UserInfo getUserInfo(String deviceNum) throws BaseException {
+//
+//        return userInfoRepository.findByDeviceNum(deviceNum)
+//                .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+//
+//    }
     //
-    @Transactional
-    public UserInfoRes signUpUser(UserSignUpReq userSignUpReq) throws BaseException{
-        if(userInfoRepository.findByDeviceNum(userSignUpReq.getDeviceNum()).isPresent()){
-            throw new BaseException(EXIST_USER);
-        }
+//    @Transactional
+//    public UserInfoRes signUpUser(UserSignUpReq userSignUpReq) throws BaseException{
+//        if(userInfoRepository.findByDeviceNum(userSignUpReq.getDeviceNum()).isPresent()){
+//            throw new BaseException(EXIST_USER);
+//        }
+//
+//        try{
+//            UserInfo userInfo = new UserInfo(userSignUpReq.getDeviceNum(),userSignUpReq.getNickname(),userSignUpReq.getAge(),
+//                    userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
+//            UserInfo saveUser = userInfoRepository.save(userInfo);
+//
+//            addFavourites(userSignUpReq.getFavouritesKeywords(), userSignUpReq.getFavouritesDrinks(),saveUser);
+//
+//            return new UserInfoRes(saveUser);
+//
+//        } catch (BaseException exception){
+//            userInfoRepository.delete(getUserInfo(userSignUpReq.getDeviceNum()));
+//            throw new BaseException(exception.getStatus());
+//        }
+//    }
 
-        try{
-            UserInfo userInfo = new UserInfo(userSignUpReq.getDeviceNum(),userSignUpReq.getNickname(),userSignUpReq.getAge(),
-                    userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
-            UserInfo saveUser = userInfoRepository.save(userInfo);
-
-            addFavourites(userSignUpReq.getFavouritesKeywords(), userSignUpReq.getFavouritesDrinks(),saveUser);
-
-            return new UserInfoRes(saveUser);
-
-        } catch (BaseException exception){
-            userInfoRepository.delete(getUserInfo(userSignUpReq.getDeviceNum()));
-            throw new BaseException(exception.getStatus());
-        }
-    }
-
-    @Transactional
-    public UserInfoRes modifyUser(UserModifyReq userModifyReq) throws BaseException{
-        try {
-            UserInfo userInfo = getUserInfo(userModifyReq.getDeviceNum());
-            userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
-
-            addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
-
-            return new UserInfoRes(userInfo);
-        } catch (BaseException e){
-            throw new BaseException(e.getStatus());
-        }
-    }
+//    @Transactional
+//    public UserInfoRes modifyUser(UserModifyReq userModifyReq) throws BaseException{
+//        try {
+//            UserInfo userInfo = getUserInfo(userModifyReq.getDeviceNum());
+//            userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
+//
+//            addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
+//
+//            return new UserInfoRes(userInfo);
+//        } catch (BaseException e){
+//            throw new BaseException(e.getStatus());
+//        }
+//    }
 
     private void addFavourites(String favouritesKeywords,String favouritesDrinks, UserInfo userInfo) throws BaseException {
 

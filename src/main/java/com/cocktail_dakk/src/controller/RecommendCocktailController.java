@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recommend")
+@RequestMapping("cocktaildakk/v1/recommend")
 @RequiredArgsConstructor
 public class RecommendCocktailController {
 
@@ -39,27 +39,27 @@ public class RecommendCocktailController {
         }
     }
 
-    @GetMapping("/user/{deviceNum}")
-    public BaseResponse<GetUserRecommendationRes> getUserCocktailRes(@PathVariable("deviceNum") String deviceNum){
-        try {
-            UserInfo userInfo = userInfoService.getUserInfo(deviceNum);
-            return new BaseResponse<>(userCocktailService.getUserRecommendCocktail(userInfo));
-        } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
-        }
-    }
-
-    @GetMapping("/keyword/{deviceNum}")
-    public BaseResponse<List<GetRecommendationListRes>> getKeywordCocktailRes(@PathVariable("deviceNum") String deviceNum){
-        List<GetRecommendationListRes> recommendationRes = new ArrayList<>();
-        try {
-            UserInfo userInfo = userInfoService.getUserInfo(deviceNum);
-            recommendationRes.add(cocktailService.getKeywordRecommendation(userInfo));
-            recommendationRes.add(cocktailService.getDrinkRecommendation(userInfo));
-            return new BaseResponse<>(recommendationRes);
-        } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
-        }
-    }
+//    @GetMapping("/user/{deviceNum}")
+//    public BaseResponse<GetUserRecommendationRes> getUserCocktailRes(@PathVariable("deviceNum") String deviceNum){
+//        try {
+//            UserInfo userInfo = userInfoService.getUserInfo(deviceNum);
+//            return new BaseResponse<>(userCocktailService.getUserRecommendCocktail(userInfo));
+//        } catch (BaseException exception){
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
+//
+//    @GetMapping("/keyword/{deviceNum}")
+//    public BaseResponse<List<GetRecommendationListRes>> getKeywordCocktailRes(@PathVariable("deviceNum") String deviceNum){
+//        List<GetRecommendationListRes> recommendationRes = new ArrayList<>();
+//        try {
+//            UserInfo userInfo = userInfoService.getUserInfo(deviceNum);
+//            recommendationRes.add(cocktailService.getKeywordRecommendation(userInfo));
+//            recommendationRes.add(cocktailService.getDrinkRecommendation(userInfo));
+//            return new BaseResponse<>(recommendationRes);
+//        } catch (BaseException exception){
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
 }

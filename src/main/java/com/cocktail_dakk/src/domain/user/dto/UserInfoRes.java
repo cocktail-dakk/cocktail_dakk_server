@@ -26,7 +26,6 @@ public class UserInfoRes {
 
     public UserInfoRes(UserInfo userInfo){
         this.id = userInfo.getUserInfoId();
-        this.deviceNum = userInfo.getDeviceNum();
         this.nickname = userInfo.getNickname();
         this.age = userInfo.getAge();
         this.sex = userInfo.getSex();
