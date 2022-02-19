@@ -30,7 +30,7 @@ public class JwtAuthFilter extends GenericFilterBean {
 
         if(!ObjectUtils.isEmpty(token)){
             if(tokenService.isTokenExpired(token)){
-                throw new JwtException("token is expired");
+                throw new JwtException("JWT The Access token is expired");
             }
 
             if(tokenService.verifyToken(token)){
@@ -44,26 +44,16 @@ public class JwtAuthFilter extends GenericFilterBean {
                     Authentication authentication = getAuthentication(userInfoDto);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }catch (ExpiredJwtException e) {
-                    logger.warn("the token is expired and not valid anymore", e);
-                    throw new JwtException("토큰 기한 만료");
+                    logger.warn("JWT The access token is expired and not valid anymore", e);
+                    throw new JwtException("JWT The access token is expired");
                 } catch(SignatureException e){
-                    logger.error("Authentication Failed. Username or Password not valid.");
-                    throw new JwtException("사용자 인증 실패");
+                    logger.error("JWT Authentication Failed. Username or Password not valid.");
+                    throw new JwtException("JWT User authentication failed");
                 }
             }else{
-                throw new JwtException("유효하지 않은 토큰");
+                throw new JwtException("JWT Invalid access token");
             }
         }
-//        if(token!=null&&tokenService.verifyToken(token)){
-//            String email=tokenService.getUid(token);
-//
-//            UserInfoDto userInfoDto = UserInfoDto.builder()
-//                    .email(email)
-//                    .build();
-//
-//            Authentication authentication = getAuthentication(userInfoDto);
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//        }
         chain.doFilter(request, response);
     }
     public Authentication getAuthentication(UserInfoDto member){
