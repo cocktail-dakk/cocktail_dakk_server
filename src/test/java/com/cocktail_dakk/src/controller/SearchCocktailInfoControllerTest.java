@@ -1,7 +1,5 @@
 package com.cocktail_dakk.src.controller;
 
-import com.cocktail_dakk.config.auth.jwt.Token;
-import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
@@ -15,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,17 +53,13 @@ class SearchCocktailInfoControllerTest {
     @Autowired
     UserInfoRepository userInfoRepository;
 
-    @Autowired
-    TokenService tokenService;
-
     @Test
+    @WithMockUser(roles = "USER")
     @Transactional
     public void findTest() throws Exception {
         saveCocktailInfo();
-        Token token = createUser();
         // Then
         mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/")
-                        .header("Auth", token.getToken())
                         .param("page", "0")
                         .param("inputStr", "21세기"))
                 .andDo(print())
@@ -73,14 +68,13 @@ class SearchCocktailInfoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @Transactional
     public void filterTest() throws Exception {
         saveCocktailInfo();
-        Token token = createUser();
 
         // Then
         mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/filter")
-                .header("Auth", token.getToken())
                 .param("page", "0")
                 .param("keywordName", "")
                 .param("minAlcoholLevel", "1")
@@ -183,19 +177,6 @@ class SearchCocktailInfoControllerTest {
         cocktailKeywordRepository.save(cocktailKeyword1);
         cocktailKeywordRepository.save(cocktailKeyword2);
         cocktailKeywordRepository.save(cocktailKeyword3);
-    }
-
-    private Token createUser(){
-        UserInfo userInfo = UserInfo.builder()
-                .email("test")
-                .role(Role.USER)
-                .build();
-
-        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
-
-        UserInfo save = userInfoRepository.save(userInfo);
-
-        return tokenService.generateToken(save.getEmail(), save.getRoleKey());
     }
 
 }
