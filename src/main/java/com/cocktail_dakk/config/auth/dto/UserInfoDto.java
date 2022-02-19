@@ -13,4 +13,11 @@ public class UserInfoDto {
     public UserInfoDto(String email){
         this.email=email;
     }
+
+    @Override
+    public String toString() {
+        return "UserInfoDto{" +
+                "email='" + email + '\'' +
+                '}';
+    }
 }

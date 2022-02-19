@@ -1,6 +1,7 @@
 package com.cocktail_dakk.config.auth;
 
 import com.cocktail_dakk.src.domain.user.Role;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/login").permitAll()
+                .antMatchers("/users/login", "/token/**", "/").permitAll()
                 .antMatchers("/cocktaildakk/v1/**").hasRole(Role.USER.name()).anyRequest().authenticated()
                 .and()
                 .logout().logoutSuccessUrl("/")

@@ -30,7 +30,7 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api'
 
 	implementation 'mysql:mysql-connector-java'
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+//	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
 
 	implementation 'com.querydsl:querydsl-apt'
 	implementation 'com.querydsl:querydsl-jpa'

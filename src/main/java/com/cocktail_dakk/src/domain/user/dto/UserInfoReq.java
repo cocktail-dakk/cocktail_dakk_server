@@ -9,15 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UserInfoReq {
-    private String deviceNum;
     private String nickname;
     private Integer age;
     private String sex;
     private Integer alcoholLevel;
 
     @Builder
-    public UserInfoReq(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel) {
-        this.deviceNum = deviceNum;
+    public UserInfoReq(String nickname, Integer age, String sex, Integer alcoholLevel) {
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
