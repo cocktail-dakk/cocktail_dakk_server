@@ -2,6 +2,7 @@ package com.cocktail_dakk.src.controller;
 
 import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
 import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 import com.cocktail_dakk.src.service.UserInfoService;
@@ -26,6 +27,16 @@ public class UserController {
     public BaseResponse<UserInfoRes> getUserInfoId(){
         try {
             return new BaseResponse<>(new UserInfoRes(userService.getUserInfo()));
+        } catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }//회원없-null, 회원있-회원 전체 정보 반환
+    }
+
+    @ResponseBody
+    @PostMapping("/info") //device-num?deviceNum=1111
+    public BaseResponse<UserInfoRes> initUserInfoId(@RequestBody UserInfoReq userInfoReq){
+        try {
+            return new BaseResponse<>(userService.initUser(userInfoReq));
         } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
         }//회원없-null, 회원있-회원 전체 정보 반환

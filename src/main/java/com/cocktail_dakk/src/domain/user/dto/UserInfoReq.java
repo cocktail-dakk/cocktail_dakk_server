@@ -13,12 +13,16 @@ public class UserInfoReq {
     private Integer age;
     private String sex;
     private Integer alcoholLevel;
+    private String favouritesKeywords;
+    private String favouritesDrinks;
 
     @Builder
-    public UserInfoReq(String nickname, Integer age, String sex, Integer alcoholLevel) {
+    public UserInfoReq(String nickname, Integer age, String sex, Integer alcoholLevel, String favouritesKeywords, String favouritesDrinks) {
         this.nickname = nickname;
         this.age = age;
         this.sex = sex;
         this.alcoholLevel = alcoholLevel;
+        this.favouritesKeywords=favouritesKeywords;
+        this.favouritesDrinks=favouritesDrinks;
     }
 }

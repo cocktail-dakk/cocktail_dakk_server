@@ -8,6 +8,7 @@ import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
 import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 //import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
@@ -34,6 +35,19 @@ public class UserInfoService {
 
         return userInfoRepository.findByEmail(userInfoDto.getEmail())
                 .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+    }
+    @Transactional
+    public UserInfoRes initUser(UserInfoReq userInfoReq) throws BaseException{
+        try {
+            UserInfo userInfo = getUserInfo();
+            userInfo.initUserInfo(userInfoReq.getNickname(), userInfoReq.getAge(), userInfoReq.getSex(), userInfoReq.getAlcoholLevel(), Status.ACTIVE);
+
+            addFavourites(userInfoReq.getFavouritesKeywords(),userInfoReq.getFavouritesDrinks(), userInfo);
+
+            return new UserInfoRes(userInfo);
+        } catch (BaseException e){
+            throw new BaseException(e.getStatus());
+        }
     }
 
     @Transactional
