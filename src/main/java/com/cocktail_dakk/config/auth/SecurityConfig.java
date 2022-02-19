@@ -1,13 +1,15 @@
 package com.cocktail_dakk.config.auth;
 
+import com.cocktail_dakk.config.auth.jwt.JwtAuthFilter;
+import com.cocktail_dakk.config.auth.jwt.JwtExceptionFilter;
+import com.cocktail_dakk.config.auth.jwt.OAuth2SuccessHandler;
+import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.user.Role;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.CustomUserTypesOAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
@@ -37,5 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(customOAuth2UserService);
 
         http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtExceptionFilter(), JwtAuthFilter.class);
     }
 }

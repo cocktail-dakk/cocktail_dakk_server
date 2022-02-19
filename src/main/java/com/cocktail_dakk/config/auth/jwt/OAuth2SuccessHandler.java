@@ -1,4 +1,4 @@
-package com.cocktail_dakk.config.auth;
+package com.cocktail_dakk.config.auth.jwt;
 
 import com.cocktail_dakk.config.auth.dto.UserInfoDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

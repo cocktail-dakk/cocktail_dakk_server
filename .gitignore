@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 generated
+src/main/java/com/cocktail_dakk/config/auth/jwt/Secret.java
 
 src/main/resources/application-oauth.properties
 

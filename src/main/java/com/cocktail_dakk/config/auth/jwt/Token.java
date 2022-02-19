@@ -1,4 +1,4 @@
-package com.cocktail_dakk.config.auth;
+package com.cocktail_dakk.config.auth.jwt;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

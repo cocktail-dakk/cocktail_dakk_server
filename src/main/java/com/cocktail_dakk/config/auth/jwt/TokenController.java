@@ -1,4 +1,4 @@
-package com.cocktail_dakk.config.auth;
+package com.cocktail_dakk.config.auth.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class TokenController {
     private final TokenService tokenService;
-
-    @GetMapping("/token/expired")
-    public String auth(){
-        throw new RuntimeException();
-    }
 
     @GetMapping("/token/refresh")
     public String refreshAuth(HttpServletRequest request, HttpServletResponse response){
@@ -30,7 +25,8 @@ public class TokenController {
             response.setContentType("application/json;charset=UTF-8");
 
             return "NEW TOKEN";
+        }else{
+            return "The refresh token has expired, so log in again";
         }
-        throw new RuntimeException();
     }
 }
