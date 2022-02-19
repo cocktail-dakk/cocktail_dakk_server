@@ -23,7 +23,7 @@ public class TokenController {
 
         if(!ObjectUtils.isEmpty(token)){
             try {
-                if(!tokenService.isTokenExpired(token))
+                if(tokenService.isTokenExpired(token))
                     throw new JwtException("JWT The refresh token has expired, so log in again");
             }catch (JwtException e){
                 return new BaseResponse<>((e.getMessage()));
