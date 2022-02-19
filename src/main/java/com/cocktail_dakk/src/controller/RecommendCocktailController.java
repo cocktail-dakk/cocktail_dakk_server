@@ -37,7 +37,7 @@ public class RecommendCocktailController {
         }
     }
 
-    @GetMapping("/user/{deviceNum}")
+    @GetMapping("/user/")
     public BaseResponse<GetUserRecommendationRes> getUserCocktailRes(){
         try {
             UserInfo userInfo = userInfoService.getUserInfo();
@@ -47,7 +47,7 @@ public class RecommendCocktailController {
         }
     }
 
-    @GetMapping("/keyword/{deviceNum}")
+    @GetMapping("/keyword/")
     public BaseResponse<List<GetRecommendationListRes>> getKeywordCocktailRes(){
         List<GetRecommendationListRes> recommendationRes = new ArrayList<>();
         try {
