@@ -5,15 +5,13 @@ import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetRecommendationListRes;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetTodayCocktailInfoRes;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetUserRecommendationRes;
-import com.cocktail_dakk.src.domain.cocktail.dto.UserRecommendationList;
 import com.cocktail_dakk.src.domain.user.UserInfo;
-import com.cocktail_dakk.src.service.recommend.KeywordCocktailService;
 import com.cocktail_dakk.src.service.UserInfoService;
+import com.cocktail_dakk.src.service.recommend.KeywordCocktailService;
 import com.cocktail_dakk.src.service.recommend.TodayCocktailService;
 import com.cocktail_dakk.src.service.recommend.UserCocktailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

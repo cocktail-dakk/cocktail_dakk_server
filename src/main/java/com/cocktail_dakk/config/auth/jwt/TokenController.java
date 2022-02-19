@@ -1,7 +1,6 @@
 package com.cocktail_dakk.config.auth.jwt;
 
 import com.cocktail_dakk.config.BaseResponse;
-import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
@@ -30,7 +29,7 @@ public class TokenController {
                 return new BaseResponse<>((e.getMessage()));
             }
 
-            if(token!=null&& tokenService.verifyToken(token)){
+            if(tokenService.verifyToken(token)){
                 try{
                     String email=tokenService.getUid(token);
                     Token newToken=tokenService.generateToken(email, "USER");
