@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.domain.user;
 
+import com.cocktail_dakk.config.auth.jwt.Token;
 import com.cocktail_dakk.src.domain.Status;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,28 +23,28 @@ public class UserInfoRepositoryTest {
 
     @Test
     @Transactional
-    public void findByDeviceNumTest() {
+    public void findByEmailTest() {
         // Given
-        UserInfo userInfo = UserInfo.builder()
-                .deviceNum("1234567")
-                .nickname("jjeong")
-                .age(22)
-                .sex("F")
-                .alcoholLevel(18)
-                .status(Status.ACTIVE)
-                .build();
-
         // When
-        userInfoRepository.save(userInfo);
-        userInfoRepository.flush();
+        UserInfo userInfo = createUser();
 
         // Then
-        Optional<UserInfo> all = userInfoRepository.findByDeviceNum(userInfo.getDeviceNum());
+        Optional<UserInfo> all = userInfoRepository.findByEmail(userInfo.getEmail());
         assertThat(all).isNotEmpty();
-        UserInfo byDeviceNum = all.get();
-        System.out.println("Find by deviceNum success");
+        UserInfo byEmail = all.get();
+        System.out.println("Find by email success");
 
-        assertThat(userInfo.getDeviceNum()).isEqualTo(all.get().getDeviceNum());
+        assertThat(userInfo.getEmail()).isEqualTo(byEmail.getEmail());
+    }
 
+    private UserInfo createUser(){
+        UserInfo userInfo = UserInfo.builder()
+                .email("test")
+                .role(Role.USER)
+                .build();
+
+        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
+
+        return userInfoRepository.save(userInfo);
     }
 }

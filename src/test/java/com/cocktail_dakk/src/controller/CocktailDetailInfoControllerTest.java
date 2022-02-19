@@ -1,5 +1,7 @@
 package com.cocktail_dakk.src.controller;
 
+import com.cocktail_dakk.config.auth.jwt.Token;
+import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
@@ -8,9 +10,11 @@ import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
+import com.cocktail_dakk.src.domain.user.Role;
+import com.cocktail_dakk.src.domain.user.UserInfo;
+import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -55,13 +59,21 @@ public class CocktailDetailInfoControllerTest {
     @Autowired
     CocktailMixingMethodRepository cocktailMixingMethodRepository;
 
+    @Autowired
+    UserInfoRepository userInfoRepository;
+
+    @Autowired
+    TokenService tokenService;
+
     @Test
     @Transactional
     public void details() throws Exception{
         saveCocktailInfo();
+        Token token = createUser();
 
         // Then
-        mockMvc.perform(get("/cocktails/details")
+        mockMvc.perform(get("/cocktaildakk/v1/cocktails/details")
+                        .header("Auth", token.getToken())
                         .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -135,7 +147,16 @@ public class CocktailDetailInfoControllerTest {
         cocktailMixingMethodRepository.save(cocktailMixingMethod1);
     }
 
+    private Token createUser(){
+        UserInfo userInfo = UserInfo.builder()
+                .email("test")
+                .role(Role.USER)
+                .build();
 
+        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
 
+        UserInfo save = userInfoRepository.save(userInfo);
 
+        return tokenService.generateToken(save.getEmail(), save.getRoleKey());
+    }
 }

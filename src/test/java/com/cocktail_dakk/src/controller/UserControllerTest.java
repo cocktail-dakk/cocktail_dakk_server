@@ -1,11 +1,11 @@
 package com.cocktail_dakk.src.controller;
 
-import com.cocktail_dakk.config.BaseException;
-import com.cocktail_dakk.config.BaseResponseStatus;
+import com.cocktail_dakk.config.auth.jwt.Token;
+import com.cocktail_dakk.config.auth.jwt.TokenService;
+import com.cocktail_dakk.src.domain.Status;
+import com.cocktail_dakk.src.domain.user.Role;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.domain.user.UserInfoRepository;
-import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,30 +32,33 @@ public class UserControllerTest {
     @Autowired
     UserInfoRepository userInfoRepository;
 
+    @Autowired
+    TokenService tokenService;
 
     @Test
     @Transactional
-    public void deviceNumTest() throws Exception {
+    public void userInfoTest() throws Exception {
 
-        createUser();
+        Token user = createUser();
 
-        mockMvc.perform(get("/users/device-num")
-                        .param("deviceNum", "1234"))
+        mockMvc.perform(get("/users/info")
+                        .header("Auth", user.getToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.deviceNum").value("1234"));
+                .andExpect(jsonPath("$.result.email").value("test"));
     }
 
-    private void createUser(){
+    private Token createUser(){
         UserInfo userInfo = UserInfo.builder()
-                .deviceNum("1234")
-                .nickname("jjeong")
-                .age(22)
-                .sex("F")
-                .alcoholLevel(0)
+                .email("test")
+                .role(Role.USER)
                 .build();
 
-        userInfoRepository.save(userInfo);
+        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
+
+        UserInfo save = userInfoRepository.save(userInfo);
+
+        return tokenService.generateToken(save.getEmail(), save.getRoleKey());
     }
 
 }

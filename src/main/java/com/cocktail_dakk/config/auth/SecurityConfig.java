@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/users/login", "/token/**", "/").permitAll()
-                .antMatchers("/cocktaildakk/v1/**").hasRole(Role.USER.name()).anyRequest().authenticated()
+                .antMatchers("/users/info", "users/modify","/cocktaildakk/v1/**").hasRole(Role.USER.name()).anyRequest().authenticated()
                 .and()
                 .logout().logoutSuccessUrl("/")
                 .and()

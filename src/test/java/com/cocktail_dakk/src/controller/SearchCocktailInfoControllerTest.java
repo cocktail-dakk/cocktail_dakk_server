@@ -1,13 +1,16 @@
 package com.cocktail_dakk.src.controller;
 
+import com.cocktail_dakk.config.auth.jwt.Token;
+import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
-import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
-import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
+import com.cocktail_dakk.src.domain.user.Role;
+import com.cocktail_dakk.src.domain.user.UserInfo;
+import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,13 +51,20 @@ class SearchCocktailInfoControllerTest {
     @Autowired
     CocktailDrinkRepository cocktailDrinkRepository;
 
+    @Autowired
+    UserInfoRepository userInfoRepository;
+
+    @Autowired
+    TokenService tokenService;
+
     @Test
     @Transactional
     public void findTest() throws Exception {
         saveCocktailInfo();
-
+        Token token = createUser();
         // Then
-        mockMvc.perform(get("/search/cocktail/")
+        mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/")
+                        .header("Auth", token.getToken())
                         .param("page", "0")
                         .param("inputStr", "21세기"))
                 .andDo(print())
@@ -67,9 +76,11 @@ class SearchCocktailInfoControllerTest {
     @Transactional
     public void filterTest() throws Exception {
         saveCocktailInfo();
+        Token token = createUser();
 
         // Then
-        mockMvc.perform(get("/search/cocktail/filter")
+        mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/filter")
+                .header("Auth", token.getToken())
                 .param("page", "0")
                 .param("keywordName", "")
                 .param("minAlcoholLevel", "1")
@@ -172,6 +183,19 @@ class SearchCocktailInfoControllerTest {
         cocktailKeywordRepository.save(cocktailKeyword1);
         cocktailKeywordRepository.save(cocktailKeyword2);
         cocktailKeywordRepository.save(cocktailKeyword3);
+    }
+
+    private Token createUser(){
+        UserInfo userInfo = UserInfo.builder()
+                .email("test")
+                .role(Role.USER)
+                .build();
+
+        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
+
+        UserInfo save = userInfoRepository.save(userInfo);
+
+        return tokenService.generateToken(save.getEmail(), save.getRoleKey());
     }
 
 }
