@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 import static com.cocktail_dakk.config.BaseResponseStatus.*;
 
@@ -24,12 +23,11 @@ public class LikeService {
     private final UserInfoRepository userInfoRepository;
 
     @Transactional
-    public void addLike(Long userId, Long cocktailId) throws BaseException {
+    public void addLike(UserInfo userInfo, Long cocktailId) throws BaseException {
 
-        UserInfo userInfo = getUserInfo(userId);
         CocktailInfo cocktailInfo = getCocktailInfo(cocktailId);
 
-        if (userCocktailRepository.existsEventLikeByUserInfoIdAndCocktailInfoId(userId, cocktailId)){
+        if (userCocktailRepository.existsEventLikeByUserInfoAndCocktailInfo(userInfo, cocktailInfo)){
             throw new BaseException(DUPLICATE_LIKE);
         }
 
@@ -42,10 +40,9 @@ public class LikeService {
     }
 
     @Transactional
-    public void deleteLike(Long userId, Long cocktailId) throws BaseException {
-        UserInfo userInfo = getUserInfo(userId);
+    public void deleteLike(UserInfo userInfo, Long cocktailId) throws BaseException {
         CocktailInfo cocktailInfo = getCocktailInfo(cocktailId);
-        UserCocktail userCocktail = userCocktailRepository.findByUserInfoIdAndCocktailInfoId(userId, cocktailId)
+        UserCocktail userCocktail = userCocktailRepository.findByUserInfoAndCocktailInfo(userInfo, cocktailInfo)
                 .orElseThrow(() -> new BaseException(NOT_EXIST_USER_COCKTAIL));
 
         userCocktailRepository.deleteById(userCocktail.getUserCocktailId());

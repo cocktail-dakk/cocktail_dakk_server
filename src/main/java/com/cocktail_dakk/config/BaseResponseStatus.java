@@ -26,9 +26,8 @@ public enum BaseResponseStatus {
     STAR_OUT_OF_RANGE(false,2008,"별점을 확인해주세요."),
     POST_KEYWORD_EMPTY(false,2009,"칵테일 취향을 입력해주세요"),
     POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
-    DUPLICATE_LIKE(false,2011,"이미 존재하는 좋아요입니다."),
-    DUPLICATE_UNLIKE(false,2012,"이미 좋아요 취소를 하였습니다."),
-    NOT_EXIST_USER_COCKTAIL(false,2013,"존재하지 좋아요 목록입니다."),
+    DUPLICATE_LIKE(false,2011,"이미 즐겨찾기를 한 칵테일입니다."),
+    NOT_EXIST_USER_COCKTAIL(false,2012,"존재하지 않는 즐겨찾기 목록입니다."),
 
     EXIST_USER(false,2023,"이미 존재하는 회원입니다."),
 
@@ -39,7 +38,6 @@ public enum BaseResponseStatus {
     // Common
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
