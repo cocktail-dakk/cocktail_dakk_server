@@ -51,9 +51,15 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
-    // 5000 : 필요시 만들어서 쓰세요
+    /**
+    * 5000: jwt 토큰 오류
+    */
+    JWT_REFRESH_TOKEN_EXPIRED_ERROR(false, 5001, "refresh 토큰이 만료됐습니다."),
+    JWT_REFRESH_TOKEN_SIGNATURE_ERROR(false, 5002, "유효하지 않은 refresh 토큰입니다."),
+    JWT_REFRESH_TOKEN_EMPTY_ERROR(false, 5003, "refresh 토큰이 없어 접근 권한 없습니다.");
+
     // 6000 : 필요시 만들어서 쓰세요
 
 

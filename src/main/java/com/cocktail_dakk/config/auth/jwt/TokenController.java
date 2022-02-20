@@ -1,6 +1,7 @@
 package com.cocktail_dakk.config.auth.jwt;
 
 import com.cocktail_dakk.config.BaseResponse;
+import com.cocktail_dakk.config.BaseResponseStatus;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.cocktail_dakk.config.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,7 +29,7 @@ public class TokenController {
                 if(tokenService.isTokenExpired(token))
                     throw new JwtException("JWT The refresh token has expired, so log in again");
             }catch (JwtException e){
-                return new BaseResponse<>((e.getMessage()));
+                return new BaseResponse<>(JWT_REFRESH_TOKEN_EXPIRED_ERROR);
             }
 
             if(tokenService.verifyToken(token)){
@@ -40,17 +43,15 @@ public class TokenController {
 
                     return new BaseResponse<>("NEW TOKEN");
                 }catch (ExpiredJwtException e) {
-                    JwtException exception = new JwtException("JWT The refresh token has expired, so log in again");
-                    return new BaseResponse<>((exception.getMessage()));
+                    return new BaseResponse<>(JWT_REFRESH_TOKEN_EXPIRED_ERROR);
                 } catch(SignatureException e){
-                    JwtException exception = new JwtException("JWT The refresh token has signature exception. User authentication failed");
-                    return new BaseResponse<>((exception.getMessage()));
+                    return new BaseResponse<>(JWT_REFRESH_TOKEN_SIGNATURE_ERROR);
                 }
             }else{
-                return new BaseResponse<>("JWT The refresh token has expired, so log in again");
+                return new BaseResponse<>(JWT_REFRESH_TOKEN_EXPIRED_ERROR);
             }
         }else{
-            return new BaseResponse<>("JWT Invalid refresh token");
+            return new BaseResponse<>(JWT_REFRESH_TOKEN_EMPTY_ERROR);
         }
     }
 }
