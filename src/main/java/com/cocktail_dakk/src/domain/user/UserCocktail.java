@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.domain.user;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @Table(name = "UserCocktail")
 public class UserCocktail {
 
+    @Builder
     public UserCocktail(UserInfo userInfo, CocktailInfo cocktailInfo) {
         this.userInfo = userInfo;
         this.cocktailInfo = cocktailInfo;
