@@ -1,16 +1,21 @@
 package com.cocktail_dakk.src.service;
 
 import com.cocktail_dakk.config.BaseException;
+import com.cocktail_dakk.config.auth.dto.UserInfoDto;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoStatusRes;
 import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
-import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
+//import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
+import com.cocktail_dakk.src.domain.user.projection.UserInfoStatusProjection;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,39 +31,42 @@ public class UserInfoService {
     private final DrinkRepository drinkRepository;
     private final UserDrinkRepository userDrinkRepository;
 
-    @Transactional
-    public UserInfo getUserInfo(String deviceNum) throws BaseException {
+    public UserInfo getUserInfo() throws BaseException {
+        UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return userInfoRepository.findByDeviceNum(deviceNum)
+        return userInfoRepository.findByEmail(userInfoDto.getEmail())
                 .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
-
     }
-    //
-    @Transactional
-    public UserInfoRes signUpUser(UserSignUpReq userSignUpReq) throws BaseException{
-        if(userInfoRepository.findByDeviceNum(userSignUpReq.getDeviceNum()).isPresent()){
-            throw new BaseException(EXIST_USER);
+
+    public UserInfoStatusRes getUserInfoStatus() throws BaseException{
+        try {
+            UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserInfoStatusProjection userInfoStatusProjection = userInfoRepository.findStatusByEmail(userInfoDto.getEmail())
+                    .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+
+            return new UserInfoStatusRes(userInfoStatusProjection.getEmail(), userInfoStatusProjection.getStatus());
+        }catch (BaseException e){
+            throw new BaseException(e.getStatus());
         }
+    }
+    @Transactional
+    public UserInfoRes initUser(UserInfoReq userInfoReq) throws BaseException{
+        try {
+            UserInfo userInfo = getUserInfo();
+            userInfo.initUserInfo(userInfoReq.getNickname(), userInfoReq.getAge(), userInfoReq.getSex(), userInfoReq.getAlcoholLevel(), Status.ACTIVE);
 
-        try{
-            UserInfo userInfo = new UserInfo(userSignUpReq.getDeviceNum(),userSignUpReq.getNickname(),userSignUpReq.getAge(),
-                    userSignUpReq.getSex(),userSignUpReq.getAlcoholLevel(), Status.ACTIVE);
-            UserInfo saveUser = userInfoRepository.save(userInfo);
+            addFavourites(userInfoReq.getFavouritesKeywords(),userInfoReq.getFavouritesDrinks(), userInfo);
 
-            addFavourites(userSignUpReq.getFavouritesKeywords(), userSignUpReq.getFavouritesDrinks(),saveUser);
-
-            return new UserInfoRes(saveUser);
-
-        } catch (BaseException exception){
-            userInfoRepository.delete(getUserInfo(userSignUpReq.getDeviceNum()));
-            throw new BaseException(exception.getStatus());
+            return new UserInfoRes(userInfo);
+        } catch (BaseException e){
+            throw new BaseException(e.getStatus());
         }
     }
 
     @Transactional
     public UserInfoRes modifyUser(UserModifyReq userModifyReq) throws BaseException{
         try {
-            UserInfo userInfo = getUserInfo(userModifyReq.getDeviceNum());
+            UserInfo userInfo = getUserInfo();
             userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
 
             addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
@@ -111,5 +119,4 @@ public class UserInfoService {
         }
 
     }
-
 }

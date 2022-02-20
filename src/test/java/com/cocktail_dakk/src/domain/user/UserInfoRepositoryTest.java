@@ -1,6 +1,8 @@
 package com.cocktail_dakk.src.domain.user;
 
 import com.cocktail_dakk.src.domain.Status;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoStatusRes;
+import com.cocktail_dakk.src.domain.user.projection.UserInfoStatusProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,28 +24,46 @@ public class UserInfoRepositoryTest {
 
     @Test
     @Transactional
-    public void findByDeviceNumTest() {
+    public void findStatusByEmailTest(){
         // Given
-        UserInfo userInfo = UserInfo.builder()
-                .deviceNum("1234567")
-                .nickname("jjeong")
-                .age(22)
-                .sex("F")
-                .alcoholLevel(18)
-                .status(Status.ACTIVE)
-                .build();
-
         // When
-        userInfoRepository.save(userInfo);
-        userInfoRepository.flush();
+        UserInfo userInfo = createUser();
 
         // Then
-        Optional<UserInfo> all = userInfoRepository.findByDeviceNum(userInfo.getDeviceNum());
+        Optional<UserInfoStatusProjection> statusByEmail = userInfoRepository.findStatusByEmail(userInfo.getEmail());
+        assertThat(statusByEmail).isNotEmpty();
+        UserInfoStatusProjection userInfoStatusProjection = statusByEmail.get();
+
+        UserInfoStatusRes userInfoStatusRes=new UserInfoStatusRes(userInfoStatusProjection.getEmail(), userInfoStatusProjection.getStatus());
+
+        assertThat(userInfo.getEmail()).isEqualTo(userInfoStatusRes.getEmail());
+        assertThat(userInfo.getStatus()).isEqualTo(userInfoStatusRes.getStatus());
+    }
+
+    @Test
+    @Transactional
+    public void findByEmailTest() {
+        // Given
+        // When
+        UserInfo userInfo = createUser();
+
+        // Then
+        Optional<UserInfo> all = userInfoRepository.findByEmail(userInfo.getEmail());
         assertThat(all).isNotEmpty();
-        UserInfo byDeviceNum = all.get();
-        System.out.println("Find by deviceNum success");
+        UserInfo byEmail = all.get();
+        System.out.println("Find by email success");
 
-        assertThat(userInfo.getDeviceNum()).isEqualTo(all.get().getDeviceNum());
+        assertThat(userInfo.getEmail()).isEqualTo(byEmail.getEmail());
+    }
 
+    private UserInfo createUser(){
+        UserInfo userInfo = UserInfo.builder()
+                .email("test")
+                .role(Role.USER)
+                .build();
+
+        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
+
+        return userInfoRepository.save(userInfo);
     }
 }

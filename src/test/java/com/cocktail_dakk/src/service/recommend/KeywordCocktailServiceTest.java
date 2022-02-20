@@ -8,9 +8,7 @@ import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -104,7 +102,7 @@ class KeywordCocktailServiceTest {
         cocktailKeywordRepository.save(cocktailKeyword3);
 
         //유저
-        UserInfo userInfo = createUserInfo("keyword-re","minnie",23,"F",14,Status.ACTIVE);
+        UserInfo userInfo = createUser("test1", "minnie",23,"F",12,Status.ACTIVE);
         userInfoRepository.save(userInfo);
 
         //유저 키워드
@@ -118,18 +116,39 @@ class KeywordCocktailServiceTest {
 
     }
 
+    @AfterAll
+    private static void afterAll(@Autowired CocktailInfoRepository cocktailInfoRepository,
+                                 @Autowired UserInfoRepository userInfoRepository,
+                                 @Autowired UserKeywordRepository userKeywordRepository,
+                                 @Autowired KeywordRepository keywordRepository,
+                                 @Autowired DrinkRepository drinkRepository,
+                                 @Autowired CocktailDrinkRepository cocktailDrinkRepository,
+                                 @Autowired CocktailKeywordRepository cocktailKeywordRepository,
+                                 @Autowired UserDrinkRepository userDrinkRepository){
+        System.out.println("afterAll");
+        userKeywordRepository.deleteAll();
+        cocktailDrinkRepository.deleteAll();
+        cocktailKeywordRepository.deleteAll();
+        userDrinkRepository.deleteAll();
+
+        cocktailInfoRepository.deleteAll();
+        userInfoRepository.deleteAll();
+        keywordRepository.deleteAll();
+        drinkRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("유저가 설정하지 않은 키워드에서 추천한다.")
     @Transactional
     public void getKeywordRecommendation() throws Exception{
         //when
-        Optional<UserInfo> byDeviceNum = userInfoRepository.findByDeviceNum("keyword-re");
-        List<String> userKeywords = byDeviceNum.get().getUserKeywords()
+        Optional<UserInfo> byEmail = userInfoRepository.findByEmail("test1");
+        List<String> userKeywords = byEmail.get().getUserKeywords()
                 .stream().map(UserKeyword::getKeyword)
                 .map(Keyword::getKeywordName)
                 .collect(Collectors.toList());
 
-        GetRecommendationListRes keywordRecommendation = keywordCocktailService.getKeywordRecommendation(byDeviceNum.get());
+        GetRecommendationListRes keywordRecommendation = keywordCocktailService.getKeywordRecommendation(byEmail.get());
 
         //then
         assertThat(userKeywords).doesNotContain(keywordRecommendation.getDescription());
@@ -149,16 +168,15 @@ class KeywordCocktailServiceTest {
                 .build();
     }
 
-    private static UserInfo createUserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status) {
-
-        return UserInfo.builder()
-                .deviceNum(deviceNum)
-                .nickname(nickname)
-                .age(age)
-                .sex(sex)
-                .alcoholLevel(alcoholLevel)
-                .status(status)
+    private static UserInfo createUser(String email, String nickname, Integer age, String sex, Integer alcoholLevel, Status status){
+        UserInfo userInfo = UserInfo.builder()
+                .email(email)
+                .role(Role.USER)
                 .build();
+
+        userInfo.initUserInfo(nickname, age, sex, alcoholLevel, status);
+
+        return userInfo;
     }
 
 }

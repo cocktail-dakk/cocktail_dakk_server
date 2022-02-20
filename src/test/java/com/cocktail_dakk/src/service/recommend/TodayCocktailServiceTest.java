@@ -1,12 +1,11 @@
 package com.cocktail_dakk.src.service.recommend;
 
 import com.cocktail_dakk.src.domain.Status;
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
-import com.cocktail_dakk.src.domain.cocktail.CocktailToday;
-import com.cocktail_dakk.src.domain.cocktail.CocktailTodayRepository;
-import com.cocktail_dakk.src.domain.user.UserInfo;
-import com.cocktail_dakk.src.domain.user.UserInfoRepository;
+import com.cocktail_dakk.src.domain.cocktail.*;
+import com.cocktail_dakk.src.domain.drink.DrinkRepository;
+import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
+import com.cocktail_dakk.src.domain.user.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,13 +64,20 @@ class TodayCocktailServiceTest {
         cocktailInfoRepository.save(cocktailInfo9);
         cocktailInfoRepository.save(cocktailInfo10);
 
-        UserInfo userInfo1 =createUserInfo("1234","minnie",23,"F",12,Status.ACTIVE);
-        UserInfo userInfo2 =createUserInfo("12344","dale",23,"M",2,Status.ACTIVE);
-        UserInfo userInfo3 =createUserInfo("12345","jjung",23,"F",12,Status.ACTIVE);
+        UserInfo userInfo1 =createUser("test1", "minnie",23,"F",12,Status.ACTIVE);
+        UserInfo userInfo2 =createUser("test2", "dale",23,"M",2,Status.ACTIVE);
+        UserInfo userInfo3 =createUser("test3","jjung",23,"F",12,Status.ACTIVE);
 
         userInfoRepository.save(userInfo1);
         userInfoRepository.save(userInfo2);
         userInfoRepository.save(userInfo3);
+    }
+
+    @AfterAll
+    private static void afterAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository){
+        System.out.println("afterAll");
+        cocktailInfoRepository.deleteAll();
+        userInfoRepository.deleteAll();
     }
 
 
@@ -109,16 +115,15 @@ class TodayCocktailServiceTest {
                 .build();
     }
 
-    private static UserInfo createUserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status) {
-
-        return UserInfo.builder()
-                .deviceNum(deviceNum)
-                .nickname(nickname)
-                .age(age)
-                .sex(sex)
-                .alcoholLevel(alcoholLevel)
-                .status(status)
+    private static UserInfo createUser(String email, String nickname, Integer age, String sex, Integer alcoholLevel, Status status){
+        UserInfo userInfo = UserInfo.builder()
+                .email(email)
+                .role(Role.USER)
                 .build();
+
+        userInfo.initUserInfo(nickname, age, sex, alcoholLevel, status);
+
+        return userInfo;
     }
 
 }

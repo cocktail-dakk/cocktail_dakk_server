@@ -2,13 +2,17 @@ package com.cocktail_dakk.src.controller;
 
 import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoStatusRes;
 import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
-import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
 import com.cocktail_dakk.src.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,23 +24,33 @@ public class UserController {
 
 
     @ResponseBody
-    @GetMapping("/device-num") //device-num?deviceNum=1111
-    public BaseResponse<UserInfoRes> getUserInfoId(@RequestParam String deviceNum){
+    @GetMapping("/status")
+    public BaseResponse<UserInfoStatusRes> getUserInfoStatus(){
         try {
-            return new BaseResponse<>(new UserInfoRes(userService.getUserInfo(deviceNum)));
+            return new BaseResponse<>(userService.getUserInfoStatus());
         } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
-        }//회원없-null, 회원있-회원 전체 정보 반환
+        }
     }
 
     @ResponseBody
-    @PostMapping("/sign-up") //json에 담아서
-    public BaseResponse<UserInfoRes> signUp(@RequestBody UserSignUpReq userSignUpReq){
+    @GetMapping("/info")
+    public BaseResponse<UserInfoRes> getUserInfoId(){
         try {
-            return new BaseResponse<>(userService.signUpUser(userSignUpReq));
-        } catch (BaseException e){
+            return new BaseResponse<>(new UserInfoRes(userService.getUserInfo()));
+        } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
-        }//회원가입하면 회원 전체 정보 반환
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/info")
+    public BaseResponse<UserInfoRes> initUserInfoId(@RequestBody UserInfoReq userInfoReq){
+        try {
+            return new BaseResponse<>(userService.initUser(userInfoReq));
+        } catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     @PatchMapping("/modify")
@@ -48,6 +62,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/login")
+    public void login(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/oauth2/authorization/google");
+    }
 
+//    @GetMapping("/info")
+//    public void initUserInfo(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        System.out.println(authentication.getName());
+//        UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(userInfoDto.getEmail());
+//    }
 
 }
