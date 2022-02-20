@@ -41,6 +41,19 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     @Transactional
+    public void userInfoStatusTest() throws Exception{
+        createUser();
+
+        mockMvc.perform(get("/users/status"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.email").value("test"))
+                .andExpect(jsonPath("$.result.status").value("ACTIVE"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    @Transactional
     public void userInfoTest() throws Exception {
         createUser();
 

@@ -10,8 +10,10 @@ import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoStatusRes;
 import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 //import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
+import com.cocktail_dakk.src.domain.user.projection.UserInfoStatusProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,23 @@ public class UserInfoService {
     private final DrinkRepository drinkRepository;
     private final UserDrinkRepository userDrinkRepository;
 
-    @Transactional
     public UserInfo getUserInfo() throws BaseException {
         UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userInfoRepository.findByEmail(userInfoDto.getEmail())
                 .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+    }
+
+    public UserInfoStatusRes getUserInfoStatus() throws BaseException{
+        try {
+            UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserInfoStatusProjection userInfoStatusProjection = userInfoRepository.findStatusByEmail(userInfoDto.getEmail())
+                    .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+
+            return new UserInfoStatusRes(userInfoStatusProjection.getEmail(), userInfoStatusProjection.getStatus());
+        }catch (BaseException e){
+            throw new BaseException(e.getStatus());
+        }
     }
     @Transactional
     public UserInfoRes initUser(UserInfoReq userInfoReq) throws BaseException{
@@ -106,5 +119,4 @@ public class UserInfoService {
         }
 
     }
-
 }

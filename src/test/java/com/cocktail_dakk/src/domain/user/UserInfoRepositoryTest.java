@@ -1,7 +1,8 @@
 package com.cocktail_dakk.src.domain.user;
 
-import com.cocktail_dakk.config.auth.jwt.Token;
 import com.cocktail_dakk.src.domain.Status;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoStatusRes;
+import com.cocktail_dakk.src.domain.user.projection.UserInfoStatusProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,24 @@ public class UserInfoRepositoryTest {
 
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Test
+    @Transactional
+    public void findStatusByEmailTest(){
+        // Given
+        // When
+        UserInfo userInfo = createUser();
+
+        // Then
+        Optional<UserInfoStatusProjection> statusByEmail = userInfoRepository.findStatusByEmail(userInfo.getEmail());
+        assertThat(statusByEmail).isNotEmpty();
+        UserInfoStatusProjection userInfoStatusProjection = statusByEmail.get();
+
+        UserInfoStatusRes userInfoStatusRes=new UserInfoStatusRes(userInfoStatusProjection.getEmail(), userInfoStatusProjection.getStatus());
+
+        assertThat(userInfo.getEmail()).isEqualTo(userInfoStatusRes.getEmail());
+        assertThat(userInfo.getStatus()).isEqualTo(userInfoStatusRes.getStatus());
+    }
 
     @Test
     @Transactional

@@ -4,6 +4,7 @@ import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoReq;
 import com.cocktail_dakk.src.domain.user.dto.UserInfoRes;
+import com.cocktail_dakk.src.domain.user.dto.UserInfoStatusRes;
 import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 import com.cocktail_dakk.src.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -23,23 +24,33 @@ public class UserController {
 
 
     @ResponseBody
-    @GetMapping("/info") //device-num?deviceNum=1111
+    @GetMapping("/status")
+    public BaseResponse<UserInfoStatusRes> getUserInfoStatus(){
+        try {
+            return new BaseResponse<>(userService.getUserInfoStatus());
+        } catch(BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/info")
     public BaseResponse<UserInfoRes> getUserInfoId(){
         try {
             return new BaseResponse<>(new UserInfoRes(userService.getUserInfo()));
         } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
-        }//회원없-null, 회원있-회원 전체 정보 반환
+        }
     }
 
     @ResponseBody
-    @PostMapping("/info") //device-num?deviceNum=1111
+    @PostMapping("/info")
     public BaseResponse<UserInfoRes> initUserInfoId(@RequestBody UserInfoReq userInfoReq){
         try {
             return new BaseResponse<>(userService.initUser(userInfoReq));
         } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
-        }//회원없-null, 회원있-회원 전체 정보 반환
+        }
     }
 
     @PatchMapping("/modify")
