@@ -26,7 +26,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         response.setStatus(status.value());
         response.setContentType("application/json; charset=UTF-8");
 
-        JwtExceptionResponse jwtExceptionResponse=new JwtExceptionResponse(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        JwtExceptionResponse jwtExceptionResponse=new JwtExceptionResponse(false, 5000, e.getMessage(), HttpStatus.UNAUTHORIZED);
         response.getWriter().write(jwtExceptionResponse.convertToJson());
     }
 }
