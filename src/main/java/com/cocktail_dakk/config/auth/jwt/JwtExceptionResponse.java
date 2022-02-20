@@ -14,7 +14,7 @@ public class JwtExceptionResponse{
     private final Boolean isSuccess;
     private final int code;
     private final String message;
-    private final HttpStatus httpStatus;
+    private final HttpStatus result;
 
     public String convertToJson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
