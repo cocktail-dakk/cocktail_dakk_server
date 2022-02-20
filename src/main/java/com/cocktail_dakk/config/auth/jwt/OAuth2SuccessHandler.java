@@ -35,7 +35,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void writeTokenResponse(HttpServletResponse response, Token token) throws IOException{
-        response.setContentType("text/html;charset=UTF-8");
+//        response.setContentType("text/html;charset=UTF-8");
 
         response.addHeader("Auth", token.getToken());
         response.addHeader("Refresh", token.getRefreshToken());
