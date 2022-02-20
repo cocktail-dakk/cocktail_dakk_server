@@ -53,6 +53,17 @@ class UserKeywordTest {
     @Autowired
     UserDrinkRepository userDrinkRepository;
 
+    private UserInfo createUser(){
+        UserInfo userInfo = UserInfo.builder()
+                .email("test")
+                .role(Role.USER)
+                .build();
+
+        userInfo.initUserInfo("jjeong", 22, "F", 0, Status.ACTIVE);
+
+        return userInfoRepository.save(userInfo);
+    }
+
     //사용자가 선택한 취향키워드를 데이터베이스에 저장하고 조회할 수 있는지의 테스트
     @Test
     @Transactional
@@ -62,14 +73,7 @@ class UserKeywordTest {
                 .keywordName("깔끔한")
                 .build();
 
-        UserInfo userInfo=UserInfo.builder()
-                .deviceNum("1234")
-                .nickname("dale")
-                .age(25)
-                .sex("m")
-                .alcoholLevel(3)
-                .status(Status.ACTIVE)
-                .build();
+        UserInfo userInfo=createUser();
 
         //유저와 취향키워드 간의 연관관계 설정
         UserKeyword userKeyword=new UserKeyword(userInfo, keyword);
@@ -80,11 +84,7 @@ class UserKeywordTest {
 
         // when 조인에티티를 직접 영속화하는 방법
         keywordRepository.save(keyword);
-        userInfoRepository.save(userInfo);
         userKeywordRepository.save(userKeyword);
-
-
-        userInfoRepository.flush();
 
         // Then
         Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
@@ -92,7 +92,7 @@ class UserKeywordTest {
         UserInfo byId=all.get();
         System.out.println("Find by id success");
 
-        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        assertThat(userInfo.getEmail()).isEqualTo(byId.getEmail());
         System.out.println("UserInfo is same : "+ byId.getNickname());
 
         List<UserKeyword> userKeywords = byId.getUserKeywords();
@@ -115,16 +115,9 @@ class UserKeywordTest {
         Keyword keyword2=Keyword.builder()
                 .keywordName("달콤한")
                 .build();
-        
-        UserInfo userInfo=UserInfo.builder()
-                .deviceNum("1234")
-                .nickname("dale")
-                .age(25)
-                .sex("m")
-                .alcoholLevel(3)
-                .status(Status.ACTIVE)
-                .build();
-        
+
+        UserInfo userInfo=createUser();
+
         // 유저와 취향 키워드 연관관계 설정
         UserKeyword userKeyword=new UserKeyword(userInfo, keyword1);
 
@@ -183,11 +176,11 @@ class UserKeywordTest {
 //        cocktailInfoRepository.save(cocktailInfo1);
 //        cocktailInfoRepository.save(cocktailInfo2);
 //        cocktailInfoRepository.save(cocktailInfo3);
-        
+
         // when 조인 엔티티를 직접 영속화하는 방법
         keywordRepository.save(keyword1);
         keywordRepository.save(keyword2);
-        userInfoRepository.save(userInfo);
+
         userKeywordRepository.save(userKeyword);
 
         cocktailInfoRepository.save(cocktailInfo1);
@@ -197,8 +190,6 @@ class UserKeywordTest {
         cocktailKeywordRepository.save(cocktailKeyword2);
         cocktailKeywordRepository.save(cocktailKeyword3);
 
-        userInfoRepository.flush();
-
 
         // Then
         Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
@@ -206,7 +197,7 @@ class UserKeywordTest {
         UserInfo byId=all.get();
         System.out.println("Find by id success");
 
-        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        assertThat(userInfo.getEmail()).isEqualTo(byId.getEmail());
         System.out.println("UserInfo is same : "+ byId.getNickname());
 
         List<UserKeyword> userKeywords = byId.getUserKeywords();
@@ -383,48 +374,25 @@ class UserKeywordTest {
                 .status(Status.ACTIVE)
                 .build();
 
-        UserInfo userInfo1=UserInfo.builder()
-                .deviceNum("1234")
-                .nickname("dale")
-                .age(25)
-                .sex("m")
-                .alcoholLevel(3)
-                .status(Status.ACTIVE)
-                .build();
-
-        UserInfo userInfo2=UserInfo.builder()
-                .deviceNum("5678")
-                .nickname("jimin")
-                .age(23)
-                .sex("w")
-                .alcoholLevel(3)
-                .status(Status.ACTIVE)
-                .build();
+        UserInfo userInfo1=createUser();
 
         UserCocktail userCocktail1=new UserCocktail(userInfo1, cocktailInfo1);
         UserCocktail userCocktail2=new UserCocktail(userInfo1, cocktailInfo2);
-        UserCocktail userCocktail3=new UserCocktail(userInfo2, cocktailInfo3);
 
         // when 조인 엔티티 직접 영속화하는 방법
         cocktailInfoRepository.save(cocktailInfo1);
         cocktailInfoRepository.save(cocktailInfo2);
         cocktailInfoRepository.save(cocktailInfo3);
 
-        userInfoRepository.save(userInfo1);
-        userInfoRepository.save(userInfo2);
-
         userCocktailRepository.save(userCocktail1);
         userCocktailRepository.save(userCocktail2);
-        userCocktailRepository.save(userCocktail3);
-
-        userInfoRepository.flush();
 
         // Then
         List<UserInfo> all = new ArrayList<>();
         Optional<UserInfo> byId = userInfoRepository.findById(userInfo1.getUserInfoId());
         assertThat(byId.isPresent()).isTrue();
         all.add(byId.get());
-        byId = userInfoRepository.findById(userInfo2.getUserInfoId());
+        byId = userInfoRepository.findById(userInfo1.getUserInfoId());
         assertThat(byId.isPresent()).isTrue();
         all.add(byId.get());
         assertThat(all.size()).isEqualTo(2);
@@ -434,11 +402,9 @@ class UserKeywordTest {
             List<UserCocktail> userCocktails = userInfo.getUserCocktails();
 
             System.out.println(userInfo.getNickname());
-            if (userInfo.getDeviceNum().equals("1234")) {
+            if (userInfo.getEmail().equals("test")) {
                 assertThat(userCocktails.contains(userCocktail1)).isTrue();
                 assertThat(userCocktails.contains(userCocktail2)).isTrue();
-            } else if (userInfo.getDeviceNum().equals("5678")) {
-                assertThat(userCocktails.contains(userCocktail3)).isTrue();
             }
             for (UserCocktail userCocktail : userCocktails) {
                 System.out.println(userCocktail.getCocktailInfo().getEnglishName());
@@ -458,24 +424,14 @@ class UserKeywordTest {
                 .status(Status.ACTIVE)
                 .build();
 
-        UserInfo userInfo=UserInfo.builder()
-                .deviceNum("1234")
-                .nickname("dale")
-                .age(25)
-                .sex("m")
-                .alcoholLevel(3)
-                .status(Status.ACTIVE)
-                .build();
+        UserInfo userInfo=createUser();
 
         //유저와 선호 기주 간의 연관관계 설정
         UserDrink userDrink=new UserDrink(userInfo, drink);
 
         // when 조인에티티를 직접 영속화하는 방법
         drinkRepository.save(drink);
-        userInfoRepository.save(userInfo);
         userDrinkRepository.save(userDrink);
-
-        userInfoRepository.flush();
 
         // Then
         Optional<UserInfo> all = userInfoRepository.findById(userInfo.getUserInfoId());
@@ -483,7 +439,7 @@ class UserKeywordTest {
         UserInfo byId=all.get();
         System.out.println("Find by id success");
 
-        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        assertThat(userInfo.getEmail()).isEqualTo(byId.getEmail());
         System.out.println("UserInfo is same : "+ byId.getNickname());
 
         List<UserDrink> userDrinks = byId.getUserDrinks();
@@ -507,14 +463,7 @@ class UserKeywordTest {
                 .status(Status.ACTIVE)
                 .build();
 
-        UserInfo userInfo=UserInfo.builder()
-                .deviceNum("1234")
-                .nickname("dale")
-                .age(25)
-                .sex("m")
-                .alcoholLevel(3)
-                .status(Status.ACTIVE)
-                .build();
+        UserInfo userInfo=createUser();
 
         // 유저와 선호 기주 연관관계 설정
         UserDrink userDrink=new UserDrink(userInfo, drink2);
@@ -569,7 +518,6 @@ class UserKeywordTest {
         // when 조인 엔티티를 직접 영속화하는 방법
         drinkRepository.save(drink1);
         drinkRepository.save(drink2);
-        userInfoRepository.save(userInfo);
         userDrinkRepository.save(userDrink);
 
         cocktailInfoRepository.save(cocktailInfo1);
@@ -579,7 +527,6 @@ class UserKeywordTest {
         cocktailDrinkRepository.save(cocktailDrink2);
         cocktailDrinkRepository.save(cocktailDrink3);
 
-        userInfoRepository.flush();
 
 
         // Then
@@ -588,7 +535,7 @@ class UserKeywordTest {
         UserInfo byId=all.get();
         System.out.println("Find by id success");
 
-        assertThat(userInfo.getDeviceNum()).isEqualTo(byId.getDeviceNum());
+        assertThat(userInfo.getEmail()).isEqualTo(byId.getEmail());
         System.out.println("UserInfo is same : "+ byId.getNickname());
 
         List<UserDrink> userDrinks = byId.getUserDrinks();

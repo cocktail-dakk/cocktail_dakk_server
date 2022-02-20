@@ -9,6 +9,7 @@ import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,7 @@ class UserCocktailServiceTest {
         cocktailKeywordRepository.save(cocktailKeyword3);
 
         //유저
-        UserInfo userInfo = createUserInfo("user-recommendation","minnie",23,"F",14,Status.ACTIVE);
+        UserInfo userInfo = createUser("test", "minnie",23,"F",14,Status.ACTIVE);
         userInfoRepository.save(userInfo);
 
         //유저 키워드
@@ -105,11 +106,32 @@ class UserCocktailServiceTest {
 
     }
 
+    @AfterAll
+    private static void afterAll(@Autowired CocktailInfoRepository cocktailInfoRepository,
+                                 @Autowired UserInfoRepository userInfoRepository,
+                                 @Autowired UserKeywordRepository userKeywordRepository,
+                                 @Autowired KeywordRepository keywordRepository,
+                                 @Autowired DrinkRepository drinkRepository,
+                                 @Autowired CocktailDrinkRepository cocktailDrinkRepository,
+                                 @Autowired CocktailKeywordRepository cocktailKeywordRepository,
+                                 @Autowired UserDrinkRepository userDrinkRepository){
+        System.out.println("afterAll");
+        userKeywordRepository.deleteAll();
+        cocktailDrinkRepository.deleteAll();
+        cocktailKeywordRepository.deleteAll();
+        userDrinkRepository.deleteAll();
+
+        cocktailInfoRepository.deleteAll();
+        userInfoRepository.deleteAll();
+        keywordRepository.deleteAll();
+        drinkRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("기주, 도수, 키워드에 일치하는 칵테일을 추출한다.")
     @Transactional
     public void checkList() throws Exception{
-        GetUserRecommendationRes userRecommendCocktail = userCocktailService.getUserRecommendCocktail(userInfoRepository.findByDeviceNum("user-recommendation").get());
+        GetUserRecommendationRes userRecommendCocktail = userCocktailService.getUserRecommendCocktail(userInfoRepository.findByEmail("test").get());
         List<UserRecommendationList> userRecommendationLists = userRecommendCocktail.getUserRecommendationLists();
 
         for (UserRecommendationList userRecommendationList : userRecommendationLists) {
@@ -134,16 +156,15 @@ class UserCocktailServiceTest {
                 .build();
     }
 
-    private static UserInfo createUserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status) {
-
-        return UserInfo.builder()
-                .deviceNum(deviceNum)
-                .nickname(nickname)
-                .age(age)
-                .sex(sex)
-                .alcoholLevel(alcoholLevel)
-                .status(status)
+    private static UserInfo createUser(String email, String nickname, Integer age, String sex, Integer alcoholLevel, Status status){
+        UserInfo userInfo = UserInfo.builder()
+                .email(email)
+                .role(Role.USER)
                 .build();
+
+        userInfo.initUserInfo(nickname, age, sex, alcoholLevel, status);
+
+        return userInfo;
     }
 
 }

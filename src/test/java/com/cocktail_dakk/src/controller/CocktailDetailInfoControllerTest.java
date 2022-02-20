@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.controller;
 
+import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
@@ -8,11 +9,12 @@ import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
+import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -55,13 +57,18 @@ public class CocktailDetailInfoControllerTest {
     @Autowired
     CocktailMixingMethodRepository cocktailMixingMethodRepository;
 
+    @Autowired
+    UserInfoRepository userInfoRepository;
+
     @Test
+    @WithMockUser(roles = "USER")
     @Transactional
     public void details() throws Exception{
         saveCocktailInfo();
+//        Token token = createUser();
 
         // Then
-        mockMvc.perform(get("/cocktails/details")
+        mockMvc.perform(get("/cocktaildakk/v1/cocktails/details")
                         .param("id", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -134,8 +141,4 @@ public class CocktailDetailInfoControllerTest {
 
         cocktailMixingMethodRepository.save(cocktailMixingMethod1);
     }
-
-
-
-
 }

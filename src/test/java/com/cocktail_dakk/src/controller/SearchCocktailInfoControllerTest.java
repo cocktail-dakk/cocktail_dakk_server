@@ -6,12 +6,12 @@ import com.cocktail_dakk.src.domain.drink.Drink;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
 import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
-import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
-import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
+import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,13 +48,16 @@ class SearchCocktailInfoControllerTest {
     @Autowired
     CocktailDrinkRepository cocktailDrinkRepository;
 
+    @Autowired
+    UserInfoRepository userInfoRepository;
+
     @Test
+    @WithMockUser(roles = "USER")
     @Transactional
     public void findTest() throws Exception {
         saveCocktailInfo();
-
         // Then
-        mockMvc.perform(get("/search/cocktail/")
+        mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/")
                         .param("page", "0")
                         .param("inputStr", "21세기"))
                 .andDo(print())
@@ -64,12 +66,13 @@ class SearchCocktailInfoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @Transactional
     public void filterTest() throws Exception {
         saveCocktailInfo();
 
         // Then
-        mockMvc.perform(get("/search/cocktail/filter")
+        mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/filter")
                 .param("page", "0")
                 .param("keywordName", "")
                 .param("minAlcoholLevel", "1")
