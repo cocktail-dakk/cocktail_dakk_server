@@ -22,5 +22,5 @@ fi
 
 echo "> $JAR_PATH 배포"
 nohup java -jar \
-  -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties \
+  -Dspring.config.location=classpath:/application.properties,/home/ubuntu/app/application-real-db.properties,/home/ubuntu/app/application-oauth.properties \
 $JAR_PATH > $REPOSITORY/nohup.out 2>&1 &

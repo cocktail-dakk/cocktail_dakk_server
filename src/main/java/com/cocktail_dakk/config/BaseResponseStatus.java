@@ -26,8 +26,11 @@ public enum BaseResponseStatus {
     STAR_OUT_OF_RANGE(false,2008,"별점을 확인해주세요."),
     POST_KEYWORD_EMPTY(false,2009,"칵테일 취향을 입력해주세요"),
     POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
+    DUPLICATE_LIKE(false,2011,"이미 즐겨찾기를 한 칵테일입니다."),
+    NOT_EXIST_USER_COCKTAIL(false,2012,"존재하지 않는 즐겨찾기 목록입니다."),
 
     EXIST_USER(false,2023,"이미 존재하는 회원입니다."),
+
 
     /**
      * 3000 : Response 오류
@@ -35,7 +38,6 @@ public enum BaseResponseStatus {
     // Common
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
@@ -51,9 +53,15 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
-    // 5000 : 필요시 만들어서 쓰세요
+    /**
+    * 5000: jwt 토큰 오류
+    */
+    JWT_REFRESH_TOKEN_EXPIRED_ERROR(false, 5001, "refresh 토큰이 만료됐습니다."),
+    JWT_REFRESH_TOKEN_SIGNATURE_ERROR(false, 5002, "유효하지 않은 refresh 토큰입니다."),
+    JWT_REFRESH_TOKEN_EMPTY_ERROR(false, 5003, "refresh 토큰이 없어 접근 권한 없습니다.");
+
     // 6000 : 필요시 만들어서 쓰세요
 
 
