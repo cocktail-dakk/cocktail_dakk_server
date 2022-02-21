@@ -28,6 +28,8 @@ public class KeywordCocktailService {
     private final KeywordRepository keywordRepository;
     private final DrinkRepository drinkRepository;
     private final CocktailDrinkRepository cocktailDrinkRepository;
+    private static final String KEYWORD = "키워드";
+    private static final String DRINK = "기주";
 
     //사용자가 지정하지 않은 키워드로 칵테일 추천
     public GetRecommendationListRes getKeywordRecommendation(UserInfo userInfo) throws BaseException{
@@ -44,10 +46,9 @@ public class KeywordCocktailService {
             }
 
             String description = randomKeyword.getKeywordName();
-            String tag = "키워드";
 
             return GetRecommendationListRes.builder()
-                    .tag(tag)
+                    .tag(KEYWORD)
                     .description(description)
                     .recommendationRes(getRecommendKeywordRes)
                     .build();
@@ -70,10 +71,9 @@ public class KeywordCocktailService {
             }
 
             String description = randomDrink.getDrinkName();
-            String tag = "기주";
 
             return GetRecommendationListRes.builder()
-                    .tag(tag)
+                    .tag(DRINK)
                     .description(description)
                     .recommendationRes(getRecommendationRes)
                     .build();
