@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -19,6 +20,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
@@ -35,6 +37,16 @@ public class JwtAuthFilter extends GenericFilterBean {
 
             if(tokenService.verifyToken(token)){
                 try{
+                    HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+                    Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+                    if(headerNames!=null){
+                        logger.warn("--------------------------------------------------------------------------");
+                        while (headerNames.hasMoreElements()){
+                            String name=headerNames.nextElement();
+                            logger.warn("Header: "+name+" value: "+httpServletRequest.getHeader(name));
+                        }
+                        logger.warn("--------------------------------------------------------------------------");
+                    }
                     String email=tokenService.getUid(token);
 
                     UserInfoDto userInfoDto = UserInfoDto.builder()
