@@ -45,6 +45,30 @@ public class JwtAuthFilter extends GenericFilterBean {
                             String name=headerNames.nextElement();
                             logger.warn("Header: "+name+" value: "+httpServletRequest.getHeader(name));
                         }
+                        String ip = httpServletRequest.getHeader("X-Forwarded-For");
+                        logger.warn("> X-FORWARDED-FOR : " + ip);
+
+                        if (ip == null) {
+                            ip = httpServletRequest.getHeader("Proxy-Client-IP");
+                            logger.warn("> Proxy-Client-IP : " + ip);
+                        }
+                        if (ip == null) {
+                            ip = httpServletRequest.getHeader("WL-Proxy-Client-IP");
+                            logger.warn(">  WL-Proxy-Client-IP : " + ip);
+                        }
+                        if (ip == null) {
+                            ip = httpServletRequest.getHeader("HTTP_CLIENT_IP");
+                            logger.warn("> HTTP_CLIENT_IP : " + ip);
+                        }
+                        if (ip == null) {
+                            ip = httpServletRequest.getHeader("HTTP_X_FORWARDED_FOR");
+                            logger.warn("> HTTP_X_FORWARDED_FOR : " + ip);
+                        }
+                        if (ip == null) {
+                            ip = httpServletRequest.getRemoteAddr();
+                            logger.warn("> getRemoteAddr : "+ip);
+                        }
+                        logger.warn("> Result : IP Address : "+ip);
                         logger.warn("--------------------------------------------------------------------------");
                     }
                     String email=tokenService.getUid(token);
