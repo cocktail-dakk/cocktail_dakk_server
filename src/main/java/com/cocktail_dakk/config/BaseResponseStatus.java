@@ -60,7 +60,11 @@ public enum BaseResponseStatus {
     */
     JWT_REFRESH_TOKEN_EXPIRED_ERROR(false, 5001, "refresh 토큰이 만료됐습니다."),
     JWT_REFRESH_TOKEN_SIGNATURE_ERROR(false, 5002, "유효하지 않은 refresh 토큰입니다."),
-    JWT_REFRESH_TOKEN_EMPTY_ERROR(false, 5003, "refresh 토큰이 없어 접근 권한 없습니다.");
+    JWT_REFRESH_TOKEN_EMPTY_ERROR(false, 5003, "refresh 토큰이 없어 접근 권한 없습니다."),
+    ID_TOKEN_EXPIRED_ERROR(false, 5004, "id 토큰이 만료됐습니다."),
+    ID_TOKEN_NOT_VALID_ERROR(false, 5005, "유효하지 않은 id 토큰입니다."),
+    ID_TOKEN_EMPTY_ERROR(false, 5006, "id 토큰이 없어 접근 권한이 없습니다."),
+    ID_TOKEN_VERIFY_ERROR(false, 5007, "id 토큰의 검증이 실패했습니다.");
 
     // 6000 : 필요시 만들어서 쓰세요
 

@@ -42,9 +42,11 @@ public class JwtAuthFilter extends GenericFilterBean {
             if(tokenService.verifyToken(token)){
                 try{
                     String email=tokenService.getUid(token);
+                    String role=tokenService.getRole(token);
 
                     UserInfoDto userInfoDto = UserInfoDto.builder()
                             .email(email)
+                            .role(role)
                             .build();
 
                     Authentication authentication = getAuthentication(userInfoDto);
@@ -63,7 +65,7 @@ public class JwtAuthFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
     public Authentication getAuthentication(UserInfoDto member){
-        return new UsernamePasswordAuthenticationToken(member, "", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+        return new UsernamePasswordAuthenticationToken(member, "", Arrays.asList(new SimpleGrantedAuthority(member.getRole())));
     }
 
     private void checkRequest(ServletRequest request){

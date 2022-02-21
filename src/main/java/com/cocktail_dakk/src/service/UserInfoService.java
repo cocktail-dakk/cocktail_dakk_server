@@ -49,6 +49,18 @@ public class UserInfoService {
             throw new BaseException(e.getStatus());
         }
     }
+
+    @Transactional
+    public UserInfoRes saveOrUpdate(UserInfoDto userInfoDto) throws BaseException{
+        try {
+            UserInfo userInfo = userInfoRepository.findByEmail(userInfoDto.getEmail()).orElse(userInfoDto.toEntity());
+            UserInfo save = userInfoRepository.save(userInfo);
+
+            return new UserInfoRes(save);
+        }catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
     @Transactional
     public UserInfoRes initUser(UserInfoReq userInfoReq) throws BaseException{
         try {
@@ -117,6 +129,5 @@ public class UserInfoService {
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
-
     }
 }
