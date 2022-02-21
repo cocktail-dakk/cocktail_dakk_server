@@ -28,7 +28,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         OAuth2User oAuth2User=(OAuth2User) authentication.getPrincipal();
         UserInfoDto userInfoDto=userRequestMapper.toDto(oAuth2User);
 
-        Token token=tokenService.generateToken(userInfoDto.getEmail(), "USER");
+        Token token=tokenService.generateToken(userInfoDto.getEmail(), "ROLE_USER");
         log.info("{}", token);
 
         writeTokenResponse(response, token);

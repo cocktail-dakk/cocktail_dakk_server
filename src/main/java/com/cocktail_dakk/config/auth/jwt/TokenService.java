@@ -60,6 +60,10 @@ public class TokenService {
         return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
     }
 
+    public String getRole(String token){
+        return (String) Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token).getBody().get("role");
+    }
+
     private Claims getAllClaimsFromToken(String token) {
         try {
             return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token).getBody();
