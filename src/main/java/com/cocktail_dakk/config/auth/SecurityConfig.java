@@ -5,7 +5,7 @@ import com.cocktail_dakk.config.BaseResponse;
 import com.cocktail_dakk.config.BaseResponseStatus;
 import com.cocktail_dakk.config.auth.jwt.JwtAuthFilter;
 import com.cocktail_dakk.config.auth.jwt.JwtExceptionFilter;
-import com.cocktail_dakk.config.auth.jwt.OAuth2SuccessHandler;
+//import com.cocktail_dakk.config.auth.jwt.OAuth2SuccessHandler;
 import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.user.Role;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +32,8 @@ import static com.cocktail_dakk.config.BaseResponseStatus.INVALID_USER_JWT;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+//    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final TokenService tokenService;
 
     @Override
@@ -66,15 +66,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/login", "/token/**", "/").permitAll()
-                .antMatchers("/users/status","/users/info", "users/modify","/cocktaildakk/v1/**").hasRole(Role.USER.name()).anyRequest().authenticated()
-                .and()
-                .logout().logoutSuccessUrl("/")
-                .and()
-                .oauth2Login()
-                .successHandler(oAuth2SuccessHandler)
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                .antMatchers("/users/tokensignin", "/users/login", "/token/**", "/").permitAll()
+                .antMatchers("/users/status","/users/info", "users/modify","/cocktaildakk/v1/**").hasRole(Role.USER.name()).anyRequest().authenticated();
+//                .and()
+//                .logout().logoutSuccessUrl("/")
+//                .and()
+//                .oauth2Login()
+//                .userInfoEndpoint()
 
         http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new JwtExceptionFilter(), JwtAuthFilter.class);
