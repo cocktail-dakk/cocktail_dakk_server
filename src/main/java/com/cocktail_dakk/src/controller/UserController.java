@@ -45,7 +45,7 @@ public class UserController {
     @Autowired
     TokenService tokenService;
 
-    @Value("${client.id}")
+    @Value("${client.id:not found!}")
     String clientId;
 
 

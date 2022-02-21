@@ -12,7 +12,7 @@ import java.util.function.Function;
 @Service
 public class TokenService {
 
-    @Value("${jwt.secret.key}")
+    @Value("${jwt.secret.key:not found!}")
     private String JWT_SECRET_KEY;
 
     public Token generateToken(String uid, String role){
