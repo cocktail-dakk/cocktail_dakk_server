@@ -28,8 +28,10 @@ public class JwtAuthFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        checkRequest(request);
-        
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        if(httpServletRequest.getHeader("user-agent")!="ELB-HealthChecker/2.0")
+            checkRequest(request);
+
         String token=((HttpServletRequest)request).getHeader("Auth");
 
         if(!ObjectUtils.isEmpty(token)){
@@ -69,6 +71,8 @@ public class JwtAuthFilter extends GenericFilterBean {
         Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
         if(headerNames!=null){
             logger.warn("--------------------------------------------------------------------------");
+            logger.warn("URL: "+httpServletRequest.getRequestURL().toString());
+            logger.warn("Method: "+httpServletRequest.getMethod());
             while (headerNames.hasMoreElements()){
                 String name=headerNames.nextElement();
                 logger.warn("Header: "+name+" value: "+httpServletRequest.getHeader(name));
