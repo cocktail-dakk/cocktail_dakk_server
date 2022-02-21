@@ -29,7 +29,7 @@ public class JwtAuthFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        if(httpServletRequest.getHeader("user-agent")!="ELB-HealthChecker/2.0")
+        if(!httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0"))
             checkRequest(request);
 
         String token=((HttpServletRequest)request).getHeader("Auth");
