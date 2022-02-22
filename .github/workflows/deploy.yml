@@ -2,22 +2,15 @@
 
 # Controls when the workflow will run
 on:
-<<<<<<< HEAD
   # Triggers the workflow on push or pull request events but only for the main branch
-=======
->>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
   push:
     branches:
       - develop
   pull_request:
     branches:
       - develop
-    
-<<<<<<< HEAD
+
 name: test CI
-=======
-name: Deploy cocktail_dakk_server to AWS EC
->>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
 env:
   PROJECT_NAME: cocktail_dakk_server
 
@@ -25,46 +18,39 @@ jobs:
   deploy:
     # The type of runner that the job will run on
     name: DEPLOY
-<<<<<<< HEAD
     runs-on: ubuntu-18.04
-=======
-    runs-on: ubuntu-20.04
->>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
-          
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
         shell: bash
-        
+
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
-<<<<<<< HEAD
-      
+
       - name: Make zip file
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      
+
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://cocktaildakk-codedeploy/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy
         run: aws deploy create-deployment --application-name cocktaildakk --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=cocktaildakk-codedeploy,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-=======
->>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
