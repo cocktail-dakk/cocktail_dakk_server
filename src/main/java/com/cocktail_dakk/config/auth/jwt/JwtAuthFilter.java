@@ -70,8 +70,10 @@ public class JwtAuthFilter extends GenericFilterBean {
                 throw new JwtException("JWT Invalid access token");
             }
         }
-        logger.warn("Access Denied");
-        logger.warn("--------------------------------------------------------------------------");
+        if(httpServletRequest.getHeader("user-agent")!=null&&!httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0")) {
+            logger.warn("Access Denied");
+            logger.warn("--------------------------------------------------------------------------");
+        }
         chain.doFilter(request, response);
     }
     public Authentication getAuthentication(UserInfoDto member){
