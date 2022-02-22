@@ -1,8 +1,6 @@
 package com.cocktail_dakk.src.domain.user.dto;
 
-import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 import com.cocktail_dakk.src.domain.cocktail.Rating;
-import com.cocktail_dakk.src.domain.user.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
