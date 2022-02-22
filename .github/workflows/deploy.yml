@@ -2,7 +2,10 @@
 
 # Controls when the workflow will run
 on:
+<<<<<<< HEAD
   # Triggers the workflow on push or pull request events but only for the main branch
+=======
+>>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
   push:
     branches:
       - develop
@@ -10,7 +13,11 @@ on:
     branches:
       - develop
     
+<<<<<<< HEAD
 name: test CI
+=======
+name: Deploy cocktail_dakk_server to AWS EC
+>>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
 env:
   PROJECT_NAME: cocktail_dakk_server
 
@@ -18,7 +25,11 @@ jobs:
   deploy:
     # The type of runner that the job will run on
     name: DEPLOY
+<<<<<<< HEAD
     runs-on: ubuntu-18.04
+=======
+    runs-on: ubuntu-20.04
+>>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -37,6 +48,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
+<<<<<<< HEAD
       
       - name: Make zip file
         run: zip -qq -r ./$GITHUB_SHA.zip .
@@ -54,3 +66,5 @@ jobs:
 
       - name: Code Deploy
         run: aws deploy create-deployment --application-name cocktaildakk --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=cocktaildakk-codedeploy,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+=======
+>>>>>>> 90d204660edeac2a0030fdf869e4fbedad92e922

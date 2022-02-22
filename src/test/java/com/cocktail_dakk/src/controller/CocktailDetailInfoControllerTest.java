@@ -66,13 +66,14 @@ public class CocktailDetailInfoControllerTest {
     public void details() throws Exception{
         saveCocktailInfo();
 //        Token token = createUser();
+        Long cocktailInfoId = cocktailInfoRepository.findAll().get(0).getCocktailInfoId();
 
         // Then
         mockMvc.perform(get("/cocktaildakk/v1/cocktails/details")
-                        .param("id", "1"))
+                        .param("id", cocktailInfoId.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.cocktailInfoId").value(1));
+                .andExpect(jsonPath("$.result.cocktailInfoId").value(cocktailInfoId));
 
     }
 
