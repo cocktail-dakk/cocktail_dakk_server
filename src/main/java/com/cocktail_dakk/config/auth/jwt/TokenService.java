@@ -12,7 +12,7 @@ import java.util.function.Function;
 @Service
 public class TokenService {
 
-    @Value("JWT_SECRET_KEY")
+    @Value("${jwt.secret.key:not found!}")
     private String JWT_SECRET_KEY;
 
     public Token generateToken(String uid, String role){
@@ -59,6 +59,11 @@ public class TokenService {
     public String getUid(String token){
         return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
     }
+
+    public String getRole(String token){
+        return (String) Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(token).getBody().get("role");
+    }
+
 
     private Claims getAllClaimsFromToken(String token) {
         try {
