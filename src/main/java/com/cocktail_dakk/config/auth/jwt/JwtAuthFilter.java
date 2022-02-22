@@ -36,6 +36,8 @@ public class JwtAuthFilter extends GenericFilterBean {
 
         if(!ObjectUtils.isEmpty(token)){
             if(tokenService.isTokenExpired(token)){
+                logger.warn("JWT The Access token is expired");
+                logger.warn("--------------------------------------------------------------------------");
                 throw new JwtException("JWT The Access token is expired");
             }
 
@@ -51,17 +53,25 @@ public class JwtAuthFilter extends GenericFilterBean {
 
                     Authentication authentication = getAuthentication(userInfoDto);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    logger.warn("> Access permitted");
+                    logger.warn("--------------------------------------------------------------------------");
                 }catch (ExpiredJwtException e) {
                     logger.warn("JWT The access token is expired and not valid anymore", e);
+                    logger.warn("--------------------------------------------------------------------------");
                     throw new JwtException("JWT The access token is expired");
                 } catch(SignatureException e){
-                    logger.error("JWT Authentication Failed. Username or Password not valid.");
+                    logger.warn("JWT Authentication Failed. Username or Password not valid.");
+                    logger.warn("--------------------------------------------------------------------------");
                     throw new JwtException("JWT User authentication failed");
                 }
             }else{
+                logger.warn("JWT Invalid access token");
+                logger.warn("--------------------------------------------------------------------------");
                 throw new JwtException("JWT Invalid access token");
             }
         }
+        logger.warn("Access Denied");
+        logger.warn("--------------------------------------------------------------------------");
         chain.doFilter(request, response);
     }
     public Authentication getAuthentication(UserInfoDto member){
@@ -103,7 +113,7 @@ public class JwtAuthFilter extends GenericFilterBean {
                 logger.warn("> getRemoteAddr : "+ip);
             }
             logger.warn("> Result : IP Address : "+ip);
-            logger.warn("--------------------------------------------------------------------------");
+//            logger.warn("--------------------------------------------------------------------------");
         }
     }
 }
