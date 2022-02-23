@@ -2,14 +2,12 @@ package com.cocktail_dakk.src.controller;
 
 import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.config.BaseResponse;
-import com.cocktail_dakk.config.BaseResponseStatus;
 import com.cocktail_dakk.config.auth.dto.UserInfoDto;
 import com.cocktail_dakk.config.auth.jwt.Token;
 import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.user.Role;
 import com.cocktail_dakk.src.domain.user.dto.*;
 import com.cocktail_dakk.src.service.UserInfoService;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
@@ -18,18 +16,10 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static com.cocktail_dakk.config.BaseResponseStatus.*;
@@ -88,11 +78,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/login")
-    public void login(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/oauth2/authorization/google");
-    }
-
     @PostMapping("/tokensignin")
     public BaseResponse<Token> token(@RequestBody TokenReq tokenReq){
             HttpTransport transport=new NetHttpTransport();
@@ -108,13 +93,11 @@ public class UserController {
             GoogleIdToken idToken=null;
             try {
                  idToken = verifier.verify(tokenReq.getIdToken());
-            } catch (GeneralSecurityException e) {
-                return new BaseResponse<>(ID_TOKEN_VERIFY_ERROR);
-            } catch (IOException e){
+            } catch (GeneralSecurityException | IOException e) {
                 return new BaseResponse<>(ID_TOKEN_VERIFY_ERROR);
             }
 
-            if(idToken!=null) {
+        if(idToken!=null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
                 userId = payload.getSubject();
                 email = payload.getEmail();
