@@ -21,7 +21,7 @@ public class TokenController {
     private final TokenService tokenService;
 
     @GetMapping("/token/refresh")
-    public BaseResponse<String> refreshAuth(HttpServletRequest request, HttpServletResponse response){
+    public BaseResponse<Token> refreshAuth(HttpServletRequest request, HttpServletResponse response){
         String token=request.getHeader("Refresh");
 
         if(!ObjectUtils.isEmpty(token)){
@@ -37,11 +37,7 @@ public class TokenController {
                     String email=tokenService.getUid(token);
                     Token newToken=tokenService.generateToken(email, "USER");
 
-                    response.addHeader("Auth", newToken.getToken());
-                    response.addHeader("Refresh", newToken.getRefreshToken());
-                    response.setContentType("application/json;charset=UTF-8");
-
-                    return new BaseResponse<>("NEW TOKEN");
+                    return new BaseResponse<>(newToken);
                 }catch (ExpiredJwtException e) {
                     return new BaseResponse<>(JWT_REFRESH_TOKEN_EXPIRED_ERROR);
                 } catch(SignatureException e){
