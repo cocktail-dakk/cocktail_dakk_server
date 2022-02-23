@@ -21,8 +21,7 @@ import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -58,6 +57,13 @@ class SearchCocktailInfoControllerTest {
         saveCocktailInfo();
         // Then
         mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/")
+                        .with(request -> {
+                            request.setScheme("http");
+                            request.setServerName("localhost");
+                            request.setServerPort(8080);
+
+                            return request;
+                        })
                         .param("page", "0")
                         .param("inputStr", "21세기"))
                 .andDo(print())
@@ -73,6 +79,13 @@ class SearchCocktailInfoControllerTest {
 
         // Then
         mockMvc.perform(get("/cocktaildakk/v1/search/cocktail/filter")
+                .with(request -> {
+                    request.setScheme("http");
+                    request.setServerName("localhost");
+                    request.setServerPort(8080);
+
+                    return request;
+                })
                 .param("page", "0")
                 .param("keywordName", "")
                 .param("minAlcoholLevel", "1")

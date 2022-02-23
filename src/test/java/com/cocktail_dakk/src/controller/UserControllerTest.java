@@ -44,7 +44,14 @@ public class UserControllerTest {
     public void userInfoStatusTest() throws Exception{
         createUser();
 
-        mockMvc.perform(get("/users/status"))
+        mockMvc.perform(get("/users/status")
+                .with(request -> {
+                    request.setScheme("http");
+                    request.setServerName("localhost");
+                    request.setServerPort(8080);
+
+                    return request;
+                }))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.email").value("test"))
@@ -57,7 +64,14 @@ public class UserControllerTest {
     public void userInfoTest() throws Exception {
         createUser();
 
-        mockMvc.perform(get("/users/info"))
+        mockMvc.perform(get("/users/info")
+                .with(request -> {
+                    request.setScheme("http");
+                    request.setServerName("localhost");
+                    request.setServerPort(8080);
+
+                    return request;
+                }))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.email").value("test"));

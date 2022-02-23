@@ -18,6 +18,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -70,6 +71,13 @@ public class CocktailDetailInfoControllerTest {
 
         // Then
         mockMvc.perform(get("/cocktaildakk/v1/cocktails/details")
+                        .with(request -> {
+                            request.setScheme("http");
+                            request.setServerName("localhost");
+                            request.setServerPort(8080);
+
+                            return request;
+                        })
                         .param("id", cocktailInfoId.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
