@@ -9,6 +9,8 @@ import com.cocktail_dakk.config.auth.jwt.JwtExceptionFilter;
 import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.user.Role;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    private final CustomOAuth2UserService customOAuth2UserService;
 //    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final TokenService tokenService;
+    protected final Log logger = LogFactory.getLog(getClass());
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -50,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.setStatus(HttpStatus.FORBIDDEN.value());
                         response.setContentType("application/json;charset=UTF-8");
 
+                        logger.warn("> Access denied");
+                        logger.warn("--------------------------------------------------------------------------");
                         BaseResponse baseResponse=new BaseResponse(INVALID_USER_JWT);
                         response.getWriter().write(baseResponse.convertToJson());
                     }
@@ -60,6 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.setStatus(HttpStatus.FORBIDDEN.value());
                         response.setContentType("application/json;charset=UTF-8");
 
+                        logger.warn("> Access denied");
+                        logger.warn("--------------------------------------------------------------------------");
                         BaseResponse baseResponse=new BaseResponse(INVALID_USER_JWT);
                         response.getWriter().write(baseResponse.convertToJson());
                     }

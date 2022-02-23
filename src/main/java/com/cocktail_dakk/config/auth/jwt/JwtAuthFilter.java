@@ -78,7 +78,6 @@ public class JwtAuthFilter extends GenericFilterBean {
             }else {
                 if (httpServletRequest.getHeader("user-agent") != null && !httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0")) {
                     logger.warn("Empty Token");
-                    logger.warn("--------------------------------------------------------------------------");
                 }
                 chain.doFilter(request, response);
             }
