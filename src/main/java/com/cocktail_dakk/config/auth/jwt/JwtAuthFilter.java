@@ -130,9 +130,9 @@ public class JwtAuthFilter extends GenericFilterBean {
     }
 
     private boolean isValidURL(String target) {
-        String regex1="http:\\/\\/www.cocktaildakk.shop\\/*";
-        String regex2="http:\\/\\/localhost:8080\\/*";
-        String regex3="\\/*";
+        String regex1="^http:\\/\\/www.cocktaildakk.shop\\/*";
+        String regex2="^http:\\/\\/localhost:8080\\/*";
+        String regex3="^\\/*";
 
         Pattern pattern1 = Pattern.compile(regex1, Pattern.CASE_INSENSITIVE);
         Matcher matcher1 = pattern1.matcher(target);
@@ -144,6 +144,7 @@ public class JwtAuthFilter extends GenericFilterBean {
         Matcher matcher3 = pattern3.matcher(target);
 
         boolean result=matcher1.find()||matcher2.find()||matcher3.find();
+
         return result;
     }
 }
