@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
@@ -29,52 +31,60 @@ public class JwtAuthFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        if(httpServletRequest.getHeader("user-agent")!=null&&!httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0"))
-            checkRequest(request);
 
-        String token=((HttpServletRequest)request).getHeader("Auth");
+        if((httpServletRequest.getHeader("user-agent")!=null&&httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0"))||isValidURL(httpServletRequest.getRequestURL().toString())) {
+            if (httpServletRequest.getHeader("user-agent") != null && !httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0"))
+                checkRequest(request);
 
-        if(!ObjectUtils.isEmpty(token)){
-            if(tokenService.isTokenExpired(token)){
-                logger.warn("JWT The Access token is expired");
-                logger.warn("--------------------------------------------------------------------------");
-                throw new JwtException("JWT The Access token is expired");
-            }
+            String token = ((HttpServletRequest) request).getHeader("Auth");
 
-            if(tokenService.verifyToken(token)){
-                try{
-                    String email=tokenService.getUid(token);
-                    String role=tokenService.getRole(token);
-
-                    UserInfoDto userInfoDto = UserInfoDto.builder()
-                            .email(email)
-                            .role(role)
-                            .build();
-
-                    Authentication authentication = getAuthentication(userInfoDto);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    logger.warn("> Access permitted");
+            if (!ObjectUtils.isEmpty(token)) {
+                if (tokenService.isTokenExpired(token)) {
+                    logger.warn("JWT The Access token is expired");
                     logger.warn("--------------------------------------------------------------------------");
-                }catch (ExpiredJwtException e) {
-                    logger.warn("JWT The access token is expired and not valid anymore", e);
-                    logger.warn("--------------------------------------------------------------------------");
-                    throw new JwtException("JWT The access token is expired");
-                } catch(SignatureException e){
-                    logger.warn("JWT Authentication Failed. Username or Password not valid.");
-                    logger.warn("--------------------------------------------------------------------------");
-                    throw new JwtException("JWT User authentication failed");
+                    throw new JwtException("JWT The Access token is expired");
                 }
-            }else{
-                logger.warn("JWT Invalid access token");
-                logger.warn("--------------------------------------------------------------------------");
-                throw new JwtException("JWT Invalid access token");
+
+                if (tokenService.verifyToken(token)) {
+                    try {
+                        String email = tokenService.getUid(token);
+                        String role = tokenService.getRole(token);
+
+                        UserInfoDto userInfoDto = UserInfoDto.builder()
+                                .email(email)
+                                .role(role)
+                                .build();
+
+                        Authentication authentication = getAuthentication(userInfoDto);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        logger.warn("> Access permitted");
+                        logger.warn("--------------------------------------------------------------------------");
+
+                        chain.doFilter(request, response);
+                    } catch (ExpiredJwtException e) {
+                        logger.warn("JWT The access token is expired and not valid anymore", e);
+                        logger.warn("--------------------------------------------------------------------------");
+                        throw new JwtException("JWT The access token is expired");
+                    } catch (SignatureException e) {
+                        logger.warn("JWT Authentication Failed. Username or Password not valid.");
+                        logger.warn("--------------------------------------------------------------------------");
+                        throw new JwtException("JWT User authentication failed");
+                    }
+                } else {
+                    logger.warn("JWT Invalid access token");
+                    logger.warn("--------------------------------------------------------------------------");
+                    throw new JwtException("JWT Invalid access token");
+                }
+            }else {
+                if (httpServletRequest.getHeader("user-agent") != null && !httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0")) {
+                    logger.warn("Empty Token");
+                    logger.warn("--------------------------------------------------------------------------");
+                }
+                chain.doFilter(request, response);
             }
+        }else {
+            throw new JwtException("Access Denied");
         }
-        if(httpServletRequest.getHeader("user-agent")!=null&&!httpServletRequest.getHeader("user-agent").equals("ELB-HealthChecker/2.0")) {
-            logger.warn("Access Denied");
-            logger.warn("--------------------------------------------------------------------------");
-        }
-        chain.doFilter(request, response);
     }
     public Authentication getAuthentication(UserInfoDto member){
         return new UsernamePasswordAuthenticationToken(member, "", Arrays.asList(new SimpleGrantedAuthority(member.getRole())));
@@ -117,5 +127,23 @@ public class JwtAuthFilter extends GenericFilterBean {
             logger.warn("> Result : IP Address : "+ip);
 //            logger.warn("--------------------------------------------------------------------------");
         }
+    }
+
+    private boolean isValidURL(String target) {
+        String regex1="http:\\/\\/www.cocktaildakk.shop\\/*";
+        String regex2="http:\\/\\/localhost:8080\\/*";
+        String regex3="\\/*";
+
+        Pattern pattern1 = Pattern.compile(regex1, Pattern.CASE_INSENSITIVE);
+        Matcher matcher1 = pattern1.matcher(target);
+
+        Pattern pattern2 = Pattern.compile(regex2, Pattern.CASE_INSENSITIVE);
+        Matcher matcher2 = pattern2.matcher(target);
+
+        Pattern pattern3 = Pattern.compile(regex3, Pattern.CASE_INSENSITIVE);
+        Matcher matcher3 = pattern3.matcher(target);
+
+        boolean result=matcher1.find()||matcher2.find()||matcher3.find();
+        return result;
     }
 }
