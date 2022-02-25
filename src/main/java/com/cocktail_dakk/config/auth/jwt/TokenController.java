@@ -35,7 +35,9 @@ public class TokenController {
             if(tokenService.verifyToken(token)){
                 try{
                     String email=tokenService.getUid(token);
-                    Token newToken=tokenService.generateToken(email, "USER");
+                    String role=tokenService.getRole(token);
+
+                    Token newToken=tokenService.generateToken(email, role);
 
                     return new BaseResponse<>(newToken);
                 }catch (ExpiredJwtException e) {

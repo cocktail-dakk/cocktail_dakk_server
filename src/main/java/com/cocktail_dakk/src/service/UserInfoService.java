@@ -44,7 +44,12 @@ public class UserInfoService {
             UserInfoStatusProjection userInfoStatusProjection = userInfoRepository.findStatusByEmail(userInfoDto.getEmail())
                     .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
 
-            return new UserInfoStatusRes(userInfoStatusProjection.getEmail(), userInfoStatusProjection.getStatus());
+            Status status = userInfoStatusProjection.getStatus();
+            if(status==null||status==Status.INACTIVE){
+                return new UserInfoStatusRes(userInfoStatusProjection.getEmail(), true);
+            }else{
+                return new UserInfoStatusRes(userInfoStatusProjection.getEmail(), false);
+            }
         }catch (BaseException e){
             throw new BaseException(e.getStatus());
         }

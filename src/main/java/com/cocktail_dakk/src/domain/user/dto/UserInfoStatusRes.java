@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserInfoStatusRes {
     private String email;
-    private Status status;
+    private Boolean doInit;
 
     @Builder
-    public UserInfoStatusRes(String email, Status status){
+    public UserInfoStatusRes(String email, Boolean doInit){
         this.email=email;
-        this.status=status;
+        this.doInit=doInit;
     }
 }
