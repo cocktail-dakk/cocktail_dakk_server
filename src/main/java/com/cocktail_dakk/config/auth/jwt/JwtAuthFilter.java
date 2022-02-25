@@ -1,6 +1,7 @@
 package com.cocktail_dakk.config.auth.jwt;
 
 import com.cocktail_dakk.config.auth.dto.UserInfoDto;
+import com.cocktail_dakk.src.domain.user.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
@@ -48,7 +49,7 @@ public class JwtAuthFilter extends GenericFilterBean {
                 if (tokenService.verifyToken(token)) {
                     try {
                         String email = tokenService.getUid(token);
-                        String role = tokenService.getRole(token);
+                        String role=tokenService.getRole(token);
 
                         UserInfoDto userInfoDto = UserInfoDto.builder()
                                 .email(email)

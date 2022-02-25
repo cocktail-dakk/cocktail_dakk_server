@@ -55,7 +55,7 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.email").value("test"))
-                .andExpect(jsonPath("$.result.status").value("ACTIVE"));
+                .andExpect(jsonPath("$.result.doInit").value(false));
     }
 
     @Test
