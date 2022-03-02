@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+generated
+
+src/main/resources/application-oauth.properties
+
 ### STS ###
 .apt_generated
 .classpath
@@ -37,3 +41,5 @@ out/
 .vscode/
 
 .DS_Store
+
+src/main/resources/application-real-db.properties
