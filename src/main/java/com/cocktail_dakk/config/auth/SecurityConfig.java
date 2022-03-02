@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/tokensignin", "/users/login", "/token/**", "/").permitAll()
+                .antMatchers("/users/tokensignin", "/users/login", "/token/**", "/", "/Photos/**", "/*.css", "/*.html").permitAll()
                 .antMatchers("/users/status","/users/info", "users/modify","/cocktaildakk/v1/**").hasRole(Role.USER.name()).anyRequest().authenticated();
 //                .and()
 //                .logout().logoutSuccessUrl("/")
