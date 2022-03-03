@@ -1,7 +1,6 @@
 package com.cocktail_dakk.config.auth.jwt;
 
 import com.cocktail_dakk.config.auth.dto.UserInfoDto;
-import com.cocktail_dakk.src.domain.user.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
@@ -11,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -22,12 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends GenericFilterBean {
     private final TokenService tokenService;
+    private static final Pattern pattern1=Pattern.compile("^http:\\/\\/www.cocktaildakk.shop\\/.*");
+    private static final Pattern pattern2=Pattern.compile("^http:\\/\\/localhost:8080\\/.*");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -130,14 +129,6 @@ public class JwtAuthFilter extends GenericFilterBean {
     }
 
     private boolean isValidURL(String target) {
-        String regex1="^http:\\/\\/www.cocktaildakk.shop\\/.*";
-        String regex2="^http:\\/\\/localhost:8080\\/.*";
-
-        boolean matches1 = Pattern.matches(regex1, target);
-        boolean matches2 = Pattern.matches(regex2, target);
-
-        boolean result=matches1|matches2;
-
-        return result;
+        return pattern1.matcher(target).matches()|pattern2.matcher(target).matches();
     }
 }
