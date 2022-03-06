@@ -19,27 +19,25 @@ public class UserInfo {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userInfoId;
 
-    @Column(length = 20)
     @NotNull
-    private String deviceNum;
+    private String email;
 
     @Column(length = 20)
-    @NotNull
     private String nickname;
 
-    @NotNull
     private Integer age;
 
     @Column(length = 1)
-    @NotNull
     private String sex;
 
-    @NotNull
     private Integer alcoholLevel;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Role role;
 
     @OneToMany(mappedBy = "userInfo")
     private List<UserKeyword> userKeywords=new ArrayList<>();
@@ -51,13 +49,21 @@ public class UserInfo {
     private List<UserDrink> userDrinks=new ArrayList<>();
 
     @Builder
-    public UserInfo(String deviceNum, String nickname, Integer age, String sex, Integer alcoholLevel, Status status){
-        this.deviceNum=deviceNum;
+    public UserInfo(String email, Role role){
+        this.email=email;
+        this.role=role;
+    }
+
+    public void initUserInfo(String nickname, Integer age, String sex, Integer alcoholLevel, Status status){
         this.nickname=nickname;
         this.age=age;
         this.sex=sex;
         this.alcoholLevel= alcoholLevel;
         this.status=status;
+    }
+
+    public String getRoleKey(){
+        return this.role.getKey();
     }
 
     public void updateUser(String nickname, Integer alcoholLevel){

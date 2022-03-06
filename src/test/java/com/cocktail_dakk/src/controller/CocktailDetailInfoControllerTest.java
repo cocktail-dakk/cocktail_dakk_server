@@ -1,5 +1,6 @@
 package com.cocktail_dakk.src.controller;
 
+import com.cocktail_dakk.config.auth.jwt.TokenService;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.Drink;
@@ -8,14 +9,16 @@ import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethod;
 import com.cocktail_dakk.src.domain.mixingMethod.MixingMethodRepository;
+import com.cocktail_dakk.src.domain.user.UserInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -55,17 +58,30 @@ public class CocktailDetailInfoControllerTest {
     @Autowired
     CocktailMixingMethodRepository cocktailMixingMethodRepository;
 
+    @Autowired
+    UserInfoRepository userInfoRepository;
+
     @Test
+    @WithMockUser(roles = "USER")
     @Transactional
     public void details() throws Exception{
         saveCocktailInfo();
+//        Token token = createUser();
+        Long cocktailInfoId = cocktailInfoRepository.findAll().get(0).getCocktailInfoId();
 
         // Then
-        mockMvc.perform(get("/cocktails/details")
-                        .param("id", "1"))
+        mockMvc.perform(get("/cocktaildakk/v1/cocktails/details")
+                        .with(request -> {
+                            request.setScheme("http");
+                            request.setServerName("localhost");
+                            request.setServerPort(8080);
+
+                            return request;
+                        })
+                        .param("id", cocktailInfoId.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.result.cocktailInfoId").value(1));
+                .andExpect(jsonPath("$.result.cocktailInfoId").value(cocktailInfoId));
 
     }
 
@@ -134,8 +150,4 @@ public class CocktailDetailInfoControllerTest {
 
         cocktailMixingMethodRepository.save(cocktailMixingMethod1);
     }
-
-
-
-
 }

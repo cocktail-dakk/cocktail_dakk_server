@@ -8,15 +8,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UserModifyReq {
-    private String deviceNum;
     private String nickname;
     private Integer alcoholLevel;
     private String favouritesKeywords;
     private String favouritesDrinks;
 
     @Builder
-    public UserModifyReq(String deviceNum,String nickname, Integer alcoholLevel, String favouritesKeywords, String favouritesDrinks){
-        this.deviceNum = deviceNum;
+    public UserModifyReq(String nickname, Integer alcoholLevel, String favouritesKeywords, String favouritesDrinks){
         this.nickname = nickname;
         this.alcoholLevel = alcoholLevel;
         this.favouritesKeywords = favouritesKeywords;

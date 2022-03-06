@@ -26,29 +26,12 @@ public enum BaseResponseStatus {
     STAR_OUT_OF_RANGE(false,2008,"별점을 확인해주세요."),
     POST_KEYWORD_EMPTY(false,2009,"칵테일 취향을 입력해주세요"),
     POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
-    POST_OUT_OF_RANGE(false,2011,"5개 미만으로 선택해주세요"),
-
-    // users
-    USERS_EMPTY_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
-
-    // [POST] /users
-    POST_USERS_EMPTY(false, 2015, "내용을 입력해주세요."),
-    POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
-    POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
-    POST_USERS_INVALID_PASSWORD(false, 2022, "비밀번호 형식을 확인해주세요."),
-
-
-    // [POST] /products
-    POST_PRODUCTS_EMPTY_TITLE(false, 2018, "제목을 입력해주세요."),
-
-    // [POST] /chat
-    POST_CHAT_EMPTY(false,2019, "내용을 입력해주세요."),
-    POST_CHAT_NOT_USER(false,2020,"채팅방에 해당하는 유저가 아닙니다."),
-
-    NOT_MATCH_PRODUCT(false,2021,"요청에 실패하셨습니다."),
-    PATCH_PRODUCT_EMPTY(false,2022, "내용을 입력해주세요."),
+    DUPLICATE_LIKE(false,2011,"이미 즐겨찾기를 한 칵테일입니다."),
+    NOT_EXIST_USER_COCKTAIL(false,2012,"존재하지 않는 즐겨찾기 목록입니다."),
+    POST_OUT_OF_RANGE(false,2013,"5개 미만으로 선택해주세요"),
 
     EXIST_USER(false,2023,"이미 존재하는 회원입니다."),
+
 
     /**
      * 3000 : Response 오류
@@ -56,7 +39,6 @@ public enum BaseResponseStatus {
     // Common
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
@@ -74,12 +56,17 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
-    //[PATCH] /products/{productIdx}
-    MODIFY_FAIL_PRODUCT(false,4013,"상품 변경 실패"),
-    DELETE_FATL_PRODUCT(false,4014, "상품 삭제 실패");
+    /**
+    * 5000: jwt 토큰 오류
+    */
+    JWT_REFRESH_TOKEN_EXPIRED_ERROR(false, 5001, "refresh 토큰이 만료됐습니다."),
+    JWT_REFRESH_TOKEN_SIGNATURE_ERROR(false, 5002, "유효하지 않은 refresh 토큰입니다."),
+    JWT_REFRESH_TOKEN_EMPTY_ERROR(false, 5003, "refresh 토큰이 없어 접근 권한 없습니다."),
+    ID_TOKEN_EXPIRED_ERROR(false, 5004, "id 토큰이 만료됐습니다."),
+    ID_TOKEN_NOT_VALID_ERROR(false, 5005, "유효하지 않은 id 토큰입니다."),
+    ID_TOKEN_EMPTY_ERROR(false, 5006, "id 토큰이 없어 접근 권한이 없습니다."),
+    ID_TOKEN_VERIFY_ERROR(false, 5007, "id 토큰의 검증이 실패했습니다.");
 
-
-    // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
 
 

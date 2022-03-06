@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostRatingReq {
-    private String deviceNum;
     private Long cocktailInfoId;
     private float starPoint;
 }

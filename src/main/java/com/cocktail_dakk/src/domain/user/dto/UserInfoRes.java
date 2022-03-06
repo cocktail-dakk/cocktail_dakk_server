@@ -1,14 +1,11 @@
 package com.cocktail_dakk.src.domain.user.dto;
 
 import com.cocktail_dakk.src.domain.drink.dto.DrinkRes;
-import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.dto.KeywordRes;
 import com.cocktail_dakk.src.domain.user.UserInfo;
-import com.cocktail_dakk.src.domain.user.UserKeyword;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserInfoRes {
     private Long id;
-    private String deviceNum;
+    private String email;
     private String nickname;
     private Integer age;
     private String sex;
@@ -26,7 +23,7 @@ public class UserInfoRes {
 
     public UserInfoRes(UserInfo userInfo){
         this.id = userInfo.getUserInfoId();
-        this.deviceNum = userInfo.getDeviceNum();
+        this.email=userInfo.getEmail();
         this.nickname = userInfo.getNickname();
         this.age = userInfo.getAge();
         this.sex = userInfo.getSex();

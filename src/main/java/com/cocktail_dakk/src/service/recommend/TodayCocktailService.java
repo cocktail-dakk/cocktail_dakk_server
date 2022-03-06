@@ -1,6 +1,7 @@
 package com.cocktail_dakk.src.service.recommend;
 
 import com.cocktail_dakk.config.BaseException;
+import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.cocktail.dto.GetTodayCocktailInfoRes;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.cocktail_dakk.config.BaseResponseStatus.DATABASE_ERROR;
-import static com.cocktail_dakk.config.BaseResponseStatus.REQUEST_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -53,16 +53,18 @@ public class TodayCocktailService {
             cocktailTodayRepository.deleteAll();
 
             //랜덤 인덱스 중복 없이 5개 추출
-            Long[] randomCocktailId = new Long[5];
-            long cocktailCount = cocktailInfoRepository.count();
-            Long lastInsertId = cocktailInfoRepository.findAll().get((int) cocktailCount-1).getCocktailInfoId(); //마지막에 들어간 id
+            List<CocktailInfo> activeCocktailInfos = cocktailInfoRepository.findAllByStatus(Status.ACTIVE);
+            int activeCocktailInfoCount = activeCocktailInfos.size();
+            Integer[] randomCocktailId = new Integer[5];
+            getRandomIndex(activeCocktailInfoCount, randomCocktailId);
 
-            getRandomIndexes(randomCocktailId, lastInsertId);
-
+            //오늘의 칵테일 id 저장
             CocktailToday cocktailToday = new CocktailToday();
-            for(int i=0; i<5; i++){
-                cocktailToday.getRandomId().add(randomCocktailId[i]);
-                log.info("randomId ={}", randomCocktailId[i]);
+            for (int i = 0; i < 5; i++) {
+                CocktailInfo randomCocktailInfo = activeCocktailInfos.get(randomCocktailId[i]);
+                Long cocktailInfoId = randomCocktailInfo.getCocktailInfoId();
+                cocktailToday.getRandomId().add(cocktailInfoId);
+                log.info("randomId ={}", cocktailInfoId);
             }
             cocktailTodayRepository.save(cocktailToday);
 
@@ -71,18 +73,11 @@ public class TodayCocktailService {
         }
     }
 
-    private void getRandomIndexes(Long[] randomCocktailId, long cocktailCount) {
-        for(int i = 0; i<5; i++){
-            randomCocktailId[i] = Long.valueOf((long)(Math.random() * (cocktailCount + 1)));
-            Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(randomCocktailId[i]);
-            //존재하지 않는 인덱스라면
-            if(cocktailInfo.isEmpty()){
-                i -- ;
-                continue;
-            }
-
+    private void getRandomIndex(int activeCocktailInfoCount, Integer[] randomCocktailId) {
+        for(int i = 0; i < 5; i++){
+            randomCocktailId[i] = Integer.valueOf((int) (Math.random() * activeCocktailInfoCount));
             for (int j = 0; j < i; j++) {
-                if(randomCocktailId[i].equals(randomCocktailId[j])){
+                if (randomCocktailId[i].equals(randomCocktailId[j])) {
                     i--;
                     break;
                 }
