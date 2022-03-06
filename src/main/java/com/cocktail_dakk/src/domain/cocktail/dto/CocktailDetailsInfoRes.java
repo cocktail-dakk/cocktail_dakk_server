@@ -2,6 +2,8 @@ package com.cocktail_dakk.src.domain.cocktail.dto;
 
 
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
+import com.cocktail_dakk.src.domain.drink.Drink;
+import com.cocktail_dakk.src.domain.drink.dto.DrinkRes;
 import com.cocktail_dakk.src.domain.keyword.dto.KeywordRes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,7 @@ public class CocktailDetailsInfoRes {
     private String todayImgUrl;
     private List<MixingMethodRes> cocktailMixingMethod;
     private List<KeywordRes> cocktailKeyword;
+    private List<DrinkRes> cocktailDrink;
     private Integer alcoholLevel;
     private String ingredient;
     private BigDecimal ratingAvg;
@@ -40,6 +43,10 @@ public class CocktailDetailsInfoRes {
         this.cocktailKeyword = cocktailInfo.getCocktailKeywords()
                 .stream()
                 .map(KeywordRes::new)
+                .collect(Collectors.toList());
+        this.cocktailDrink = cocktailInfo.getCocktailDrinks()
+                .stream()
+                .map(DrinkRes::new)
                 .collect(Collectors.toList());
         this.alcoholLevel = cocktailInfo.getAlcoholLevel();
         this.ingredient = cocktailInfo.getIngredient();
