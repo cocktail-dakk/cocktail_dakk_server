@@ -28,6 +28,7 @@ public enum BaseResponseStatus {
     POST_DRINK_EMPTY(false,2010,"칵테일 기주를 입력해주세요"),
     DUPLICATE_LIKE(false,2011,"이미 즐겨찾기를 한 칵테일입니다."),
     NOT_EXIST_USER_COCKTAIL(false,2012,"존재하지 않는 즐겨찾기 목록입니다."),
+    POST_OUT_OF_RANGE(false,2013,"5개 미만으로 선택해주세요"),
 
     EXIST_USER(false,2023,"이미 존재하는 회원입니다."),
 

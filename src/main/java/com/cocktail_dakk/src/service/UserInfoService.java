@@ -106,6 +106,10 @@ public class UserInfoService {
         String[] tempKeywordArr = favouritesKeywords.split(",");
         String[] tempDrinksArr = favouritesDrinks.split(",");
 
+        if(tempKeywordArr.length > 4 || tempDrinksArr.length > 4){
+            throw new BaseException(POST_OUT_OF_RANGE);
+        }
+
         try {
             // userDrink에 값이 있으면 delete하고 시작
             if(!userInfo.getUserDrinks().isEmpty()){
