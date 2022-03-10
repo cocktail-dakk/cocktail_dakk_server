@@ -44,7 +44,7 @@ class CocktailInfoRepositoryTest {
         saveCocktailInfo();
 
         // Then
-        List<CocktailInfo> search = cocktailInfoRepository.findSearch(Pageable.ofSize(10), "깔끔한", "깔끔한", "깔끔한", "깔끔한");
+        List<CocktailInfo> search = cocktailInfoRepository.findSearch(Pageable.ofSize(10), "깔끔한");
         assertThat(search.size()).isEqualTo(2);
         assertThat(search.get(0).getEnglishName()).isEqualTo("21st Century");
         assertThat(search.get(1).getEnglishName()).isEqualTo("Gold Rush");
