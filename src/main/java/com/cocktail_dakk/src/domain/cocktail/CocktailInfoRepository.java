@@ -13,5 +13,7 @@ public interface CocktailInfoRepository extends JpaRepository<CocktailInfo, Long
     List<CocktailInfo> findSearch(Pageable pageable, @Param("koreanName") String koreanName, @Param("englishName")String englishName, @Param("ingredients") String ingredients, @Param("keywordName") String keywordName);
 
     CocktailInfo findByCocktailInfoId(Long id);
-    List<CocktailInfo> findAllByStatus(Status status);
+
+    @Query("SELECT distinct c from CocktailInfo c join fetch c.cocktailKeywords where c.status = 'ACTIVE'")
+    List<CocktailInfo> findAllByStatus();
 }

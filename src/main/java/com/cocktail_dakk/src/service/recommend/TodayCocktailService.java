@@ -53,7 +53,7 @@ public class TodayCocktailService {
             cocktailTodayRepository.deleteAll();
 
             //랜덤 인덱스 중복 없이 5개 추출
-            List<CocktailInfo> activeCocktailInfos = cocktailInfoRepository.findAllByStatus(Status.ACTIVE);
+            List<CocktailInfo> activeCocktailInfos = cocktailInfoRepository.findAllByStatus();
             int activeCocktailInfoCount = activeCocktailInfos.size();
             Integer[] randomCocktailId = new Integer[5];
             getRandomIndex(activeCocktailInfoCount, randomCocktailId);
