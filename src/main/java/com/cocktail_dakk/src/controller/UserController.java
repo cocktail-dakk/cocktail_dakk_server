@@ -53,7 +53,7 @@ public class UserController {
     @GetMapping("/info")
     public BaseResponse<UserInfoRes> getUserInfoId(){
         try {
-            return new BaseResponse<>(new UserInfoRes(userService.getUserInfo()));
+            return new BaseResponse<>(new UserInfoRes(userService.getUserInfoWithKeywordAndDrink()));
         } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
