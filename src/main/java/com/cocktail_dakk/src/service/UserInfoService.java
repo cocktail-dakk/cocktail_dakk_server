@@ -15,9 +15,13 @@ import com.cocktail_dakk.src.domain.user.dto.UserModifyReq;
 //import com.cocktail_dakk.src.domain.user.dto.UserSignUpReq;
 import com.cocktail_dakk.src.domain.user.projection.UserInfoStatusProjection;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.util.List;
 
 import static com.cocktail_dakk.config.BaseResponseStatus.*;
 
@@ -30,12 +34,29 @@ public class UserInfoService {
     private final KeywordRepository keywordRepository;
     private final DrinkRepository drinkRepository;
     private final UserDrinkRepository userDrinkRepository;
+    private final EntityManager entityManager;
 
     public UserInfo getUserInfo() throws BaseException {
-        UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return userInfoRepository.findByEmail(userInfoDto.getEmail())
-                .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+            List<UserInfo> userInfo = entityManager.createQuery("select distinct u from UserInfo  u join fetch u.userKeywords uk join fetch uk.keyword k where u.email=:email", UserInfo.class)
+                    .setParameter("email", userInfoDto.getEmail())
+                    .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+
+            userInfo=entityManager.createQuery("select distinct u from UserInfo  u join fetch u.userDrinks ud join fetch ud.drink d where u.email=:email", UserInfo.class)
+                    .setParameter("email", userInfoDto.getEmail())
+                    .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+
+            if(userInfo.isEmpty()){
+                throw new BaseException(NOT_EXIST_USER);
+            }
+            return userInfo.get(0);
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 
     public UserInfoStatusRes getUserInfoStatus() throws BaseException{
@@ -50,8 +71,8 @@ public class UserInfoService {
             }else{
                 return new UserInfoStatusRes(userInfoStatusProjection.getEmail(), false);
             }
-        }catch (BaseException e){
-            throw new BaseException(e.getStatus());
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
@@ -75,8 +96,8 @@ public class UserInfoService {
             addFavourites(userInfoReq.getFavouritesKeywords(),userInfoReq.getFavouritesDrinks(), userInfo);
 
             return new UserInfoRes(userInfo);
-        } catch (BaseException e){
-            throw new BaseException(e.getStatus());
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
@@ -89,8 +110,8 @@ public class UserInfoService {
             addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
 
             return new UserInfoRes(userInfo);
-        } catch (BaseException e){
-            throw new BaseException(e.getStatus());
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
