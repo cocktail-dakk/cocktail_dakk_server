@@ -111,7 +111,7 @@ public class UserInfoService {
     @Transactional
     public UserInfoRes modifyUser(UserModifyReq userModifyReq) throws BaseException{
         try {
-            UserInfo userInfo = getUserInfoWithKeywordAndDrink();
+            UserInfo userInfo = getUserInfo();
             userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
 
             addFavourites(userModifyReq.getFavouritesKeywords(), userModifyReq.getFavouritesDrinks(), userInfo);
