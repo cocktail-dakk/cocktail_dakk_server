@@ -20,8 +20,6 @@ public class SearchCocktailInfoRes {
     private List<KeywordRes> keywords;
     private String smallNukkiImageURL;
     private BigDecimal ratingAvg;
-    private Integer alcoholLevel;
-    private List<DrinkRes> drinks;
 
     public SearchCocktailInfoRes(CocktailInfo cocktailInfo) {
         this.cocktailInfoId = cocktailInfo.getCocktailInfoId();
@@ -33,10 +31,5 @@ public class SearchCocktailInfoRes {
                 .collect(Collectors.toList());
         this.smallNukkiImageURL = cocktailInfo.getSmallNukkiImageURL();
         this.ratingAvg = cocktailInfo.getRatingAvg();
-        this.alcoholLevel=cocktailInfo.getAlcoholLevel();
-        this.drinks=cocktailInfo.getCocktailDrinks()
-                .stream()
-                .map(DrinkRes::new)
-                .collect(Collectors.toList());
     }
 }
