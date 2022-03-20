@@ -132,6 +132,7 @@ class UserCocktailServiceTest {
     @Transactional
     public void checkList() throws Exception{
         GetUserRecommendationRes userRecommendCocktail = userCocktailService.getUserRecommendCocktail(userInfoRepository.findByEmail("test").get());
+        System.out.println("====쿼리 확인====");
         List<UserRecommendationList> userRecommendationLists = userRecommendCocktail.getUserRecommendationLists();
 
         for (UserRecommendationList userRecommendationList : userRecommendationLists) {
