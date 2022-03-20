@@ -4,6 +4,10 @@ import com.cocktail_dakk.config.auth.dto.UserInfoDto;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfo;
 import com.cocktail_dakk.src.domain.cocktail.CocktailInfoRepository;
+import com.cocktail_dakk.src.domain.cocktail.CocktailKeyword;
+import com.cocktail_dakk.src.domain.cocktail.CocktailKeywordRepository;
+import com.cocktail_dakk.src.domain.keyword.Keyword;
+import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
 import com.cocktail_dakk.src.domain.user.dto.UserLikeRes;
 import org.assertj.core.api.Assertions;
@@ -39,6 +43,12 @@ class LikeServiceTest {
     @Autowired
     private UserCocktailRepository userCocktailRepository;
 
+    @Autowired
+    private CocktailKeywordRepository cocktailKeywordRepository;
+
+    @Autowired
+    private KeywordRepository keywordRepository;
+
     @Test
     @Transactional
     public void getLikes() throws Exception{
@@ -64,7 +74,7 @@ class LikeServiceTest {
                 userCocktailRepository.findAll().get(0).getCocktailInfo().getCocktailInfoId());
 
         //then
-        Assertions.assertThat(userCocktailRepository.findByUserInfo(userInfo).size()).isEqualTo(2);
+        Assertions.assertThat(userCocktailRepository.findByUserInfo(userInfo.getUserInfoId()).size()).isEqualTo(2);
     }
 
     private void createUserAndLikeCocktail(){
@@ -98,6 +108,30 @@ class LikeServiceTest {
         saveUserCocktail(userInfo, cocktailInfo1);
         saveUserCocktail(userInfo, cocktailInfo2);
         saveUserCocktail(userInfo, cocktailInfo3);
+
+        //칵테일 키워드
+        Keyword keyword=Keyword.builder()
+                .keywordName("우유")
+                .build();
+        keywordRepository.save(keyword);
+
+        Keyword keyword2=Keyword.builder()
+                .keywordName("상쾌한")
+                .build();
+        keywordRepository.save(keyword2);
+
+        Keyword keyword3=Keyword.builder()
+                .keywordName("레이디킬러")
+                .build();
+        keywordRepository.save(keyword3);
+
+        CocktailKeyword cocktailKeyword1 = new CocktailKeyword(cocktailInfo1, keyword);
+        CocktailKeyword cocktailKeyword2 = new CocktailKeyword(cocktailInfo2, keyword2);
+        CocktailKeyword cocktailKeyword3 = new CocktailKeyword(cocktailInfo3, keyword3);
+
+        cocktailKeywordRepository.save(cocktailKeyword1);
+        cocktailKeywordRepository.save(cocktailKeyword2);
+        cocktailKeywordRepository.save(cocktailKeyword3);
 
     }
 

@@ -33,7 +33,7 @@ public class TodayCocktailService {
 
             List<CocktailInfo> cocktailInfos = new ArrayList<>();
             for (Long random : randomId) {
-                Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(random);
+                Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findByCocktailIdToday(random);
                 cocktailInfos.add(cocktailInfo.get());
             }
             return cocktailInfos.stream()

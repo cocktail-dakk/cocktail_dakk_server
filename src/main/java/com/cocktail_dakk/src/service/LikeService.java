@@ -29,13 +29,12 @@ public class LikeService {
 
     @Transactional
     public void addLike(UserInfo userInfo, Long cocktailId) throws BaseException {
-
         CocktailInfo cocktailInfo = getCocktailInfo(cocktailId);
-        try{
-            if (userCocktailRepository.existsLikeByUserInfoAndCocktailInfo(userInfo, cocktailInfo)){
-                throw new BaseException(DUPLICATE_LIKE);
-            }
+        if (userCocktailRepository.existsLikeByUserInfoAndCocktailInfo(userInfo, cocktailInfo)){
+            throw new BaseException(DUPLICATE_LIKE);
+        }
 
+        try{
             UserCocktail userCocktail = UserCocktail.builder()
                     .userInfo(userInfo)
                     .cocktailInfo(cocktailInfo)
@@ -50,10 +49,10 @@ public class LikeService {
     @Transactional
     public void deleteLike(UserInfo userInfo, Long cocktailId) throws BaseException {
         CocktailInfo cocktailInfo = getCocktailInfo(cocktailId);
-        try {
-            UserCocktail userCocktail = userCocktailRepository.findByUserInfoAndCocktailInfo(userInfo, cocktailInfo)
-                    .orElseThrow(() -> new BaseException(NOT_EXIST_USER_COCKTAIL));
+        UserCocktail userCocktail = userCocktailRepository.findByUserInfoAndCocktailInfo(userInfo, cocktailInfo)
+                .orElseThrow(() -> new BaseException(NOT_EXIST_USER_COCKTAIL));
 
+        try {
             userCocktailRepository.deleteById(userCocktail.getUserCocktailId());
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -63,7 +62,7 @@ public class LikeService {
     @Transactional(readOnly = true)
     public List<UserLikeRes> getUserLikes(UserInfo userInfo)throws BaseException{
         try {
-            return userCocktailRepository.findByUserInfo(userInfo).
+            return userCocktailRepository.findByUserInfo(userInfo.getUserInfoId()).
                     stream()
                     .map(UserCocktail::getCocktailInfo)
                     .map(UserLikeRes::new)
