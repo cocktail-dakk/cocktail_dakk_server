@@ -3,6 +3,7 @@ package com.cocktail_dakk.src.service.recommend;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.drink.DrinkRepository;
+import com.cocktail_dakk.src.domain.keyword.Keyword;
 import com.cocktail_dakk.src.domain.keyword.KeywordRepository;
 import com.cocktail_dakk.src.domain.user.*;
 import org.junit.jupiter.api.AfterAll;
@@ -31,7 +32,8 @@ class TodayCocktailServiceTest {
     private CocktailTodayRepository cocktailTodayRepository;
 
     @BeforeAll
-    private static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository) {
+    private static void beforeAll(@Autowired CocktailInfoRepository cocktailInfoRepository,
+                                  @Autowired CocktailKeywordRepository cocktailKeywordRepository, @Autowired KeywordRepository keywordRepository) {
         CocktailInfo cocktailInfo1 = createCocktail("Golden Dream", "골든 드림", "달콤하고 부드러운 맛 덕분에 주로 식후주로 사용되며, 이전 IBA 공식 칵테일에서도 식후주로 분류된 바 있다.",
                 "url111", "url222", "url333", 2, Status.ACTIVE);
         CocktailInfo cocktailInfo2 = createCocktail("cocktailInfo2", "칵테일정보2", "두 번째 테스트용 칵테일 데이터",
@@ -64,20 +66,48 @@ class TodayCocktailServiceTest {
         cocktailInfoRepository.save(cocktailInfo9);
         cocktailInfoRepository.save(cocktailInfo10);
 
-        UserInfo userInfo1 =createUser("test1", "minnie",23,"F",12,Status.ACTIVE);
-        UserInfo userInfo2 =createUser("test2", "dale",23,"M",2,Status.ACTIVE);
-        UserInfo userInfo3 =createUser("test3","jjung",23,"F",12,Status.ACTIVE);
+        Keyword keyword1=Keyword.builder()
+                .keywordName("깔끔한")
+                .build();
 
-        userInfoRepository.save(userInfo1);
-        userInfoRepository.save(userInfo2);
-        userInfoRepository.save(userInfo3);
+        Keyword keyword2=Keyword.builder()
+                .keywordName("달콤한")
+                .build();
+
+        keywordRepository.save(keyword1);
+        keywordRepository.save(keyword2);
+
+        CocktailKeyword cocktailKeyword1=new CocktailKeyword(cocktailInfo1, keyword1);
+        CocktailKeyword cocktailKeyword2=new CocktailKeyword(cocktailInfo2, keyword2);
+        CocktailKeyword cocktailKeyword3=new CocktailKeyword(cocktailInfo3, keyword1);
+        CocktailKeyword cocktailKeyword4=new CocktailKeyword(cocktailInfo4, keyword2);
+        CocktailKeyword cocktailKeyword5=new CocktailKeyword(cocktailInfo5, keyword1);
+        CocktailKeyword cocktailKeyword6=new CocktailKeyword(cocktailInfo6, keyword2);
+        CocktailKeyword cocktailKeyword7=new CocktailKeyword(cocktailInfo7, keyword1);
+        CocktailKeyword cocktailKeyword8=new CocktailKeyword(cocktailInfo8, keyword2);
+        CocktailKeyword cocktailKeyword9=new CocktailKeyword(cocktailInfo9, keyword1);
+        CocktailKeyword cocktailKeyword10=new CocktailKeyword(cocktailInfo10, keyword2);
+
+        cocktailKeywordRepository.save(cocktailKeyword1);
+        cocktailKeywordRepository.save(cocktailKeyword2);
+        cocktailKeywordRepository.save(cocktailKeyword3);
+        cocktailKeywordRepository.save(cocktailKeyword4);
+        cocktailKeywordRepository.save(cocktailKeyword5);
+        cocktailKeywordRepository.save(cocktailKeyword6);
+        cocktailKeywordRepository.save(cocktailKeyword7);
+        cocktailKeywordRepository.save(cocktailKeyword8);
+        cocktailKeywordRepository.save(cocktailKeyword9);
+        cocktailKeywordRepository.save(cocktailKeyword10);
+
     }
 
     @AfterAll
-    private static void afterAll(@Autowired CocktailInfoRepository cocktailInfoRepository, @Autowired UserInfoRepository userInfoRepository){
+    private static void afterAll(@Autowired CocktailInfoRepository cocktailInfoRepository,
+                                 @Autowired KeywordRepository keywordRepository, @Autowired CocktailKeywordRepository cocktailKeywordRepository){
         System.out.println("afterAll");
+        cocktailKeywordRepository.deleteAll();
+        keywordRepository.deleteAll();
         cocktailInfoRepository.deleteAll();
-        userInfoRepository.deleteAll();
     }
 
 
@@ -113,17 +143,6 @@ class TodayCocktailServiceTest {
                 .alcoholLevel(level)
                 .status(status)
                 .build();
-    }
-
-    private static UserInfo createUser(String email, String nickname, Integer age, String sex, Integer alcoholLevel, Status status){
-        UserInfo userInfo = UserInfo.builder()
-                .email(email)
-                .role(Role.USER)
-                .build();
-
-        userInfo.initUserInfo(nickname, age, sex, alcoholLevel, status);
-
-        return userInfo;
     }
 
 }

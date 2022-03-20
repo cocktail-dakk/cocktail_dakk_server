@@ -22,7 +22,7 @@ public class SearchCocktailInfoService{
 
     public Slice<SearchCocktailInfoRes> findByInputStrAll(Pageable pageable, String inputStr) throws BaseException{
         try {
-            List<SearchCocktailInfoRes> result = cocktailInfoRepository.findSearch(pageable, inputStr, inputStr, inputStr, inputStr)
+            List<SearchCocktailInfoRes> result = cocktailInfoRepository.findSearch(pageable, inputStr)
                     .stream()
                     .map(SearchCocktailInfoRes::new)
                     .collect(Collectors.toList());

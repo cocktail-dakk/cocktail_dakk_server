@@ -33,7 +33,7 @@ public class TodayCocktailService {
 
             List<CocktailInfo> cocktailInfos = new ArrayList<>();
             for (Long random : randomId) {
-                Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findById(random);
+                Optional<CocktailInfo> cocktailInfo = cocktailInfoRepository.findByCocktailIdToday(random);
                 cocktailInfos.add(cocktailInfo.get());
             }
             return cocktailInfos.stream()
@@ -53,7 +53,7 @@ public class TodayCocktailService {
             cocktailTodayRepository.deleteAll();
 
             //랜덤 인덱스 중복 없이 5개 추출
-            List<CocktailInfo> activeCocktailInfos = cocktailInfoRepository.findAllByStatus(Status.ACTIVE);
+            List<CocktailInfo> activeCocktailInfos = cocktailInfoRepository.findAllByStatus();
             int activeCocktailInfoCount = activeCocktailInfos.size();
             Integer[] randomCocktailId = new Integer[5];
             getRandomIndex(activeCocktailInfoCount, randomCocktailId);

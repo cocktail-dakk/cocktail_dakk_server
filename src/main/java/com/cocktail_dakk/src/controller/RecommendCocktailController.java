@@ -11,6 +11,7 @@ import com.cocktail_dakk.src.service.recommend.KeywordCocktailService;
 import com.cocktail_dakk.src.service.recommend.TodayCocktailService;
 import com.cocktail_dakk.src.service.recommend.UserCocktailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("cocktaildakk/v1/recommend")
 @RequiredArgsConstructor
+@Slf4j
 public class RecommendCocktailController {
 
     private final TodayCocktailService todayCocktailService;
@@ -40,7 +42,7 @@ public class RecommendCocktailController {
     @GetMapping("/user/")
     public BaseResponse<GetUserRecommendationRes> getUserCocktailRes(){
         try {
-            UserInfo userInfo = userInfoService.getUserInfo();
+            UserInfo userInfo = userInfoService.getUserInfoWithKeywordAndDrink();
             return new BaseResponse<>(userCocktailService.getUserRecommendCocktail(userInfo));
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
@@ -51,8 +53,9 @@ public class RecommendCocktailController {
     public BaseResponse<List<GetRecommendationListRes>> getKeywordCocktailRes(){
         List<GetRecommendationListRes> recommendationRes = new ArrayList<>();
         try {
-            UserInfo userInfo = userInfoService.getUserInfo();
+            UserInfo userInfo = userInfoService.getUserInfoWithKeywordAndDrink();
             recommendationRes.add(cocktailService.getKeywordRecommendation(userInfo));
+            log.info("=== 키워드 ===");
             recommendationRes.add(cocktailService.getDrinkRecommendation(userInfo));
             return new BaseResponse<>(recommendationRes);
         } catch (BaseException exception){

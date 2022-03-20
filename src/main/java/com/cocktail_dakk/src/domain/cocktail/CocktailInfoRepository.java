@@ -7,11 +7,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CocktailInfoRepository extends JpaRepository<CocktailInfo, Long>, CocktailFilterRepository {
-    @Query("SELECT distinct c FROM CocktailInfo c join c.cocktailKeywords ck join ck.keyword k where (c.koreanName like concat('%', :koreanName, '%')  or c.englishName like concat('%', :englishName, '%') or c.ingredient like concat('%', :ingredients, '%') or k.keywordName like concat('%', :keywordName, '%')) and c.status='ACTIVE'")
-    List<CocktailInfo> findSearch(Pageable pageable, @Param("koreanName") String koreanName, @Param("englishName")String englishName, @Param("ingredients") String ingredients, @Param("keywordName") String keywordName);
+    @Query("SELECT distinct c FROM CocktailInfo c join fetch c.cocktailKeywords ck join fetch ck.keyword k where (c.koreanName like concat('%', :inputStr, '%')  or c.englishName like concat('%', :inputStr, '%') or c.ingredient like concat('%', :inputStr, '%') or k.keywordName like concat('%', :inputStr, '%')) and c.status='ACTIVE'")
+    List<CocktailInfo> findSearch(Pageable pageable, @Param("inputStr") String inputStr);
 
     CocktailInfo findByCocktailInfoId(Long id);
-    List<CocktailInfo> findAllByStatus(Status status);
+
+    @Query("SELECT distinct c FROM CocktailInfo c join fetch c.cocktailKeywords ck join fetch ck.keyword k where c.status = 'ACTIVE'")
+    List<CocktailInfo> findAllByStatus();
+
+    @Query("SELECT distinct c FROM CocktailInfo c join fetch c.cocktailKeywords ck join fetch ck.keyword k where c.cocktailInfoId = ?1")
+    Optional<CocktailInfo> findByCocktailIdToday(Long id);
+
 }

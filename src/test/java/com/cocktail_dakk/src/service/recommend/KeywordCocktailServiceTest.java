@@ -51,10 +51,16 @@ class KeywordCocktailServiceTest {
                 "url222", "url2222", "url22222", 14, Status.ACTIVE);
         CocktailInfo cocktailInfo3 = createCocktail("Trinidad Sour", "트리니다드 사워", "두 번째 테스트용 칵테일 데이터",
                 "url222", "url2222", "url22222", 10, Status.INACTIVE);
+        CocktailInfo cocktailInfo4 = createCocktail("test cocktail4", "테스트 칵테일4", "네 번째 테스트용 칵테일 데이터",
+                "url222", "url2222", "url22222", 10, Status.INACTIVE);
+        CocktailInfo cocktailInfo5 = createCocktail("test cocktail5", "테스트 칵테일5", "다섯 번째 테스트용 칵테일 데이터",
+                "url222", "url2222", "url22222", 10, Status.INACTIVE);
 
         cocktailInfoRepository.save(cocktailInfo1);
         cocktailInfoRepository.save(cocktailInfo2);
         cocktailInfoRepository.save(cocktailInfo3);
+        cocktailInfoRepository.save(cocktailInfo4);
+        cocktailInfoRepository.save(cocktailInfo5);
 
         //칵테일 기주
         Drink drink1 = Drink.builder()
@@ -72,10 +78,14 @@ class KeywordCocktailServiceTest {
         CocktailDrink cocktailDrink1 = new CocktailDrink(cocktailInfo2, drink1);
         CocktailDrink cocktailDrink2 = new CocktailDrink(cocktailInfo1, drink2);
         CocktailDrink cocktailDrink3 = new CocktailDrink(cocktailInfo3, drink1);
+        CocktailDrink cocktailDrink4= new CocktailDrink(cocktailInfo4, drink1);
+        CocktailDrink cocktailDrink5 = new CocktailDrink(cocktailInfo5, drink1);
 
         cocktailDrinkRepository.save(cocktailDrink1);
         cocktailDrinkRepository.save(cocktailDrink2);
         cocktailDrinkRepository.save(cocktailDrink3);
+        cocktailDrinkRepository.save(cocktailDrink4);
+        cocktailDrinkRepository.save(cocktailDrink5);
 
         //칵테일 키워드
         Keyword keyword=Keyword.builder()
@@ -96,10 +106,14 @@ class KeywordCocktailServiceTest {
         CocktailKeyword cocktailKeyword1 = new CocktailKeyword(cocktailInfo1, keyword);
         CocktailKeyword cocktailKeyword2 = new CocktailKeyword(cocktailInfo2, keyword2);
         CocktailKeyword cocktailKeyword3 = new CocktailKeyword(cocktailInfo3, keyword3);
+        CocktailKeyword cocktailKeyword4 = new CocktailKeyword(cocktailInfo4, keyword2);
+        CocktailKeyword cocktailKeyword5 = new CocktailKeyword(cocktailInfo5, keyword3);
 
         cocktailKeywordRepository.save(cocktailKeyword1);
         cocktailKeywordRepository.save(cocktailKeyword2);
         cocktailKeywordRepository.save(cocktailKeyword3);
+        cocktailKeywordRepository.save(cocktailKeyword4);
+        cocktailKeywordRepository.save(cocktailKeyword5);
 
         //유저
         UserInfo userInfo = createUser("test1", "minnie",23,"F",12,Status.ACTIVE);
@@ -147,6 +161,8 @@ class KeywordCocktailServiceTest {
                 .stream().map(UserKeyword::getKeyword)
                 .map(Keyword::getKeywordName)
                 .collect(Collectors.toList());
+
+        System.out.println("====서비스 코드 확인===");
 
         GetRecommendationListRes keywordRecommendation = keywordCocktailService.getKeywordRecommendation(byEmail.get());
 

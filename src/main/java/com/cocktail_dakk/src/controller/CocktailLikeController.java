@@ -45,7 +45,7 @@ public class CocktailLikeController {
     @GetMapping
     public BaseResponse<List<UserLikeRes>> getLikes (){
         try {
-            UserInfo userInfo = userInfoService.getUserInfo();
+            UserInfo userInfo = userInfoService.getUserInfoWithKeywordAndDrink();
             return new BaseResponse<>(likeService.getUserLikes(userInfo));
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
