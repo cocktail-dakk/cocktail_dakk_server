@@ -37,6 +37,13 @@ public class UserInfoService {
     private final EntityManager entityManager;
 
     public UserInfo getUserInfo() throws BaseException {
+        UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return userInfoRepository.findByEmail(userInfoDto.getEmail())
+                .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+    }
+
+    public UserInfo getUserInfoWithKeywordAndDrink() throws BaseException {
         try {
             UserInfoDto userInfoDto = (UserInfoDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -104,10 +111,10 @@ public class UserInfoService {
     @Transactional
     public UserInfoRes modifyUser(UserModifyReq userModifyReq) throws BaseException{
         try {
-            UserInfo userInfo = getUserInfo();
+            UserInfo userInfo = getUserInfoWithKeywordAndDrink();
             userInfo.updateUser(userModifyReq.getNickname(), userModifyReq.getAlcoholLevel());
 
-            addFavourites(userModifyReq.getFavouritesKeywords(),userModifyReq.getFavouritesDrinks(),userInfo);
+            addFavourites(userModifyReq.getFavouritesKeywords(), userModifyReq.getFavouritesDrinks(), userInfo);
 
             return new UserInfoRes(userInfo);
         } catch (BaseException e){

@@ -40,7 +40,7 @@ public class RecommendCocktailController {
     @GetMapping("/user/")
     public BaseResponse<GetUserRecommendationRes> getUserCocktailRes(){
         try {
-            UserInfo userInfo = userInfoService.getUserInfo();
+            UserInfo userInfo = userInfoService.getUserInfoWithKeywordAndDrink();
             return new BaseResponse<>(userCocktailService.getUserRecommendCocktail(userInfo));
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
@@ -51,7 +51,7 @@ public class RecommendCocktailController {
     public BaseResponse<List<GetRecommendationListRes>> getKeywordCocktailRes(){
         List<GetRecommendationListRes> recommendationRes = new ArrayList<>();
         try {
-            UserInfo userInfo = userInfoService.getUserInfo();
+            UserInfo userInfo = userInfoService.getUserInfoWithKeywordAndDrink();
             recommendationRes.add(cocktailService.getKeywordRecommendation(userInfo));
             recommendationRes.add(cocktailService.getDrinkRecommendation(userInfo));
             return new BaseResponse<>(recommendationRes);
