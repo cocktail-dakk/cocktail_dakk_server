@@ -28,8 +28,10 @@ public class CocktailDetailsInfoRes {
     private Integer alcoholLevel;
     private String ingredient;
     private BigDecimal ratingAvg;
+    private boolean isRatingNull;
+    private boolean isLikeNull;
 
-    public CocktailDetailsInfoRes(CocktailInfo cocktailInfo){
+    public CocktailDetailsInfoRes(CocktailInfo cocktailInfo, boolean isRatingNull, boolean isLikeNull){
         this.cocktailInfoId = cocktailInfo.getCocktailInfoId();
         this.englishName = cocktailInfo.getEnglishName();
         this.koreanName = cocktailInfo.getKoreanName();
@@ -51,5 +53,7 @@ public class CocktailDetailsInfoRes {
         this.alcoholLevel = cocktailInfo.getAlcoholLevel();
         this.ingredient = cocktailInfo.getIngredient();
         this.ratingAvg = cocktailInfo.getRatingAvg();
+        this.isRatingNull = isRatingNull;
+        this.isLikeNull = isLikeNull;
     }
 }

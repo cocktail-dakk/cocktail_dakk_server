@@ -24,10 +24,10 @@ public class CocktailDetailInfoController {
     private final UserInfoService userInfoService;
 
     @GetMapping("/details")
-    public BaseResponse<CocktailDetailsInfoRes> getCocktailInfo(@RequestParam Long id){
+    public BaseResponse<CocktailDetailsInfoRes> getCocktailInfo(@RequestParam(value="id") Long id, @RequestParam(value="email") String email){
 //        return cocktailService.getCocktailDetailsInfo(id);
         try {
-            return new BaseResponse<>(cocktailService.getCocktailDetailsInfo(id));
+            return new BaseResponse<>(cocktailService.getCocktailDetailsInfo(id,email));
         } catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
