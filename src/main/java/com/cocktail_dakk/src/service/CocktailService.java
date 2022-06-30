@@ -4,6 +4,7 @@ import com.cocktail_dakk.config.BaseException;
 import com.cocktail_dakk.src.domain.Status;
 import com.cocktail_dakk.src.domain.cocktail.*;
 import com.cocktail_dakk.src.domain.cocktail.dto.*;
+import com.cocktail_dakk.src.domain.user.UserCocktailRepository;
 import com.cocktail_dakk.src.domain.user.UserInfo;
 import com.cocktail_dakk.src.domain.user.dto.PostRatingRes;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,19 @@ import static com.cocktail_dakk.config.BaseResponseStatus.*;
 public class CocktailService {
     private final CocktailInfoRepository cocktailInfoRepository;
     private final RatingRepository ratingRepository;
+    private final UserCocktailRepository userCocktailRepository;
+    private final UserInfoService userInfoService;
 
 
     //칵테일 상세페이지 띄우기
-    public CocktailDetailsInfoRes getCocktailDetailsInfo(Long id) throws BaseException {
+    public CocktailDetailsInfoRes getCocktailDetailsInfo(Long id,String email) throws BaseException {
         try {
             CocktailInfo detailCocktail = cocktailInfoRepository.findByCocktailInfoId(id);
-            return new CocktailDetailsInfoRes(detailCocktail);
+            UserInfo userInfo = userInfoService.getUserInfo();
+            boolean isLikeNull = userCocktailRepository.existsLikeByUserInfoAndCocktailInfo(userInfo,detailCocktail);
+            boolean isRatingNull = ratingRepository.existsRatingByUserInfoAndCocktailInfo(userInfo,detailCocktail);
+
+            return new CocktailDetailsInfoRes(detailCocktail,isRatingNull,isLikeNull);
         } catch (Exception e){
             throw new BaseException(RESPONSE_ERROR);
         }
